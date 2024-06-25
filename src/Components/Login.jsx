@@ -16,17 +16,8 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault(); 
-        const formData = {
-            username,
-            password,
-        };
         try {
-            const response = await axios.post('http://192.168.92.71:5000/api/users/login', formData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true,
-            });
+            const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
             console.log(response.data);
         } catch (err) {
             console.log(err);
