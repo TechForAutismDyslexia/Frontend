@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import logoTree from './images/logoTree.jpg'
 // import { useEffect, useState } from 'react';
 // import axios from 'axios';
 
@@ -10,7 +11,7 @@ export default function Navbar() {
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <ul className="navbar-brand" to="/">
-                    {/* <img src={require("./images/hmrlogo.png")} alt="Logo" height='50' width='50' /> */}
+                    <img src={logoTree} style={{borderRadius:'40px'}} alt="Logo" height='50' width='100' />
                     <span className='ms-4'>JWL</span>
                 </ul>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,13 +20,13 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <p className="nav-link" aria-current="page" to="/">About Us</p>
+                            <p className="nav-link" aria-current="page" to="/about">About Us</p>
                         </li>
                         <li className="nav-item">
-                            <p className="nav-link" to="/tickets">Contact Us</p>
+                            <p className="nav-link" to="/contact">Contact Us</p>
                         </li>
                         <li className="nav-item">
-                            <p className="nav-link" to="/tickets">Feedback</p>
+                            <p className="nav-link" to="/feedback">Feedback</p>
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
