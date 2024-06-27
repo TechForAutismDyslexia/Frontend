@@ -19,6 +19,7 @@ export default function Login() {
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
             console.log(response.data);
+            localStorage.setItem('token', response.data.token);
         } catch (err) {
             console.log(err);
         }
