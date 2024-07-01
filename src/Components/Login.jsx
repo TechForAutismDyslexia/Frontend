@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
@@ -19,12 +20,13 @@ export default function Login() {
         e.preventDefault(); 
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
-            await axios.create({
-                headers : {
-                    'Authorization' : `Bearer ${response.data}`
-                }
-            })
-            console.log(response.data);
+            // await axios.create({
+            //     headers : {
+            //         'Authorization' : `Bearer ${response.data}`
+            //     }
+            // })
+            localStorage.setItem('logintoken', response.data);
+            Navigate('/home');
 
         } catch (err) {
             console.log(err);
