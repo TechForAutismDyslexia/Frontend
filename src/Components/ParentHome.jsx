@@ -6,7 +6,6 @@ import Profile from './images/profile.png'
 export default function ParentHome() {
   return (
     <div>
-      <Navbar />
       <div className="parent-container container">
         <section className="navigation my-4">
           <h2>Welcome to the Parent Portal</h2>
