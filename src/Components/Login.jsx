@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
@@ -19,7 +20,10 @@ export default function Login() {
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
             console.log(response.data);
-            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('token', response.data);
+            if(response.data){
+                navigate('/home');
+            }
         } catch (err) {
             console.log(err);
         }
