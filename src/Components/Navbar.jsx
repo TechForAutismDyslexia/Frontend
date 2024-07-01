@@ -16,13 +16,8 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
-<<<<<<< HEAD
-                <ul className="navbar-brand" to="/">
-                    <img src={logoTree} style={{ borderRadius: '40px' }} alt="Logo" height='50' width='100' />
-=======
                 <Link className="navbar-brand" to="/">
                     <img src={logoTree} style={{borderRadius:'40px'}} alt="Logo" height='50' width='100' />
->>>>>>> ce7f517 (New)
                     <span className='ms-4'>JWL</span>
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
