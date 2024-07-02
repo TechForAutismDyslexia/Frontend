@@ -7,6 +7,7 @@ import Caretaker from './Components/Caretaker.jsx'
 import Admin from './Components/Admin.jsx'
 import Games from './Components/Details.jsx'
 import Doctor from './Components/Doctor.jsx'
+import './Components/Admin.css';
 // import Profile from './Components/profile.jsx'
 
 function App() {
