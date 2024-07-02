@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import logoTree from './images/logoTree.jpg'
+import logo from './images/family.png'
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ export default function Navbar() {
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
-                    <img src={logoTree} style={{borderRadius:'40px'}} alt="Logo" height='50' width='100' />
+                    <img src={logo} style={{borderRadius:'40px'}} alt="Logo" height='50' width='50' />
                     <span className='ms-4'>JWL</span>
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
