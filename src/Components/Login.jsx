@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const Navigate = useNavigate();
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
@@ -18,8 +21,12 @@ export default function Login() {
         e.preventDefault(); 
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
-            console.log(response.data);
-            localStorage.setItem('token', response.data.token);
+            sessionStorage.setItem('logintoken', response.data);
+            const decodedToken = jwtDecode(response.data);
+            sessionStorage.setItem('role', decodedToken.role);
+            sessionStorage.setItem('id', decodedToken.id);
+            Navigate(`/${decodedToken.role}dashboard`);
+
         } catch (err) {
             console.log(err);
         }

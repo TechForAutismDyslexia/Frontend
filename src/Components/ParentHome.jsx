@@ -1,30 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './ParentHome.css';
-import Navbar from './Navbar.jsx'
-import Profile from './images/profile.png'
-
+import Profile from './images/profile.png';
+import axios from 'axios';
+import Loader from './Loader.jsx';
+import { Link } from 'react-router-dom';
 export default function ParentHome() {
+
+  const [responses, setResponses] = useState('')
+
+  const b = async () => {
+
+    const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children',
+      {
+        headers: {
+          'Authorization': `${sessionStorage.getItem('logintoken')}`
+        }
+      }
+    )
+    setResponses(response.data)
+    console.log(response.data)
+  }
+
+
+  useEffect(() => {
+    b();
+  }, [])
+
+  const handleClick = (response) => {
+    sessionStorage.setItem('childId', response._id)
+  }
+
+
   return (
     <div>
-      <Navbar />
       <div className="parent-container container">
-        <section className="navigation my-4">
+        <section className="navigation my-4 text-center">
           <h2>Welcome to the Parent Portal</h2>
-          <p>This portal provides access to important information and resources for parents. Navigate through the sections to find details about school activities, events, and more.</p>
         </section>
-        <section className="my-4">
-          <img src={Profile} className='img-fluid profile'></img>
-          <h3>School Activities</h3>
-          <p>Stay updated with the latest school activities. Here you can find information about upcoming events, extracurricular activities, and programs that are designed to enhance your child's educational experience.</p>
-        </section>
-        <section className="my-4">
-          <h3>Parent-Teacher Meetings</h3>
-          <p>We believe in strong communication between parents and teachers. Check out the schedule for the next parent-teacher meetings and learn how to get involved in your child's education.</p>
-        </section>
-        <section className="my-4">
-          <h3>Resources for Parents</h3>
-          <p>Explore a range of resources that can help you support your child's learning at home. From educational articles to online tools, we have compiled a list of valuable resources for you.</p>
-        </section>
+        <div>
+          <section className="my-4 row justify-content-center">
+            {!responses && <Loader />}
+            {responses && responses.map((response, index) => (
+              <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 text-center" style={{fontSize:'20px'}}>
+                <Link to="/parentdashboard/details" style={{textDecoration:'none'}} onClick={()=>handleClick(response)}>
+                <div className="d-flex justify-content-center p-3">
+                  <img src={Profile} className='img-fluid profile' alt="Profile"></img>
+                </div>
+                <h3><strong>Name : </strong>{response.name}</h3>
+                <p><strong>Age : </strong>{response.age}</p>
+                <p><strong>Parent Details : </strong>{response.parentDetails}</p>
+                <p><strong>Caretaker Name : </strong>{response.caretakerName}</p>
+                <p><strong>Doctor Name : </strong>{response.doctorName}</p>
+                <p><strong>Center Id : </strong>{response.centreId}</p>
+                <p><strong>Games Completed : </strong>{response.gamesCompleted}</p>
+                <p><strong>Admin Status : </strong>{response.adminStatus ? "true" : "false"}</p>
+            </Link>
+              </div>
+            ))}
+          </section>
+        </div>
       </div>
     </div>
   );

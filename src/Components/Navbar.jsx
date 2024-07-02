@@ -1,23 +1,39 @@
-
-
-
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logoTree from './images/logoTree.jpg';
 
 export default function Navbar() {
+    const [user, setUser] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('logintoken');
+        if (token) {
+            setUser(true);
+        }
+    }, [location]);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('logintoken');
+        sessionStorage.removeItem('role');
+        sessionStorage.removeItem('id');
+        navigate('/login');
+        setUser(false);
+    };
+
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
-                    <img src={logoTree} style={{ borderRadius: '40px' }} alt="Logo" height="50" width="100" />
-                    <span className="ms-4">JWL</span>
+                    <img src={logoTree} style={{borderRadius:'40px'}} alt="Logo" height='50' width='100' />
+                    <span className='ms-4'>JWL</span>
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul className="navbar-nav me-auto mb-lg-0">
                         <li className="nav-item">
                             <Link className="nav-link" aria-current="page" to="/about">About Us</Link>
                         </li>
@@ -39,11 +55,11 @@ export default function Navbar() {
                             </a>
                             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li>
-                                <Link className="dropdown-item" aria-current="page" to="/profile">Profile</Link>
+                                    <Link className="dropdown-item" aria-current="page" to="/profile">Profile</Link>
                                 </li>
                                 <li><a className="dropdown-item" href="#">Switch Mode</a></li>
                                 <li><hr className="dropdown-divider" /></li>
-                                <Link className="dropdown-item" aria-current="page" to="/login">Sign Out</Link>
+                                <li><button className="dropdown-item" onClick={handleLogout}>Sign Out</button></li>
                             </ul>
                         </li>
                     </ul>
