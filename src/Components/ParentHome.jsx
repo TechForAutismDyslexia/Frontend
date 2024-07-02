@@ -13,7 +13,7 @@ export default function ParentHome() {
     const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children',
       {
         headers: {
-          'Authorization': `${localStorage.getItem('logintoken')}`
+          'Authorization': `${sessionStorage.getItem('logintoken')}`
         }
       }
     )

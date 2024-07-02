@@ -8,7 +8,7 @@ export default function Navbar() {
     const [user, setUser] = useState(false);
     const location = useLocation();
     useEffect(() => {
-        const token = localStorage.getItem('logintoken');
+        const token = sessionStorage.getItem('logintoken');
         if (token) {
             setUser(true);
         }
