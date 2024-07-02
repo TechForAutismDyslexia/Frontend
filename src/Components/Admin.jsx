@@ -109,9 +109,6 @@ export default function Admin() {
                   ))}
                 </ul>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
-              </div>
             </div>
           </div>
         </div>
