@@ -4,7 +4,7 @@ import Navbar from './Components/Navbar.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './Components/Register.jsx'
 import Caretaker from './Components/Caretaker.jsx'
-
+import Admin from './Components/Admin.jsx'
 function App() {
 
   return (
@@ -16,6 +16,7 @@ function App() {
           <Route path="/home" element={<ParentHome />} />
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
+          <Route path="/admindashboard" element={<Admin/>}/>
         </Routes>
       </Router>
     </>

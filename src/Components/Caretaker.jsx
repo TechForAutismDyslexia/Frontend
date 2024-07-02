@@ -7,7 +7,7 @@ export default function Caretaker() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('logintoken');
+        const token = sessionStorage.getItem('logintoken');
         const response = await axios.get('https://jwlgamesbackend.vercel.app/api/caretaker/assigned', {
           headers: {
             Authorization: `${token}`
