@@ -24,8 +24,6 @@ export default function Login() {
             const decodedToken = jwtDecode(response.data);
             localStorage.setItem('role', decodedToken.role);
             localStorage.setItem('id', decodedToken.id);
-            console.log(decodedToken);
-            console.log(decodedToken.role);
             Navigate(`/${decodedToken.role}dashboard`);
 
         } catch (err) {
