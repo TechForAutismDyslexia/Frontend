@@ -27,13 +27,7 @@ export default function Register() {
     const handleRegister = (e) => {
         e.preventDefault(); 
         try {
-            const data = new FormData();
-            data.append("username", username);
-            data.append("email", email);
-            data.append("name", name);
-            data.append("mobilenumber", phone);
-            data.append("password", password);
-            const res = axios.post('https://jwlgamesbackend.vercel.app/api/users/register',data);
+            const res = axios.post('https://jwlgamesbackend.vercel.app/api/users/register',{name,username,email,phone,password});
             console.log(res.data);
         }
         catch (e) {
