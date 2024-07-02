@@ -7,7 +7,7 @@ import Caretaker from './Components/Caretaker.jsx'
 import Admin from './Components/Admin.jsx'
 import Games from './Components/Details.jsx'
 import Doctor from './Components/Doctor.jsx'
-import Profile from './Components/Profile.jsx'
+// import Profile from './Components/profile.jsx'
 
 function App() {
 
@@ -23,7 +23,7 @@ function App() {
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/parentdashboard/details" element={<Games/>}/>
           <Route path="/doctordashboard" element={<Doctor/>}/>
-          <Route path="/profile" element={<Profile/>}/>
+          {/* <Route path="/profile" element={<Profile/>}/> */}
 
         </Routes>
       </Router> 
