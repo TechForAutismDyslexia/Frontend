@@ -18,7 +18,7 @@ function App() {
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
         </Routes>
-      </Router>
+      </Router> 
     </>
   )
 }
