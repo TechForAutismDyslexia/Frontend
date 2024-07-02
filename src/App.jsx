@@ -5,22 +5,22 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './Components/Register.jsx'
 import Caretaker from './Components/Caretaker.jsx'
 import Admin from './Components/Admin.jsx'
-import Doctor from './Components/Doctor.jsx'
+import Games from './Components/Details.jsx'
 function App() {
 
   return (
     <>
-      <Router>
+      <Router basename="/adminportal">
         <Navbar/>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<ParentHome />} />
+          <Route path="/parentdashboard" element={<ParentHome />} />
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
-          <Route path="/doctordashboard" element={<Doctor/>}/>
+          <Route path="/parentdashboard/details" element={<Games/>}/>
         </Routes>
-      </Router>
+      </Router> 
     </>
   )
 }

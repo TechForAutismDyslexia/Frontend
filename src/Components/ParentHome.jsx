@@ -3,7 +3,7 @@ import './ParentHome.css';
 import Profile from './images/profile.png';
 import axios from 'axios';
 import Loader from './Loader.jsx';
-
+import { Link } from 'react-router-dom';
 export default function ParentHome() {
 
   const [responses, setResponses] = useState('')
@@ -26,6 +26,11 @@ export default function ParentHome() {
     b();
   }, [])
 
+  const handleClick = (response) => {
+    sessionStorage.setItem('childId', response._id)
+  }
+
+
   return (
     <div>
       <div className="parent-container container">
@@ -37,6 +42,7 @@ export default function ParentHome() {
             {!responses && <Loader />}
             {responses && responses.map((response, index) => (
               <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 text-center" style={{fontSize:'20px'}}>
+                <Link to="/parentdashboard/details" style={{textDecoration:'none'}} onClick={()=>handleClick(response)}>
                 <div className="d-flex justify-content-center p-3">
                   <img src={Profile} className='img-fluid profile' alt="Profile"></img>
                 </div>
@@ -48,6 +54,7 @@ export default function ParentHome() {
                 <p><strong>Center Id : </strong>{response.centreId}</p>
                 <p><strong>Games Completed : </strong>{response.gamesCompleted}</p>
                 <p><strong>Admin Status : </strong>{response.adminStatus ? "true" : "false"}</p>
+            </Link>
               </div>
             ))}
           </section>
