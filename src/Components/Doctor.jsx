@@ -22,7 +22,6 @@ export default function Doctor() {
       }, [])
     return (
         <>
-        <div>Doctor</div>
         <div>
             <div className="parent-container container">
                 <section className="navigation my-4 text-center">
