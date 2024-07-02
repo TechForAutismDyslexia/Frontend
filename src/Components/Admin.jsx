@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 export default function Admin() {
   const [children, setChildren] = useState([]);
