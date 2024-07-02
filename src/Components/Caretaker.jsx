@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Caretaker() {
   const [data, setData] = useState([]);
@@ -37,7 +36,7 @@ export default function Caretaker() {
                 <p className="card-text">Caretaker: {item.caretakerName}</p>
                 <p className="card-text">Games Completed: {item.gamesCompleted.join(', ')}</p>
                 <p className="card-text">Parent Details: {item.parentDetails}</p>
-                <p className="card-text">Admin Status: {item.adminStatus ? 'Yes' : 'No'}</p>
+                {/* <p className="card-text">Admin Status: {item.adminStatus ? 'Yes' : 'No'}</p> */}
               </div>
             </div>
           </div>
