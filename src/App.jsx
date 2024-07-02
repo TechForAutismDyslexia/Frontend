@@ -5,11 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './Components/Register.jsx'
 import Caretaker from './Components/Caretaker.jsx'
 import Admin from './Components/Admin.jsx'
+import Games from './Components/Details.jsx'
 function App() {
 
   return (
     <>
-      <Router>
+      <Router basename="/adminportal">
         <Navbar/>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
+          <Route path="/parentdashboard/details" element={<Games/>}/>
         </Routes>
       </Router> 
     </>
