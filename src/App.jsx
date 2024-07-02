@@ -6,6 +6,7 @@ import Register from './Components/Register.jsx'
 import Caretaker from './Components/Caretaker.jsx'
 import Admin from './Components/Admin.jsx'
 import Games from './Components/Details.jsx'
+import Doctor from './Components/Doctor.jsx'
 function App() {
 
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/parentdashboard/details" element={<Games/>}/>
+          <Route path="/doctordashboard" element={<Doctor/>}/>
         </Routes>
       </Router> 
     </>
