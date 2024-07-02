@@ -21,7 +21,7 @@ export default function Login() {
         e.preventDefault(); 
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
-            localStorage.setItem('token', response.data);
+            localStorage.setItem('logintoken', response.data);
             const decodedToken = jwtDecode(response.data);
             localStorage.setItem('role', decodedToken.role);
             localStorage.setItem('id', decodedToken.id);
