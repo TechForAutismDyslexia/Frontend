@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 import Loader from './Loader';
 export default function Doctor() {
-    const [children, setChildren] = useState([]);
+    const [children, setChildren] = useState('');
     const getChildren = async () => {
         try {
             const res = await axios.get('https://jwlgamesbackend.vercel.app/api/doctor/assigned',{
@@ -42,7 +42,7 @@ export default function Doctor() {
                                 <p><strong>Doctor Name : </strong>{child.doctorName}</p>
                                 <p><strong>Center Id : </strong>{child.centreId}</p>
                                 <p><strong>Games Completed : </strong>{child.gamesCompleted}</p>
-                                <p><strong>Admin Status : </strong>{child.adminStatus ? "true" : "false"}</p>
+                                {/* <p><strong>Admin Status : </strong>{child.adminStatus ? "true" : "false"}</p> */}
                             </div>
                         ))}
                     </section>
