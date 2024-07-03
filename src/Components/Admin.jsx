@@ -7,7 +7,11 @@ export default function Admin() {
   const [children, setChildren] = useState([]);
   const [verified, setVerified] = useState([]);
   const [pending, setPending] = useState([]);
+  const [caretakers, setCaretakers] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const [selectedChild, setSelectedChild] = useState(null);
+  const [selectedCaretaker, setSelectedCaretaker] = useState('');
+  const [selectedDoctor, setSelectedDoctor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -19,7 +23,6 @@ export default function Admin() {
           }
         });
         const allChildren = response.data;
-        console.log(allChildren);
         setChildren(allChildren);
 
         const verifiedChildren = allChildren.filter(child => child.adminStatus === true);
@@ -35,9 +38,76 @@ export default function Admin() {
     fetchChildren();
   }, []);
 
+  useEffect(() => {
+    const fetchCaretakers = async () => {
+      try {
+        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allcaretakers', {
+          headers: {
+            Authorization: `${sessionStorage.getItem('logintoken')}`
+          }
+        });
+        setCaretakers(response.data);
+      } catch (error) {
+        console.error('Error fetching caretakers:', error);
+      }
+    };
+
+    fetchCaretakers();
+  }, []);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/alldoctors', {
+          headers: {
+            Authorization: `${sessionStorage.getItem('logintoken')}`
+          }
+        });
+        setDoctors(response.data);
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
   const handleCardClick = (child) => {
     setSelectedChild(child);
+    setSelectedCaretaker('');
+    setSelectedDoctor('');
     setIsModalOpen(true);
+  };
+
+  const handleCaretakerChange = (event) => {
+    setSelectedCaretaker(event.target.value);
+  };
+
+  const handleDoctorChange = (event) => {
+    setSelectedDoctor(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log(selectedChild._id, selectedCaretaker, selectedDoctor);
+      await axios.put(`https://jwlgamesbackend.vercel.app/api/admin/${selectedChild._id}/assign`, {
+        caretakerId: selectedCaretaker,
+        doctorId: selectedDoctor
+      }, {
+        headers: {
+          Authorization: `${sessionStorage.getItem('logintoken')}`
+        }
+      });
+      closeModal();
+      // Fetch children again to update the state
+      const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allchildren', {
+        headers: {
+          Authorization: `${sessionStorage.getItem('logintoken')}`
+        }
+      });
+      setChildren(response.data);
+    } catch (error) {
+      console.error('Error updating child:', error);
+    }
   };
 
   const closeModal = () => {
@@ -108,6 +178,28 @@ export default function Admin() {
                     <li key={index}>{game}</li>
                   ))}
                 </ul>
+                <div className="form-group">
+                  <label htmlFor="caretakerSelect">Assign Caretaker</label>
+                  <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleCaretakerChange}>
+                    <option value="">Select Caretaker</option>
+                    {caretakers.map(caretaker => (
+                      <option key={caretaker._id} value={caretaker._id}>{caretaker.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="doctorSelect">Assign Doctor</label>
+                  <select id="doctorSelect" className="form-control" value={selectedDoctor} onChange={handleDoctorChange}>
+                    <option value="">Select Doctor</option>
+                    {doctors.map(doctor => (
+                      <option key={doctor._id} value={doctor._id}>{doctor.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
               </div>
             </div>
           </div>
