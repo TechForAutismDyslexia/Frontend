@@ -80,7 +80,7 @@ export default function Navbar() {
                     }
                     {openModal &&
                         <div className={`modal fade ${openModal ? 'show' : ''}`} style={{ display: openModal ? 'block' : 'none' }} tabIndex="-1" role="dialog" aria-hidden={!openModal}>
-                        <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-dialog">
                           <div className="modal-content">
                             <div className="modal-header" style={{backgroundColor:'#f57676'}}>
                               <h5 className="modal-title">Logout</h5>
