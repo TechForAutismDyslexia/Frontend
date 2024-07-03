@@ -7,11 +7,13 @@ import { useNavigate } from 'react-router-dom';
 export default function Navbar() {
     const [user, setUser] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const [username,setUsername] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = sessionStorage.getItem('logintoken');
+        setUsername(sessionStorage.getItem('username'));
         if (token) {
             setUser(true);
         }
@@ -57,14 +59,25 @@ export default function Navbar() {
                     </ul>
                     {user &&
                         <div>
-                            <ul className="navbar-nav mb-2 mb-lg-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
-                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                                    <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                                </svg>
-                                <li className="nav-item">
-                                    <button className="btn btn-danger mt-2" onClick={handleModal}  >Logout</button>
+                            <ul className="navbar-nav  dropstart">
+
+                                <li class="nav-item ">
+                                    <button class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                            <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                        </svg>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <p className='fw-bold ps-2 pt-2'>{username}</p>
+                                        </li>
+                                        <li>
+                                            <button onClick={handleLogout} className='btn pt-0 text-danger'> logout</button>
+                                        </li>
+                                    </ul>
                                 </li>
+
                             </ul>
                         </div>
 
