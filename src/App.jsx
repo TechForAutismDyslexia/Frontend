@@ -11,7 +11,7 @@ import './Components/Admin.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { useState } from 'react';
-// import Profile from './Components/profile.jsx'
+import Reports from './Components/Reports.jsx'
 
 function App() {
   const [sharedUsername , setSharedUsername] = useState('');
@@ -31,8 +31,7 @@ function App() {
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/parentdashboard/details" element={<Games/>}/>
           <Route path="/doctordashboard" element={<Doctor/>}/>
-          {/* <Route path="/profile" element={<Profile/>}/> */}
-
+          <Route path="/reports" element={<Reports/>}/>
         </Routes>
       </Router> 
     </>

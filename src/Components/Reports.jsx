@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProgressBar, Container, Row, Col, Card, ListGroup, Table } from 'react-bootstrap';
 
-const Profile = () => {
+const Reports = () => {
   const user = {
     avatar: 'https://via.placeholder.com/150',
     name: 'Dummy',
@@ -63,4 +63,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Reports;

@@ -1,4 +1,5 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Caretaker() {
@@ -25,9 +26,9 @@ export default function Caretaker() {
   return (
     <div className="container mt-4">
       <div className="row">
-      {!data && <Loader />}
+        {!data && <Loader />}
         {data.map((item) => (
-          <div key={item._id} className="col-md-4 mb-4 br-2">
+          <div key={item._id} className="col-md-4 mb-4">
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{item.name}</h5>
@@ -38,8 +39,11 @@ export default function Caretaker() {
                 {/* <p className="card-text">Games Completed: {item.gamesCompleted.join(', ')}</p> */}
                 {/* <p className="card-text">Parent Details: {item.parentDetails}</p> */}
                 {/* <p className="card-text">Admin Status: {item.adminStatus ? 'Yes' : 'No'}</p> */}
+                <div className='display d-flex justify-content-around'>
+                  <button type="button" className="btn btn-primary">Games</button>
+                  <Link to='/reports'><button type="button" className="btn btn-danger">Reports</button></Link>
+                </div>
               </div>
-              
             </div>
           </div>
         ))}
