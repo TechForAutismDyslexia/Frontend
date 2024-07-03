@@ -31,6 +31,7 @@ export default function Navbar() {
         sessionStorage.removeItem('logintoken');
         sessionStorage.removeItem('role');
         sessionStorage.removeItem('id');
+        sessionStorage.removeItem('username');
         setUser(false);
         navigate('/login');
     };
