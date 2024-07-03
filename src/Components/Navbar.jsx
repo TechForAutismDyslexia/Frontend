@@ -34,10 +34,10 @@ export default function Navbar() {
     };
     return (
         // style={{backgroundColor:'#76c2f5'}}
-        <nav className="navbar navbar-expand-lg">     
+        <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
-                    <img src={logo} style={{borderRadius:'40px'}} alt="Logo" height='50' width='50' />
+                    <img src={logo} style={{ borderRadius: '40px' }} alt="Logo" height='50' width='50' />
                     <span className='ms-4'>JWL</span>
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,20 +55,21 @@ export default function Navbar() {
                             <Link className="nav-link" to="/feedback">Feedback</Link>
                         </li>
                     </ul>
-                    { user &&
-                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                                <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                            </svg>
-                            <li className="nav-item">
-                                <button className="btn btn-danger mt-2 ms-3" onClick={handleModal}  >Logout</button>
-                            </li>
-                        </ul>
-                        
+                    {user &&
+                        <div>
+                            <ul className="navbar-nav mb-2 mb-lg-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                </svg>
+                                <li className="nav-item">
+                                    <button className="btn btn-danger mt-2" onClick={handleModal}  >Logout</button>
+                                </li>
+                            </ul>
+                        </div>
 
                     }
-                    { !user &&
+                    {!user &&
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login">Login</Link>
@@ -80,24 +81,24 @@ export default function Navbar() {
                     }
                     {openModal &&
                         <div className={`modal fade ${openModal ? 'show' : ''}`} style={{ display: openModal ? 'block' : 'none' }} tabIndex="-1" role="dialog" aria-hidden={!openModal}>
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <div className="modal-header" style={{backgroundColor:'#f57676'}}>
-                              <h5 className="modal-title">Logout</h5>
-                              <button type="button" className="close btn-large btn" onClick={closeModal} aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header" style={{ backgroundColor: '#f57676' }}>
+                                        <h5 className="modal-title">Logout</h5>
+                                        <button type="button" className="close btn-large btn" onClick={closeModal} aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        Are you sure you want to logout?
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                                        <button type="button" className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="modal-body">
-                              Are you sure you want to logout?
-                            </div>
-                            <div className="modal-footer">
-                              <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
-                              <button type="button" className="btn btn-danger" onClick={handleLogout}>Logout</button>
-                              </div>
-                          </div>
                         </div>
-                      </div>
                     }
 
                 </div>
