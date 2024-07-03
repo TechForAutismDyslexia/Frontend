@@ -29,7 +29,7 @@ export default function ParentHome() {
   return (
     <div>
       <div className="parent-container container">
-        <section className="navigation my-4 text-center">
+        <section className="navigation my-4 text-center rounded-4">
           <h2>Welcome to the Parent Portal</h2>
         </section>
         <div>
@@ -43,7 +43,7 @@ export default function ParentHome() {
                   className="btn"
                   onClick={() => handleClick(response)}
                 >
-                  <div className="card">
+                  <div className="card rounded-5">
                     <div className="d-flex justify-content-center p-3">
                       <img src={Profile} className="img-fluid profile" alt="Profile"></img>
                     </div>
