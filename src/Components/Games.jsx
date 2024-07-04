@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import IconsData from './images.json';
+import GameData from './gameData.json';
 
 export default function Games() {
   const [icons, setIcons] = useState([]);
@@ -7,7 +7,7 @@ export default function Games() {
   useEffect(() => {
     const loadIcons = async () => {
       const iconsArray = await Promise.all(
-        Object.values(IconsData.icons).map(async icon => {
+        (GameData).map(async icon => {
           const imageUrl = await import(`../assets/icons/${icon.img}.jpg`);
           return { ...icon, url: imageUrl.default };
         })
