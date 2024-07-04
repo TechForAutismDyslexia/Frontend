@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
@@ -14,7 +13,6 @@ export default function Admin() {
   const [selectedCaretaker, setSelectedCaretaker] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -125,7 +123,7 @@ export default function Admin() {
         <h1 className="my-4">Admin</h1>
         <div className=''>
           <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/register'}>Add Parent</button>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/adminregister'}>Add Doctor/Caretaker</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/admindashboard/adminregister'}>Add Doctor/Caretaker</button>
           {/* <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/registercaretaker'}>Add Caretaker</button> */}
         </div>
       </div>

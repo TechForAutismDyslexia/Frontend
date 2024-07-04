@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AdminRegister() {
     const [username, setUsername] = useState('');
@@ -15,6 +18,7 @@ export default function AdminRegister() {
     const handleMobileNumberChange = (e) => setMobilenumber(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleRoleChange = (e) => setRole(e.target.value);
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -24,16 +28,20 @@ export default function AdminRegister() {
                 { headers: { Authorization: `${sessionStorage.getItem('logintoken')}` } }
             );
             console.log(res.data);
+            toast.success("Registered successfully!" , {autoClose:2000});
+
+            setTimeout(()=>{
+                navigate("/admindashboard");
+            },3000);
         } catch (e) {
             console.log("data not sent");
+            toast.error("Registration failed. Please try again.");
         }
     }
 
     return (
         <div className="register-container">
-            {/* <div className="register-header">
-                <p className="register-title">Admin Register</p>
-            </div> */}
+            <ToastContainer />
             <div className="register-form-container">
                 <form className="register-form" onSubmit={handleRegister}>
                     <div className="form-group">
