@@ -9,11 +9,14 @@ export default function Navbar() {
     const [user, setUser] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [username, setUsername] = useState('');
+    const [role, setRole] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = sessionStorage.getItem('logintoken');
+        const roleP = sessionStorage.getItem('role');   
+        setRole(roleP);
         setUsername(sessionStorage.getItem('username'));
         if (token) {
             setUser(true);
@@ -40,7 +43,7 @@ export default function Navbar() {
         // style={{backgroundColor:'#76c2f5'}}
         <nav className="navbar navbar-expand-lg border border-2 border-dark rounded-4 m-3 fs-6" style={{ backgroundColor: 'rgb(100, 150, 200)' }}>
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand" to={`/${role ? role+'dashboard' : ''}`}>
                     <img src={logo} style={{ borderRadius: '40px' }} className='border border-dark border-2' alt="Logo" height='40' width='40' />
                     <span className='ms-4'>JWL</span>
                 </Link>
