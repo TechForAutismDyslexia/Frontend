@@ -1,0 +1,88 @@
+{
+    "icons": {
+        "1": {
+            "name": "Image Matching",
+            "url": "./icons/imageMatching.jpeg",
+            "description": "This is a description of the game",
+            "route": "/games/matching"
+        },
+        "2": {
+            "name": "Missing Letter",
+            "url": "./icons/MissingLetter.png",
+            "description": "This is a description of the game",
+            "route": "/games/memorygame"
+        },
+        "3": {
+            "name": "Shape Design",
+            "url": "./icons/Shape-Design.png",
+            "description": "This is a description of the game",
+            "route": "/games/shapedesign"
+        },
+        "4": {
+            "name": "Drag and Drop",
+            "url": "./icons/tabledraganddrop.jpeg",
+            "description": "This is a description of the game",
+            "route": "/games/tabledraganddrop"
+        },
+        "5": {
+            "name": "Word",
+            "url": "./icons/word.png",
+            "description": "This is a description of the game",
+            "route": "/games/word"
+        },
+        "6": {
+            "name": "Word Search",
+            "url": "./icons/Search.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/wordsearch"
+        },
+        "7": {
+            "name": "Connecting Letters",
+            "url": "./icons/ConnectingLetters.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/connectingletters"
+        },
+        "8": {
+            "name": "Drag and Match",
+            "url": "./icons/DragAndMatch.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/dragandmatch"
+        },
+        "9": {
+            "name": "Window Sequencing",
+            "url": "./icons/WindowSequencing.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/windowsequencing"
+        },
+        "10": {
+            "name": "Animal Farm",
+            "url": "./icons/AnimalFarm.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/animalfarm"
+        },
+        "11":{
+            "name": "Animal Matching",
+            "url": "./icons/AnimalMatching.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/animalmatching"
+        },
+        "12":{
+            "name": "Joining Shapes",
+            "url": "./icons/JoiningShapes.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/joiningshapes"
+        },
+        "13":{
+            "name": "Sentence Verification",
+            "url": "/icons/SentenceVerification.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/sentenceverification"
+        },
+        "14":{
+            "name": "Shadow Matching",
+            "url": "./icons/ShadowMatching.jpg",
+            "description": "This is a description of the game",
+            "route": "/games/shadowmatching"
+        }
+    }
+}
