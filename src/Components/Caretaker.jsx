@@ -1,9 +1,10 @@
 import  { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Caretaker() {
   const [data, setData] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,6 +23,10 @@ export default function Caretaker() {
     fetchData();
   }, []);
 
+  const handleGames = () => {
+    navigate('/caretakerdashboard/games');
+  }
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -38,6 +43,7 @@ export default function Caretaker() {
                 {/* <p className="card-text">Games Completed: {item.gamesCompleted.join(', ')}</p> */}
                 {/* <p className="card-text">Parent Details: {item.parentDetails}</p> */}
                 {/* <p className="card-text">Admin Status: {item.adminStatus ? 'Yes' : 'No'}</p> */}
+                <button className='btn btn-primary' onClick={handleGames}>Games</button>
               </div>
               
             </div>
