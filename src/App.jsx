@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './Components/Register.jsx'
 import Caretaker from './Components/Caretaker.jsx'
 import Admin from './Components/Admin.jsx'
-import Details from './Components/Details.jsx'
+// import Details from './Components/Details.jsx'
 import Doctor from './Components/Doctor.jsx'
 import Games from './Components/Games.jsx'
 import './Components/Admin.css';
@@ -13,6 +13,8 @@ import AdminRegister from './Components/Adminregistration.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Reports from './Components/Reports.jsx'
+import Admingamedetailsftech from './Components/Admingamedetailsftech.jsx'
+import './App.css';
 
 
 function App() {
@@ -28,7 +30,8 @@ function App() {
           <Route path="/caretakerdashboard/games" element={<Games/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
-          <Route path="/parentdashboard/details" element={<Details/>}/>
+          <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>
+          {/* <Route path="/parentdashboard/details" element={<Details/>}/> */}
           <Route path="/doctordashboard" element={<Doctor/>}/>
           <Route path="/reports" element={<Reports/>}/>
           <Route path="/games" element={<Games/>}/>

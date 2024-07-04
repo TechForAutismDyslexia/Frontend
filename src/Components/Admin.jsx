@@ -124,7 +124,7 @@ export default function Admin() {
         <div className=''>
           <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/register'}>Add Parent</button>
           <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/admindashboard/adminregister'}>Add Doctor/Caretaker</button>
-          {/* <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/registercaretaker'}>Add Caretaker</button> */}
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => window.location.href = '/adminportal/admindashboard/admingamedetailsftech'}>Game Details</button>
         </div>
       </div>
       <h2>Verified Users</h2>
