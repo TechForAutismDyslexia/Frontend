@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[247],{247:(e,s,a)=>{e.exports=a.p+"static/media/snowman.abe6ef607f4dcdef70ce.png"}}]);

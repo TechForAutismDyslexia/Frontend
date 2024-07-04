@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[983],{6983:(e,a,s)=>{e.exports=s.p+"static/media/icecreamshadow.a3d9e3e72aa4d22ab35f.png"}}]);

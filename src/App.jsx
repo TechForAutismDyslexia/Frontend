@@ -27,14 +27,19 @@ function App() {
           <Route path="/parentdashboard" element={<ParentHome />} />
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
-          <Route path="/caretakerdashboard/games" element={<Games/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>
           {/* <Route path="/parentdashboard/details" element={<Details/>}/> */}
           <Route path="/doctordashboard" element={<Doctor/>}/>
+<<<<<<< HEAD
           <Route path="/reports" element={<Reports/>}/>
           <Route path="/games" element={<Games/>}/>
+=======
+          <Route path="/games" element={<Games/>}/>
+          {/* <Route path="/profile" element={<Profile/>}/> */}
+
+>>>>>>> b0498fc (New)
         </Routes>
       </Router> 
     </>

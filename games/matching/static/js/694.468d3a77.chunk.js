@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[694],{4694:(e,s,a)=>{e.exports=a.p+"static/media/bottle.7475be5c22e80a8c973a.png"}}]);

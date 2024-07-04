@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[828],{8828:(e,s,a)=>{e.exports=a.p+"static/media/a1.370855e91fb0267f7383.png"}}]);
