@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
@@ -13,6 +14,7 @@ export default function Admin() {
   const [selectedCaretaker, setSelectedCaretaker] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -76,6 +78,7 @@ export default function Admin() {
     setSelectedCaretaker('');
     setSelectedDoctor('');
     setIsModalOpen(true);
+    sessionStorage.setItem('childId', child._id);
   };
 
   const handleCaretakerChange = (event) => {
@@ -113,11 +116,19 @@ export default function Admin() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedChild(null);
+    sessionStorage.removeItem('childId');
   };
 
   return (
     <div className="container">
-      <h1 className="my-4">Admin</h1>
+      <div className='d-flex justify-content-between align-items-center'>
+        <h1 className="my-4">Admin</h1>
+        <div className=''>
+          <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/register'}>Add Parent</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/adminregister'}>Add Doctor/Caretaker</button>
+          {/* <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => window.location.href = '/adminportal/registercaretaker'}>Add Caretaker</button> */}
+        </div>
+      </div>
       <h2>Verified Users</h2>
       {verified.length === 0 ? (
         <p>Loading</p>
@@ -163,9 +174,6 @@ export default function Admin() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="childModalLabel">{selectedChild.name}</h5>
-                <button type="button" className="close" onClick={closeModal} aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
               </div>
               <div className="modal-body">
                 <p>Age: {selectedChild.age}</p>
