@@ -12,9 +12,8 @@ import './Components/Admin.css';
 import AdminRegister from './Components/Adminregistration.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { useState } from 'react';
-import './App.css';
-// import Profile from './Components/profile.jsx'
+import Reports from './Components/Reports.jsx'
+
 
 function App() {
   return (
@@ -31,8 +30,8 @@ function App() {
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/parentdashboard/details" element={<Details/>}/>
           <Route path="/doctordashboard" element={<Doctor/>}/>
-          {/* <Route path="/profile" element={<Profile/>}/> */}
-
+          <Route path="/reports" element={<Reports/>}/>
+          <Route path="/games" element={<Games/>}/>
         </Routes>
       </Router> 
     </>
