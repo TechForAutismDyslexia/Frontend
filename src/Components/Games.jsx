@@ -23,7 +23,7 @@ export default function Games() {
         <div className="row">
           {icons.slice(0, 14).map((icon, index) => (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={index}>
-              <a href={"https://tfd-landing-page.vercel.app"+icon.route} target='_blank' className="card-link" style={{textDecoration:'none'}}>
+              <a href={window.location.host+icon.route} target='_blank' className="card-link" style={{textDecoration:'none'}}>
                 <div className="card" style={{borderRadius:'30px'}}>
                   <img
                     src={icon.url}
