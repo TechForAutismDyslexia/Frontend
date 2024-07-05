@@ -14,7 +14,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Reports from './Components/Reports.jsx'
 import Admingamedetailsftech from './Components/Admingamedetailsftech.jsx'
+import ContactUs from './Components/ContactUs.jsx'
 import './App.css';
+import Feedback from './Components/Feedback.jsx'
+
 
 
 function App() {
@@ -35,6 +38,15 @@ function App() {
           <Route path="/doctordashboard" element={<Doctor/>}/>
           <Route path="/reports" element={<Reports/>}/>
           <Route path="/games" element={<Games/>}/>
+          <Route path="/contact" element={< ContactUs/>} />
+          <Route path="/feedback" element={<Feedback/>} />
+          <Route path="/" element={
+            <div className='container mt-5'>
+              <div className='fw-bolder fs-1 text-center'>
+                Welcome to the Admin Portal
+              </div>
+            </div>
+          } />
         </Routes>
       </Router> 
     </>
