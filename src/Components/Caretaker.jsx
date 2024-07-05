@@ -29,16 +29,21 @@ export default function Caretaker() {
     setIsModalOpen(true);
     setChildDetails(child);
   };
-
+  
   const closeModal = () => {
     setIsModalOpen(false);
     setChildDetails(null);
   };
   const navigate = useNavigate();
   const gotoGames = () => {
-    navigate('/games');
     sessionStorage.setItem('childId', childDetails._id);
+    navigate('/games');
   }
+  const gotoReports = () => {
+    sessionStorage.setItem('childId', childDetails._id);
+    navigate('/reports');
+  }
+
 
   return (
     <div className="container mt-4">
@@ -89,7 +94,7 @@ export default function Caretaker() {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={gotoGames}>Games</button>
-                <button type="button" className="btn btn-primary">Reports</button>
+                <button type="button" className="btn btn-primary" onClick={gotoReports}>Reports</button>
               </div>
             </div>
           </div>

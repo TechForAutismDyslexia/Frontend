@@ -1,37 +1,38 @@
-import React from 'react';
-import { ProgressBar, Container, Row, Col, Card, ListGroup, Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { ProgressBar, Container, Row, Col, Card, Table } from 'react-bootstrap';
 
 const Reports = () => {
-  const user = {
-    avatar: 'https://via.placeholder.com/150',
-    name: 'Dummy',
-    caretakerName: 'Ram',
-    parentName: 'Rajesh',
-    gamesPlayed: 5,
-    progress: 40, 
-    recentActions: [
-      { GameId: '#12', Game_Name: 'Connecting Letters', Status: 'Completed' },
-      { GameId: '#15', Game_Name: 'Sentence Verification', Status: 'Attempted' },
-      { GameId: '#2', Game_Name: 'Shape Matching', Status: 'Completed' },
-      { GameId: '#1', Game_Name: 'Animal Matching', Status: 'Attempted' },
-      { GameId: '#7', Game_Name: 'Joining Shapes', Status: 'Completed' },
-    ],
-  };
-
+  const [child, setChild] = useState();
+  const [data, setData] = useState([]);
+  setChild(sessionStorage.getItem('childId'));
+  const getData = async () => {
+    try {
+      const token = sessionStorage.getItem('logintoken');
+      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}/gamesplayed`, {
+        headers: {
+          Authorization: `${token}`
+        }
+      });
+      setData(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <Container>
       <Row className="justify-content-center mt-5">
         <Col md={4}>
           <Card>
-            <Card.Img variant="top" src={user.avatar} alt="Avatar" className="img-fluid rounded-circle mt-3 mx-auto" style={{ width: '150px' }} />
+            {/* <Card.Img variant="top" src={user.avatar} alt="Avatar" className="img-fluid rounded-circle mt-3 mx-auto" style={{ width: '150px' }} /> */}
             <Card.Body className="text-center">
-              <Card.Title>{user.name}</Card.Title>
+              <Card.Title>{child.name}</Card.Title>
               <Card.Text>
-                <strong>Caretaker:</strong> {user.caretakerName}<br />
-                <strong>Parent:</strong> {user.parentName}<br />
-                <strong>Games Played:</strong> {user.gamesPlayed}
+                <strong>Caretaker:</strong> {child.caretakerName}<br />
+                <strong>Parent:</strong> {child.parentName}<br />
+                <strong>Games Played:</strong> {child.gamesPlayed}
               </Card.Text>
-              <ProgressBar now={user.progress} label={`${user.progress}%`} />
+              <ProgressBar now={child.progress} label={`${child.progress}%`} />
             </Card.Body>
           </Card>
         </Col>
@@ -47,7 +48,7 @@ const Reports = () => {
                 </tr>
               </thead>
               <tbody>
-                {user.recentActions.map((action, index) => (
+                {child.recentActions.map((action, index) => (
                   <tr key={index}>
                     <td>{action.GameId}</td>
                     <td>{action.Game_Name}</td>
