@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/games/matching/static/css/main.50c17455.css",
-    "main.js": "/games/matching/static/js/main.e9228cc5.js",
+    "main.css": "/games/matching/static/css/main.b1d41d1e.css",
+    "main.js": "/games/matching/static/js/main.62291355.js",
     "static/js/8.61c54367.chunk.js": "/games/matching/static/js/8.61c54367.chunk.js",
     "static/js/828.1d97cfc9.chunk.js": "/games/matching/static/js/828.1d97cfc9.chunk.js",
     "static/js/887.3e5d686f.chunk.js": "/games/matching/static/js/887.3e5d686f.chunk.js",
@@ -66,12 +66,12 @@
     "static/media/guitar.png": "/games/matching/static/media/guitar.9dccc4522b786b606d22.png",
     "index.html": "/games/matching/index.html",
     "static/media/hi.txt": "/games/matching/static/media/hi.31d6cfe0d16ae931b73c.txt",
-    "main.50c17455.css.map": "/games/matching/static/css/main.50c17455.css.map",
-    "main.e9228cc5.js.map": "/games/matching/static/js/main.e9228cc5.js.map",
+    "main.b1d41d1e.css.map": "/games/matching/static/css/main.b1d41d1e.css.map",
+    "main.62291355.js.map": "/games/matching/static/js/main.62291355.js.map",
     "453.7bff406b.chunk.js.map": "/games/matching/static/js/453.7bff406b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.50c17455.css",
-    "static/js/main.e9228cc5.js"
+    "static/css/main.b1d41d1e.css",
+    "static/js/main.62291355.js"
   ]
 }
