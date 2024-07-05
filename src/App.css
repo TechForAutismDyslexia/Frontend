@@ -3,4 +3,6 @@ body{
     background-image: url('/parent-caretaker-portal.png');
     background-attachment: fixed;
     background-size: cover;
+    max-width: 100%;
+   
 }
