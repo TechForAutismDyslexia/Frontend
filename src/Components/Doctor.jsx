@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Loader from './Loader';
+import Loader from './Loader.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Doctor() {
   const [children, setChildren] = useState([]);
@@ -8,6 +9,8 @@ export default function Doctor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [childFeedback, setChildFeedback] = useState(null);
+  const [childGames, setChildGames] = useState([]);
+  const [games, setGames] = useState([]);
 
   useEffect(() => {
     const getChildren = async () => {
@@ -24,12 +27,31 @@ export default function Doctor() {
     };
 
     getChildren();
+
+    const fetchAllGames = async () => {
+      try {
+        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allgames');
+        setGames(response.data);
+      } catch (error) {
+        console.error('Error fetching games:', error);
+      }
+    };
+    fetchAllGames();
   }, []);
 
   const handleCardClick = async (child) => {
     setSelectedChild(child);
     setIsModalOpen(true);
-    sessionStorage.setItem('childId', child._id);
+
+    try {
+      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/admin/gametable/${child._id}`, {
+        headers: { Authorization: `${sessionStorage.getItem('logintoken')}` },
+      });
+      setChildGames(response.data);
+    } catch (error) {
+      console.error('Error fetching child games:', error);
+      setChildGames([]);
+    }
 
     try {
       const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child._id}`, {
@@ -63,21 +85,16 @@ export default function Doctor() {
     setIsModalOpen(false);
     setSelectedChild(null);
     setChildFeedback(null);
+    setChildGames([]);
     sessionStorage.removeItem('childId');
   };
 
   return (
     <div>
       <div className="parent-container container">
-        {/* <section className="navigation my-4 text-center">
-          <h2>Welcome to the Doctor Portal</h2>
-        </section> */}
         <div className='d-flex justify-content-between align-items-center'>
-        <h1 className="my-4">Doctor</h1>
-        {/* <div className=''>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => window.location.href = '/adminportal/doctordashboard/gamedetailsfetch'}>Game Details</button>
-        </div> */}
-      </div>
+          <h1 className="my-4">Doctor</h1>
+        </div>
         <div>
           <section className="my-4 row justify-content-center">
             {!children.length ? (
@@ -91,7 +108,6 @@ export default function Doctor() {
                       <p className="card-text">Age: {child.age}</p>
                       <p className="card-text">Parent Details: {child.parentDetails}</p>
                       <p className="card-text">Caretaker: {child.caretakerName}</p>
-                      {/* <p className="card-text">Doctor: {child.doctorName}</p> */}
                       <p className="card-text">Center ID: {child.centreId}</p>
                       <p className="card-text">Games Completed: {child.gamesCompleted}</p>
                     </div>
@@ -107,10 +123,6 @@ export default function Doctor() {
         <div className={`modal fade ${isModalOpen ? 'show' : ''}`} style={{ display: isModalOpen ? 'block' : 'none' }} tabIndex="-1" role="dialog" aria-labelledby="childModalLabel" aria-hidden={!isModalOpen}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="childModalLabel">{selectedChild.name}</h5>
-                <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
-              </div>
               <div className="modal-body">
                 <p><strong>Age:</strong> {selectedChild.age}</p>
                 <p><strong>Parent Details:</strong> {selectedChild.parentDetails}</p>
@@ -123,6 +135,27 @@ export default function Doctor() {
                     <li key={index}>{game}</li>
                   ))}
                 </ul>
+                <p><strong>Game Table:</strong></p>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Game ID</th>
+                      <th>Game Name</th>
+                      <th>Tries</th>
+                      <th>Timer</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {childGames.map((game) => (
+                      <tr key={game._id}>
+                        <td>{game.gameId}</td>
+                        <td>{games.find(g => g.gameId === game.gameId)?.gamename || 'Unknown Game'}</td>
+                        <td>{game.tries}</td>
+                        <td>{game.timer}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
                 {childFeedback && (
                   <div>
                     <h5>Feedback:</h5>
