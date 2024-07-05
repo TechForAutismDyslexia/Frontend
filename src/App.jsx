@@ -15,6 +15,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Reports from './Components/Reports.jsx'
 import Admingamedetailsftech from './Components/Admingamedetailsftech.jsx'
 import ContactUs from './Components/ContactUs.jsx'
+import ChildRegister from './Components/Childform.jsx'
 import './App.css';
 import Feedback from './Components/Feedback.jsx'
 
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/parentdashboard" element={<ParentHome />} />
+          <Route path="/parentdashboard/childregister" element={<ChildRegister/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
