@@ -24,8 +24,8 @@
         "route": "/games/tabledraganddrop"
     },
     {
-        "name": "Window Sequencing Letters",
-        "img": "word",
+        "name": "Window Sequencing",
+        "img": "windowsequencing",
         "description": "This is a description of the game",
         "route": "/games/wsletters" 
     },
@@ -52,12 +52,6 @@
         "img": "DragAndMatch",
         "description": "This is a description of the game",
         "route": "/games/dragandmatch"
-    },
-    {
-        "name": "Window Sequencing",
-        "img": "WindowSequencing",
-        "description": "This is a description of the game",
-        "route": "/games/windowsequencing"
     },
     {
         "name": "Animal Farm",
