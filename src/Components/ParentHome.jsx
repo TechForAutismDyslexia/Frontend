@@ -55,9 +55,12 @@ export default function ParentHome() {
 
   return (
     <div className="parent-container container">
-      <section className="navigation my-4 text-center rounded-4">
-        <h2>Welcome to the Parent Portal</h2>
-      </section>
+      <div className='d-flex justify-content-between align-items-center'>
+        <h1 className="my-4">Parent</h1>
+        <div className=''>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => window.location.href = '/adminportal/parentdashboard/childregister'}>Add Child</button>
+        </div>
+      </div>
       <div>
         <section className="card-container">
           {!children.length && <Loader />}
