@@ -13,6 +13,7 @@ export default function Admin() {
   const [selectedCaretaker, setSelectedCaretaker] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [childFeedback, setChildFeedback] = useState(null);
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -71,12 +72,24 @@ export default function Admin() {
 
     fetchDoctors();
   }, []);
-  const handleCardClick = (child) => {
+
+  const handleCardClick = async (child) => {
     setSelectedChild(child);
     setSelectedCaretaker('');
     setSelectedDoctor('');
     setIsModalOpen(true);
     sessionStorage.setItem('childId', child._id);
+
+    try {
+      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child._id}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem('logintoken')}`
+        }
+      });
+      setChildFeedback(response.data);
+    } catch (error) {
+      console.error('Error fetching feedback:', error);
+    }
   };
 
   const handleCaretakerChange = (event) => {
@@ -184,6 +197,16 @@ export default function Admin() {
                     <li key={index}>{game}</li>
                   ))}
                 </ul>
+                {childFeedback && (
+                  <div>
+                    <h5>Feedback</h5>
+                    <ul>
+                      {childFeedback.feedback.map((fb, index) => (
+                        <li key={index}>{fb}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div className="form-group">
                   <label htmlFor="caretakerSelect">Assign Caretaker</label>
                   <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleCaretakerChange}>

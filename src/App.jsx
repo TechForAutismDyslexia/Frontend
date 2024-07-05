@@ -30,6 +30,7 @@ function App() {
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>
+          {/* <Route path="/doctordashboard/gamedetailsfetch" element={<Admingamedetailsftech/>}/> */}
           {/* <Route path="/parentdashboard/details" element={<Details/>}/> */}
           <Route path="/doctordashboard" element={<Doctor/>}/>
           <Route path="/reports" element={<Reports/>}/>
