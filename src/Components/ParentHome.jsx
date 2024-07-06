@@ -9,27 +9,23 @@ export default function ParentHome() {
   const [selectedChild, setSelectedChild] = useState(null);
   const [childFeedback, setChildFeedback] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loader, setLoader] = useState(false);
-  const [c, setC] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChildren = async () => {
       try {
-        setLoader(true);
+        setIsLoading(true);
         const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`,
           },
         });
-        setLoader(false);
         setChildren(response.data);
-        if(response.data.length === 0){
-          setC(false);
-        }
+        setIsLoading(false);
       } catch (error) {
-        setLoader(false);
+        setIsLoading(false);
         console.error('Error fetching children:', error);
       }
     };
@@ -46,13 +42,16 @@ export default function ParentHome() {
 
   const fetchChildFeedback = async (childId) => {
     try {
+      setIsLoading(true);
       const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${childId}`, {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`,
         },
       });
       setChildFeedback(response.data);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error('Error fetching feedback:', error);
     }
   };
@@ -68,15 +67,15 @@ export default function ParentHome() {
     <div className="parent-container container">
       <div className='d-flex justify-content-between align-items-center'>
         <h1 className="my-4">Parent</h1>
-        <div className=''>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/parentdashboard/childregister')}>Add Child</button>
+        <div>
+          <button className="btn m-1 fw-bold" style={{ backgroundColor: "#16a085" }} onClick={() => navigate('/parentdashboard/childregister')}>Add Child</button>
         </div>
       </div>
       <div>
         <section className="card-container">
-          {loader && <Loader />}
-          {!c && !loader && <h3>No children found</h3>}
-          {children.map((child, index) => (
+          {isLoading && <Loader />}
+          {!isLoading && children.length === 0 && <h3>No children found</h3>}
+          {!isLoading && children.map((child, index) => (
             <div key={index} className="card rounded-5" onClick={() => handleClick(child)}>
               <div className="card-body">
                 <h3 className="card-title">{child.name}</h3>
@@ -84,7 +83,6 @@ export default function ParentHome() {
                 <p className="card-text"><strong>Parent Details :</strong> {child.parentDetails}</p>
                 <p className="card-text"><strong>Caretaker Name :</strong> {child.caretakerName}</p>
                 <p className="card-text"><strong>Doctor Name :</strong> {child.doctorName}</p>
-
               </div>
             </div>
           ))}
