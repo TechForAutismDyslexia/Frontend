@@ -86,7 +86,7 @@ const Reports = () => {
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
               </svg>
-              <Card.Title>{childData.name}</Card.Title>
+              <Card.Title className="mt-2">{childData.name}</Card.Title>
               <Card.Text>
                 <strong>Caretaker:</strong> {childData.caretakerName}<br />
                 <strong>Parent:</strong> {childData.parentDetails}<br />
@@ -97,7 +97,7 @@ const Reports = () => {
             </Card.Body>
             <Card.Footer className='text-center'>
               <Button variant="primary" onClick={handleShow}>
-                give feedback
+                Give Feedback
               </Button>
 
               <Modal
@@ -114,7 +114,7 @@ const Reports = () => {
                 <Modal.Body>
                 <Form onSubmit={handleSubmitFeedback}>
                 <Form.Group>
-                  <Form.Label>Leave Feedback</Form.Label>
+                  {/* <Form.Label>Leave Feedback</Form.Label> */}
                   <Form.Control
                     type="text"
                     value={feedback}
@@ -123,12 +123,12 @@ const Reports = () => {
                     required
                   />
                 </Form.Group>
-                <Button className="mt-3" variant="primary">
-                  Submit
-                </Button>
               </Form>
                 </Modal.Body>
                 <Modal.Footer>
+                <Button variant="success">
+                  Submit
+                </Button>
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
@@ -139,22 +139,22 @@ const Reports = () => {
         </Col>
         <Col md={7}>
           <Card className='d-block'>
-            <Card.Header>Recent Actions</Card.Header>
+            <Card.Header className="fw-bold">Recent Actions</Card.Header>
             <Table hover>
               <thead>
-                <tr>
+                <tr className="text-center">
                   <th>Game Name</th>
                   <th>Tries</th>
-                  <th>Timer</th>
+                  <th>Timer(Seconds)</th>
                   <th>Completed</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((action, index) => (
-                  <tr key={index}>
+                  <tr className="text-center" key={index}>
                     <td>{getGameName(action.gameId)}</td>
                     <td>{action.tries}</td>
-                    <td>{action.timer}</td>
+                    <td >{action.timer}</td>
                     <td>{action.status ? 'Yes' : 'No'}</td>
                   </tr>
                 ))}
