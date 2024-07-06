@@ -45,9 +45,14 @@ export default function Register() {
             },2000);
         }
         catch (e) {
+            if(e.response.status === 401){
+                toast.error("Username already exists!" , {autoClose:2000});
+                setLoading(false);
+                return;
+            }
             console.log("data not sent")
             setLoading(false);
-            toast.success("Error has occured. Please try again!" , {autoClose:2000});
+            toast.error("Error has occured. Please try again!" , {autoClose:2000});
         }
     }
     return (
