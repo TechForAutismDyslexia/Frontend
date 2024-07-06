@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[499],{9499:(e,s,a)=>{e.exports=a.p+"static/media/shoe.7269302bb44c50e39905.png"}}]);
