@@ -68,9 +68,9 @@
         "name": "Animal Farm",
         "img": "AnimalFarm",
         "description": "This is a description of the game",
-        "route": "/games/animalfarm"
+        "route": "/games/animal_farm"
     },
-    {
+    {   
         "gameId" : "11",
         "name": "Animal Matching",
         "img": "AnimalMatching",
