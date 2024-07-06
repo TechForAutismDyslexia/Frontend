@@ -33,10 +33,13 @@ export default function Caretaker() {
   const closeModal = () => {
     setIsModalOpen(false);
     setChildDetails(null);
+    localStorage.removeItem('childId');
+    sessionStorage.removeItem('childId');
   };
   const navigate = useNavigate();
   const gotoGames = () => {
     sessionStorage.setItem('childId', childDetails._id);
+    localStorage.setItem('childId', childDetails._id);
     navigate('/games');
   }
   const gotoReports = () => {
