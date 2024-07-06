@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Admin() {
   const [children, setChildren] = useState([]);
@@ -123,8 +125,10 @@ export default function Admin() {
         }
       });
       setChildren(response.data);
+      toast.success('Child data updated successfully!');
     } catch (error) {
       console.error('Error updating child:', error);
+      toast.error('Error updating child data. Please try again.');
     }
   };
 
