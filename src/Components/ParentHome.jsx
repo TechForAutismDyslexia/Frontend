@@ -10,6 +10,7 @@ export default function ParentHome() {
   const [childFeedback, setChildFeedback] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [feedbackLoader, setFeedbackLoader] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,16 +43,16 @@ export default function ParentHome() {
 
   const fetchChildFeedback = async (childId) => {
     try {
-      setIsLoading(true);
+      setFeedbackLoader(true);
       const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${childId}`, {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`,
         },
       });
+      setFeedbackLoader(false);
       setChildFeedback(response.data);
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
+      setFeedbackLoader(false);
       console.error('Error fetching feedback:', error);
     }
   };
@@ -105,6 +106,7 @@ export default function ParentHome() {
                 <p><strong>Center Id :</strong> {selectedChild.centreId}</p>
                 <p><strong>Games Completed :</strong> {selectedChild.gamesCompleted}</p>
                 <p><strong>Admin Status :</strong> {selectedChild.adminStatus ? 'true' : 'false'}</p>
+                {feedbackLoader && <Loader />}
                 {childFeedback && (
                   <div>
                     <h5 className="mt-4">Feedback:</h5>
