@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Register.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChildRegister() {
     const [name, setName] = useState('');
@@ -17,6 +19,7 @@ export default function ChildRegister() {
                     }
                 });
                 setCentres(res.data);
+    
             } catch (e) {
                 console.log("data not sent");
             }
@@ -52,6 +55,7 @@ export default function ChildRegister() {
                 }
             });
             console.log('Registration successful:', response.data);
+            toast.success("Registered successfully!" , {autoClose:2000});
             // Optionally, you can redirect or show a success message here
         } catch (error) {
             console.error('Registration failed:', error);

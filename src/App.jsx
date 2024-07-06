@@ -18,6 +18,8 @@ import ContactUs from './Components/ContactUs.jsx'
 import ChildRegister from './Components/Childform.jsx'
 import './App.css';
 import Feedback from './Components/Feedback.jsx'
+import AboutUs from './Components/AboutUs.jsx'
+
 
 
 
@@ -49,6 +51,7 @@ function App() {
               </div>
             </div>
           } />
+          <Route path="/about" element={<AboutUs/>}/>
         </Routes>
       </Router> 
     </>
