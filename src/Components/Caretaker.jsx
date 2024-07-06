@@ -58,16 +58,6 @@ export default function Caretaker() {
               <div className="card-body">
                 <h5 className="card-title">{item.name}</h5>
                 <p className="card-text">Age: {item.age}</p>
-                {/* <p className="card-text">Centre ID: {item.centreId}</p> */}
-                {/* <p className="card-text">Doctor: {item.doctorName}</p> */}
-                {/* <p className="card-text">Caretaker: {item.caretakerName}</p> */}
-                {/* <p className="card-text">Games Completed: {item.gamesCompleted.join(', ')}</p> */}
-                {/* <p className="card-text">Parent Details: {item.parentDetails}</p> */}
-                {/* <p className="card-text">Admin Status: {item.adminStatus ? 'Yes' : 'No'}</p> */}
-                {/* <div className='display d-flex justify-content-around'>
-                  <button type="button" className="btn btn-primary">Games</button>
-                  <Link to='/reports'><button type="button" className="btn btn-danger">Reports</button></Link>
-                </div> */}
               </div>
             </div>
           </div>

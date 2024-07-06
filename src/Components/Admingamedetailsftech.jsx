@@ -130,8 +130,8 @@ export default function Admingamedetailsftech() {
                 <p>Doctor: {selectedChild.doctorName}</p>
                 <p>Caretaker: {selectedChild.caretakerName}</p>
                 <p>Parent: {selectedChild.parentDetails}</p>
-                <p>Games Completed:</p>
-                <table className="table">
+                {/* <p>Games Completed:</p> */}
+                {/* <table className="table">
                   <thead>
                     <tr>
                       <th>Game ID</th>
@@ -150,10 +150,11 @@ export default function Admingamedetailsftech() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table> */}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                <button type="button" className="btn btn-primary" onClick={() => navigate('/reports')}>Reports</button>
               </div>
             </div>
           </div>
