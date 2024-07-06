@@ -1,11 +1,18 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgressBar, Container, Row, Col, Card, Table } from 'react-bootstrap';
 
 const Reports = () => {
-  const [child, setChild] = useState();
+  const [child, setChild] = useState(sessionStorage.getItem('childId'));
   const [data, setData] = useState([]);
-  setChild(sessionStorage.getItem('childId'));
+  const [childData, setChildData] = useState({});
+
+  useEffect(() => {
+    if (child) {
+      getData();
+    }
+  }, [child]);
+
   const getData = async () => {
     try {
       const token = sessionStorage.getItem('logintoken');
@@ -15,32 +22,33 @@ const Reports = () => {
         }
       });
       setData(response.data);
-      console.log(response.data);
+
       const res = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}`, {
         headers: {
           Authorization: `${token}`
         }
       });
-      setChild(res.data);
-      console.log(res.data);
+      setChildData(res.data);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
+
   return (
     <Container>
       <Row className="justify-content-center mt-5">
         <Col md={4}>
           <Card>
-            {/* <Card.Img variant="top" src={user.avatar} alt="Avatar" className="img-fluid rounded-circle mt-3 mx-auto" style={{ width: '150px' }} /> */}
+            {/* Uncomment and adjust the below line if there's an avatar URL in your data */}
+            {/* <Card.Img variant="top" src={childData.avatar} alt="Avatar" className="img-fluid rounded-circle mt-3 mx-auto" style={{ width: '150px' }} /> */}
             <Card.Body className="text-center">
-              <Card.Title>{child.name}</Card.Title>
+              <Card.Title>{childData.name}</Card.Title>
               <Card.Text>
-                <strong>Caretaker:</strong> {child.caretakerName}<br />
-                <strong>Parent:</strong> {child.parentName}<br />
-                <strong>Games Played:</strong> {child.gamesPlayed}
+                <strong>Caretaker:</strong> {childData.caretakerName}<br />
+                <strong>Parent:</strong> {childData.parentDetails}<br />
+                {/* Uncomment the below line if there's progress data in your response */}
+                {/* <ProgressBar now={childData.progress} label={`${childData.progress}%`} /> */}
               </Card.Text>
-              <ProgressBar now={child.progress} label={`${child.progress}%`} />
             </Card.Body>
           </Card>
         </Col>
@@ -57,12 +65,12 @@ const Reports = () => {
                 </tr>
               </thead>
               <tbody>
-                {child.recentActions.map((action, index) => (
+                {data.map((action, index) => (
                   <tr key={index}>
                     <td>{action.gameId}</td>
                     <td>{action.tries}</td>
                     <td>{action.timer}</td>
-                    <td>{action.status}</td>
+                    <td>{action.status ? 'Yes' : 'No'}</td>
                   </tr>
                 ))}
               </tbody>
