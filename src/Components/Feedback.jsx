@@ -50,19 +50,19 @@ export default function Feedback() {
                         Feedback Form
                     </div>
                     <form onSubmit={handleSubmit}>
-                        <div class="form-floating mb-3">
+                        <div className="form-floating mb-3">
                             <input type="text" id='Name' className='form-control' placeholder='Name' required onChange={handleNameChange} />
                             <label for="Name">Name</label>
                         </div>
-                        <div class="form-floating mb-3">
+                        <div className="form-floating mb-3">
                             <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" required onChange={handleEmailChange} />
                             <label for="floatingInput">Email address</label>
                         </div>
-                        <div class="form-floating mb-3">
+                        <div className="form-floating mb-3">
                             <input type="number" id='number' className='form-control' placeholder='Phone number' required onChange={handlePhoneChange} />
                             <label for="number">Phone number</label>
                         </div>
-                        <div class="form-floating mb-3">
+                        <div className="form-floating mb-3">
                             <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2" required onChange={handleFeedbackChange} style={{ height: "100px" }}></textarea>
                             <label for="floatingTextarea2">Feedback</label>
                         </div>

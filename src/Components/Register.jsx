@@ -24,10 +24,10 @@ export default function Register() {
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     }
-    const handleRegister = (e) => {
+    const handleRegister = async(e) => {
         e.preventDefault(); 
         try {
-            const res = axios.post('https://jwlgamesbackend.vercel.app/api/users/register',{name,username,email,mobilenumber,password});
+            const res = await axios.post('https://jwlgamesbackend.vercel.app/api/users/register',{name,username,email,mobilenumber,password});
             console.log(res.data);
         }
         catch (e) {

@@ -1,3 +1,4 @@
+
 [
     {
         "gameId" : "1",
@@ -79,9 +80,9 @@
     {
         "gameId" : "12",
         "name": "Sentence Verification",
-        "img": "SentenceVerification",
+        "img": "SentenceVerification1",
         "description": "This is a description of the game",
-        "route": "/games/sentenceverification"
+        "route": "/games/sentenceverification1"
     },
     {
         "gameId" : "13",
@@ -89,5 +90,12 @@
         "img": "ShadowMatching",
         "description": "This is a description of the game",
         "route": "/games/shadowmatching"
+    },
+    {
+        "gameId" : "14",
+        "name": "Sentence Verification",
+        "img": "SentenceVerification2",
+        "description": "This is a description of the game",
+        "route": "/games/sentenceverification2"
     }
 ]
