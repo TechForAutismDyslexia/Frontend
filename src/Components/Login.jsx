@@ -3,12 +3,14 @@ import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-
+import Loader from './Loader.jsx';
 
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const Navigate = useNavigate();
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -19,6 +21,7 @@ export default function Login() {
     };
 
     const handleLogin = async (e) => {
+        setLoading(true);
         e.preventDefault(); 
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/users/login', {username,password})
@@ -29,6 +32,7 @@ export default function Login() {
             const decodedToken = jwtDecode(response.data);
             sessionStorage.setItem('role', decodedToken.role);
             sessionStorage.setItem('id', decodedToken.id);
+            setLoading(false);
             Navigate(`/${decodedToken.role}dashboard`);
 
         } catch (err) {
@@ -69,6 +73,9 @@ export default function Login() {
                         <button type="submit" className="login-button">
                             Login
                         </button>
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                        {loading && <Loader />}
                     </div>
                 </form>
             </div>

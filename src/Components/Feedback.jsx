@@ -59,7 +59,7 @@ export default function Feedback() {
                             <input type="text" id='Name' className='form-control' placeholder='Name' required onChange={handleNameChange} />
                             <label htmlFor="Name" className=''>Name</label>
                         </div>
-                        <div className="form-floating mb-3">
+                        <div className="form-floating mb-3">    
                             <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" required onChange={handleEmailChange} />
                             <label htmlFor="floatingInput">Email address</label>
                         </div>
