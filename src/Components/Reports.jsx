@@ -20,8 +20,9 @@ const Reports = () => {
         headers: {
           Authorization: `${token}`
         }
-      });
+      }); 
       setData(response.data);
+      console.log(response)
 
       const res = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}`, {
         headers: {
