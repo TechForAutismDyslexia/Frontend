@@ -111,9 +111,9 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login"><strong>Login</strong></Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <Link className="nav-link" to="/register"><strong>Register</strong></Link>
-                            </li>
+                            </li> */}
                         </ul>
                     }
                     {openModal &&

@@ -6,6 +6,7 @@ const Reports = () => {
   const [child, setChild] = useState(sessionStorage.getItem('childId'));
   const [data, setData] = useState([]);
   const [childData, setChildData] = useState({});
+  const [games, setGames] = useState([]);
 
   useEffect(() => {
     if (child) {
@@ -20,9 +21,9 @@ const Reports = () => {
         headers: {
           Authorization: `${token}`
         }
-      }); 
+      });
       setData(response.data);
-      console.log(response)
+      console.log('Games played response:', response.data);
 
       const res = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}`, {
         headers: {
@@ -30,9 +31,20 @@ const Reports = () => {
         }
       });
       setChildData(res.data);
+      console.log('Child data response:', res.data);
+
+      const gamesRes = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allgames');
+      const gameresdata = gamesRes.data;
+      setGames(gameresdata);
+      console.log('All games response:', gamesRes.data);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const getGameName = (gameId) => {
+    const game = games.find((game) => game.gameId === gameId);
+    return game ? game.gamename : '';
   };
 
   return (
@@ -47,6 +59,7 @@ const Reports = () => {
               <Card.Text>
                 <strong>Caretaker:</strong> {childData.caretakerName}<br />
                 <strong>Parent:</strong> {childData.parentDetails}<br />
+                <strong>Doctor:</strong> {childData.doctorName}<br />
                 {/* Uncomment the below line if there's progress data in your response */}
                 {/* <ProgressBar now={childData.progress} label={`${childData.progress}%`} /> */}
               </Card.Text>
@@ -59,7 +72,7 @@ const Reports = () => {
             <Table hover>
               <thead>
                 <tr>
-                  <th>Game ID</th>
+                  <th>Game Name</th>
                   <th>Tries</th>
                   <th>Timer</th>
                   <th>Completed</th>
@@ -68,7 +81,7 @@ const Reports = () => {
               <tbody>
                 {data.map((action, index) => (
                   <tr key={index}>
-                    <td>{action.gameId}</td>
+                    <td>{getGameName(action.gameId)}</td>
                     <td>{action.tries}</td>
                     <td>{action.timer}</td>
                     <td>{action.status ? 'Yes' : 'No'}</td>
