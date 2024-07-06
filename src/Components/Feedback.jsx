@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Feedback() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState(0);
+    const [mobilenumber, setMobilenumber] = useState(0);
     const [feedback, setFeedback] = useState('');
 
     const handleNameChange = (e) => {
@@ -15,7 +16,7 @@ export default function Feedback() {
         setEmail(e.target.value);
     }
     const handlePhoneChange = (e) => {
-        setPhone(e.target.value);
+        setMobilenumber(e.target.value);
     }
     const handleFeedbackChange = (e) => {
         setFeedback(e.target.value);
@@ -24,7 +25,7 @@ export default function Feedback() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(name, email, phone, feedback);
+        console.log(name, email, mobilenumber, feedback);
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/userfeedback', {
                 name,
@@ -33,7 +34,7 @@ export default function Feedback() {
                 feedback
             });
             console.log('Feedback sent:', response.data);
-            toast.success("Registered successfully!", { autoClose: 2000 });
+            toast.success("Feedback sent successfully!" , {autoClose:2000});
         } catch (error) {
             console.error('Feedback failed:', error);
             toast.error("Registration failed. Please try again.");
@@ -54,19 +55,19 @@ export default function Feedback() {
                     <form onSubmit={handleSubmit}>
                         <div className="form-floating mb-3">
                             <input type="text" id='Name' className='form-control' placeholder='Name' required onChange={handleNameChange} />
-                            <label for="Name">Name</label>
+                            <label htmlFor="Name">Name</label>
                         </div>
                         <div className="form-floating mb-3">
                             <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" required onChange={handleEmailChange} />
-                            <label for="floatingInput">Email address</label>
+                            <label htmlFor="floatingInput">Email address</label>
                         </div>
                         <div className="form-floating mb-3">
                             <input type="number" id='number' className='form-control' placeholder='Phone number' required onChange={handlePhoneChange} />
-                            <label for="number">Phone number</label>
+                            <label htmlFor="number">Phone number</label>
                         </div>
                         <div className="form-floating mb-3">
                             <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2" required onChange={handleFeedbackChange} style={{ height: "100px" }}></textarea>
-                            <label for="floatingTextarea2">Feedback</label>
+                            <label htmlFor="floatingTextarea2">Feedback</label>
                         </div>
                         <button type="submit" className='btn btn-outline-dark'>Send</button>
                     </form>
