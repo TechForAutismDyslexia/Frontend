@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { ProgressBar, Container, Row, Col, Card, Table } from 'react-bootstrap';
+import { ProgressBar, Container, Row, Col, Card, Table, Form, Button } from 'react-bootstrap';
 
 const Reports = () => {
   const [child, setChild] = useState(sessionStorage.getItem('childId'));
   const [data, setData] = useState([]);
   const [childData, setChildData] = useState({});
   const [games, setGames] = useState([]);
+  const [feedback, setFeedback] = useState('');
+  const [childFeedback, setChildFeedback] = useState('');
 
   useEffect(() => {
     if (child) {
@@ -23,7 +25,7 @@ const Reports = () => {
         }
       });
       setData(response.data);
-      console.log('Games played response:', response.data);
+      // console.log('Games played response:', response.data);
 
       const res = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}`, {
         headers: {
@@ -36,9 +38,25 @@ const Reports = () => {
       const gamesRes = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allgames');
       const gameresdata = gamesRes.data;
       setGames(gameresdata);
-      console.log('All games response:', gamesRes.data);
+      // console.log('All games response:', gamesRes.data);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleSubmitFeedback = async () => {
+    try {
+      const response = await axios.put(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child}`, {
+        feedback: feedback
+      }, {
+        headers: {
+          Authorization: `${sessionStorage.getItem('logintoken')}`
+        }
+      });
+      setChildFeedback(response.data);
+      setFeedback('');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
     }
   };
 
@@ -63,6 +81,25 @@ const Reports = () => {
                 {/* Uncomment the below line if there's progress data in your response */}
                 {/* <ProgressBar now={childData.progress} label={`${childData.progress}%`} /> */}
               </Card.Text>
+            </Card.Body>
+          </Card>
+          <Card className="mt-3">
+            <Card.Header>Feedback</Card.Header>
+            <Card.Body>
+              <Form>
+                <Form.Group>
+                  <Form.Label>Leave Feedback</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    placeholder="Enter your feedback"
+                  />
+                </Form.Group>
+                <Button className="mt-3" variant="primary" onClick={handleSubmitFeedback}>
+                  Submit
+                </Button>
+              </Form>
             </Card.Body>
           </Card>
         </Col>
