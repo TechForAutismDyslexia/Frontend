@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/games/connectingletters/static/css/main.30af1809.css",
-    "main.js": "/games/connectingletters/static/js/main.9fa9fe3d.js",
+    "main.css": "/games/connectingletters/static/css/main.36c89565.css",
+    "main.js": "/games/connectingletters/static/js/main.2e356f15.js",
     "static/js/991.619c430d.chunk.js": "/games/connectingletters/static/js/991.619c430d.chunk.js",
     "static/js/929.947d6fb6.chunk.js": "/games/connectingletters/static/js/929.947d6fb6.chunk.js",
     "static/js/258.d2db6c1f.chunk.js": "/games/connectingletters/static/js/258.d2db6c1f.chunk.js",
@@ -56,10 +56,11 @@
     "static/media/item8.jpg": "/games/connectingletters/static/media/item8.63c25f21bef45bac403e.jpg",
     "static/media/item7.jpg": "/games/connectingletters/static/media/item7.cdf0bac12b69020ddf72.jpg",
     "static/media/L2img.jpg": "/games/connectingletters/static/media/L2img.bd1dfd9a20135e68d7a6.jpg",
+    "static/media/OpenDyslexic-BoldItalic.otf": "/games/connectingletters/static/media/OpenDyslexic-BoldItalic.51781d5c5f73576d2f8c.otf",
     "static/media/L1img.jpg": "/games/connectingletters/static/media/L1img.6954e6c29ea687e7a19b.jpg",
     "index.html": "/games/connectingletters/index.html",
-    "main.30af1809.css.map": "/games/connectingletters/static/css/main.30af1809.css.map",
-    "main.9fa9fe3d.js.map": "/games/connectingletters/static/js/main.9fa9fe3d.js.map",
+    "main.36c89565.css.map": "/games/connectingletters/static/css/main.36c89565.css.map",
+    "main.2e356f15.js.map": "/games/connectingletters/static/js/main.2e356f15.js.map",
     "991.619c430d.chunk.js.map": "/games/connectingletters/static/js/991.619c430d.chunk.js.map",
     "258.d2db6c1f.chunk.js.map": "/games/connectingletters/static/js/258.d2db6c1f.chunk.js.map",
     "627.f34adba1.chunk.js.map": "/games/connectingletters/static/js/627.f34adba1.chunk.js.map",
@@ -68,7 +69,7 @@
     "255.ba50cd70.chunk.js.map": "/games/connectingletters/static/js/255.ba50cd70.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.30af1809.css",
-    "static/js/main.9fa9fe3d.js"
+    "static/css/main.36c89565.css",
+    "static/js/main.2e356f15.js"
   ]
 }
