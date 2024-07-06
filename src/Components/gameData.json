@@ -2,10 +2,10 @@
 [
     {
         "gameId" : "1",
-        "name": "Image Matching",
-        "img": "imageMatching",
+        "name": "Drag and Match",
+        "img": "DragAndMatch",
         "description": "This is a description of the game",
-        "route": "/games/matching"
+        "route": "/games/dragandmatch"
     },
     {
         "gameId" : "2",
@@ -16,10 +16,10 @@
     },
     {
         "gameId" : "3",
-        "name": "Shape Design",
-        "img": "Shape-Design",
+        "name": "Connecting Letters",
+        "img": "ConnectingLetters",
         "description": "This is a description of the game",
-        "route": "/games/shapedesign"
+        "route": "/games/connectingletters"
     },
     {
         "gameId" : "4",
@@ -44,58 +44,59 @@
     },
     {
         "gameId" : "7",
-        "name": "Word Search",
-        "img": "Search",
+        "name": "Shape Design",
+        "img": "Shape-Design",
         "description": "This is a description of the game",
-        "route": "/games/wordsearch"
+        "route": "/games/shapedesign"
     },
     {
         "gameId" : "8",
-        "name": "Connecting Letters",
-        "img": "ConnectingLetters",
+        "name": "Image Matching",
+        "img": "imageMatching",
         "description": "This is a description of the game",
-        "route": "/games/connectingletters"
+        "route": "/games/matching"
     },
     {
         "gameId" : "9",
-        "name": "Drag and Match",
-        "img": "DragAndMatch",
-        "description": "This is a description of the game",
-        "route": "/games/dragandmatch"
-    },
-    {
-        "gameId" : "10",
-        "name": "Animal Farm",
-        "img": "AnimalFarm",
-        "description": "This is a description of the game",
-        "route": "/games/animal_farm"
-    },
-    {   
-        "gameId" : "11",
-        "name": "Animal Matching",
-        "img": "AnimalMatching",
-        "description": "This is a description of the game",
-        "route": "/games/animalmatching"
-    },
-    {
-        "gameId" : "12",
-        "name": "Sentence Verification",
-        "img": "SentenceVerification1",
-        "description": "This is a description of the game",
-        "route": "/games/sentenceverification1"
-    },
-    {
-        "gameId" : "13",
         "name": "Shadow Matching",
         "img": "ShadowMatching",
         "description": "This is a description of the game",
         "route": "/games/shadowmatching"
     },
     {
-        "gameId" : "14",
+        "gameId" : "10",
+        "name": "Sentence Verification",
+        "img": "SentenceVerification1",
+        "description": "This is a description of the game",
+        "route": "/games/sentenceverification1"
+    },
+    {
+        "gameId" : "11",
         "name": "Sentence Verification",
         "img": "SentenceVerification2",
         "description": "This is a description of the game",
         "route": "/games/sentenceverification2"
+    },
+    {
+        "gameId" : "12",
+        "name": "Word Search",
+        "img": "Search",
+        "description": "This is a description of the game",
+        "route": "/games/wordsearch"
+    },    
+    {
+        "gameId" : "13",
+        "name": "Animal Farm",
+        "img": "AnimalFarm",
+        "description": "This is a description of the game",
+        "route": "/games/animal_farm"
+    },
+    {   
+        "gameId" : "14",
+        "name": "Animal Matching",
+        "img": "AnimalMatching",
+        "description": "This is a description of the game",
+        "route": "/games/animalmatching"
     }
+    
 ]
