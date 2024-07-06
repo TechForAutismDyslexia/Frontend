@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { ProgressBar, Container, Row, Col, Card, Table } from 'react-bootstrap';
 
@@ -15,6 +16,13 @@ const Reports = () => {
       });
       setData(response.data);
       console.log(response.data);
+      const res = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}`, {
+        headers: {
+          Authorization: `${token}`
+        }
+      });
+      setChild(res.data);
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -43,16 +51,18 @@ const Reports = () => {
               <thead>
                 <tr>
                   <th>Game ID</th>
-                  <th>Game Name</th>
-                  <th>Status</th>
+                  <th>Tries</th>
+                  <th>Timer</th>
+                  <th>Completed</th>
                 </tr>
               </thead>
               <tbody>
                 {child.recentActions.map((action, index) => (
                   <tr key={index}>
-                    <td>{action.GameId}</td>
-                    <td>{action.Game_Name}</td>
-                    <td>{action.Status}</td>
+                    <td>{action.gameId}</td>
+                    <td>{action.tries}</td>
+                    <td>{action.timer}</td>
+                    <td>{action.status}</td>
                   </tr>
                 ))}
               </tbody>
