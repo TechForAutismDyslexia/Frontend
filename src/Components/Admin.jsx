@@ -235,8 +235,8 @@ export default function Admin() {
                 </div>
               </div>
               <div className="modal-footer">
+                <button type="button" className="btn btn-success" onClick={handleSubmit}>Save changes</button>
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
               </div>
             </div>
           </div>
