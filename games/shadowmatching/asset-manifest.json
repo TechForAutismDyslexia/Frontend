@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/games/shadowmatching/static/css/main.c646add8.css",
-    "main.js": "/games/shadowmatching/static/js/main.667fbcb7.js",
+    "main.js": "/games/shadowmatching/static/js/main.5dbbf0db.js",
     "static/js/89.a4a492d9.chunk.js": "/games/shadowmatching/static/js/89.a4a492d9.chunk.js",
     "static/js/122.e5699aaf.chunk.js": "/games/shadowmatching/static/js/122.e5699aaf.chunk.js",
     "static/js/947.cb8253d6.chunk.js": "/games/shadowmatching/static/js/947.cb8253d6.chunk.js",
@@ -69,11 +69,11 @@
     "static/media/guitar.png": "/games/shadowmatching/static/media/guitar.9dccc4522b786b606d22.png",
     "index.html": "/games/shadowmatching/index.html",
     "main.c646add8.css.map": "/games/shadowmatching/static/css/main.c646add8.css.map",
-    "main.667fbcb7.js.map": "/games/shadowmatching/static/js/main.667fbcb7.js.map",
+    "main.5dbbf0db.js.map": "/games/shadowmatching/static/js/main.5dbbf0db.js.map",
     "453.9ab5120a.chunk.js.map": "/games/shadowmatching/static/js/453.9ab5120a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c646add8.css",
-    "static/js/main.667fbcb7.js"
+    "static/js/main.5dbbf0db.js"
   ]
 }
