@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[558],{7558:(e,a,s)=>{e.exports=s.p+"static/media/bottleshadow.8df2429e921aba91d5af.png"}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[682],{682:(e,a,s)=>{e.exports=s.p+"static/media/rollerskate.7942a205ae6fa093674a.png"}}]);

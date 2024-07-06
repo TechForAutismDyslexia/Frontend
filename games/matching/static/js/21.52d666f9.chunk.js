@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[21],{5021:(e,s,a)=>{e.exports=a.p+"static/media/bell.524da31d26b31077270a.png"}}]);

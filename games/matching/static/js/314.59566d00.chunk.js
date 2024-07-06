@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[314],{5314:(e,s,a)=>{e.exports=a.p+"static/media/rollerskateshadow.ee643bf7427baf084ef8.png"}}]);

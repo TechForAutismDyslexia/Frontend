@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimdndmain=self.webpackChunkimdndmain||[]).push([[410],{410:(a,e,i)=>{a.exports=i.p+"static/media/fruit.108e9504a96f4a4138ac.png"}}]);

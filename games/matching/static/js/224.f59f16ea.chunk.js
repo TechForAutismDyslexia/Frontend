@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkimagesdnd=self.webpackChunkimagesdnd||[]).push([[224],{4224:(e,s,a)=>{e.exports=a.p+"static/media/giraffe.4334e72abd8cd8180529.png"}}]);
