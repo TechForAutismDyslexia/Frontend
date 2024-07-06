@@ -20,6 +20,7 @@ export default function Games() {
 
   const setGameId = (id) =>{
     sessionStorage.setItem('gameId',id);
+    localStorage.setItem('gameId',id);
   }
 
   return (
