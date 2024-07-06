@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Feedback() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -21,26 +22,27 @@ export default function Feedback() {
     }
 
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(name, email, phone, feedback);
         try {
             const response = await axios.post('https://jwlgamesbackend.vercel.app/api/userfeedback', {
                 name,
                 email,
-                phone,
+                mobilenumber,
                 feedback
             });
             console.log('Feedback sent:', response.data);
+            toast.success("Registered successfully!", { autoClose: 2000 });
         } catch (error) {
             console.error('Feedback failed:', error);
+            toast.error("Registration failed. Please try again.");
         }
     }
-
-
     return (
 
-        <div className='container-fluid d-block' style={{ overflowX : "hidden"}} >
+        <div className='container-fluid d-block' style={{ overflowX: "hidden" }} >
+            <ToastContainer />
             <div className='fw-bold fs-5 text-center mb-3'>
                 Help us improve by providing your valuable feedback.
             </div>
