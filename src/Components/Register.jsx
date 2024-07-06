@@ -4,6 +4,8 @@ import axios from 'axios';
 import './Register.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loader from './Loader.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -11,6 +13,9 @@ export default function Register() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [mobilenumber, setMobilenumber] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
     const handleNameChange = (e) => {
         setName(e.target.value);
     }
@@ -26,15 +31,22 @@ export default function Register() {
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     }
+
     const handleRegister = async (e) => {
+        setLoading(true);
         e.preventDefault(); 
         try {
             const res = await axios.post('https://jwlgamesbackend.vercel.app/api/users/register',{username, password, name, mobilenumber,email});
             console.log(res);
+            setLoading(false);
             toast.success("Registered successfully!" , {autoClose:2000});
+            setTimeout(()=>{
+                navigate("/admindashboard");
+            },2000);
         }
         catch (e) {
             console.log("data not sent")
+            setLoading(false);
             toast.success("Error has occured. Please try again!" , {autoClose:2000});
         }
     }
@@ -101,6 +113,9 @@ export default function Register() {
                         <button type="submit" className="register-button">
                             Register
                         </button>
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                        {loading && <Loader />}
                     </div>
                 </form>
             </div>

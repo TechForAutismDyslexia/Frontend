@@ -177,8 +177,8 @@ export default function Doctor() {
                 </div>
               </div>
               <div className="modal-footer">
+                <button type="button" className="btn btn-success" onClick={handleReports}>Reports</button>
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={handleReports}>Reports</button>
               </div>
             </div>
           </div>

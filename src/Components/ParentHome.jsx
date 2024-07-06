@@ -9,22 +9,27 @@ export default function ParentHome() {
   const [selectedChild, setSelectedChild] = useState(null);
   const [childFeedback, setChildFeedback] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [c,setC] = useState(true)
+  const [loader, setLoader] = useState(false);
+  const [c, setC] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChildren = async () => {
       try {
+        setLoader(true);
         const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`,
           },
         });
-        if(response.data.length===0){
+        setLoader(false);
+        setChildren(response.data);
+        if(response.data.length === 0){
           setC(false);
         }
-        setChildren(response.data);
       } catch (error) {
+        setLoader(false);
         console.error('Error fetching children:', error);
       }
     };
@@ -69,7 +74,8 @@ export default function ParentHome() {
       </div>
       <div>
         <section className="card-container">
-          {!c || children.length  && <Loader />}
+          {loader && <Loader />}
+          {!c && !loader && <h3>No children found</h3>}
           {children.map((child, index) => (
             <div key={index} className="card rounded-5" onClick={() => handleClick(child)}>
               <div className="card-body">
