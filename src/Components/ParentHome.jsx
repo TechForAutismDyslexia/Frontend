@@ -1,89 +1,119 @@
 import React, { useEffect, useState } from 'react';
 import './ParentHome.css';
-import Profile from './images/profile.png';
 import axios from 'axios';
 import Loader from './Loader.jsx';
-import { Link } from 'react-router-dom';
 
 export default function ParentHome() {
-  const [responses, setResponses] = useState('');
-
-  const b = async () => {
-    const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children', {
-      headers: {
-        Authorization: `${sessionStorage.getItem('logintoken')}`,
-      },
-    });
-    setResponses(response.data);
-    console.log(response.data);
-  };
+  const [children, setChildren] = useState([]);
+  const [selectedChild, setSelectedChild] = useState(null);
+  const [childFeedback, setChildFeedback] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    b();
+    const fetchChildren = async () => {
+      try {
+        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children', {
+          headers: {
+            Authorization: `${sessionStorage.getItem('logintoken')}`,
+          },
+        });
+        setChildren(response.data);
+      } catch (error) {
+        console.error('Error fetching children:', error);
+      }
+    };
+
+    fetchChildren();
   }, []);
 
-  const handleClick = (response) => {
-    sessionStorage.setItem('childId', response._id);
+  const handleClick = (child) => {
+    setSelectedChild(child);
+    setIsModalOpen(true);
+    sessionStorage.setItem('childId', child._id);
+    fetchChildFeedback(child._id);
+  };
+
+  const fetchChildFeedback = async (childId) => {
+    try {
+      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${childId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem('logintoken')}`,
+        },
+      });
+      setChildFeedback(response.data);
+    } catch (error) {
+      console.error('Error fetching feedback:', error);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedChild(null);
+    sessionStorage.removeItem('childId');
+    setChildFeedback(null);
   };
 
   return (
-    <div>
-      <div className="parent-container container">
-        <section className="navigation my-4 text-center rounded-4">
-          <h2>Welcome to the Parent Portal</h2>
-        </section>
-        <div>
-          <section className="card-container">
-            {!responses && <Loader />}
-            {responses &&
-              responses.map((response, index) => (
-                <Link
-                  key={index}
-                  to="/parentdashboard/details"
-                  className="btn"
-                  onClick={() => handleClick(response)}
-                >
-                  <div className="card rounded-5">
-                    <div className="d-flex justify-content-center p-3">
-                      <img src={Profile} className="img-fluid profile" alt="Profile"></img>
-                    </div>
-                    <div className="card-body">
-                      <h3 className="card-title"><strong>{response.name}</strong></h3>
-                      <p>
-                        <strong>Age : </strong>
-                        {response.age}
-                      </p>
-                      <p>
-                        <strong>Parent Details : </strong>
-                        {response.parentDetails}
-                      </p>
-                      <p>
-                        <strong>Caretaker Name : </strong>
-                        {response.caretakerName}
-                      </p>
-                      <p>
-                        <strong>Doctor Name : </strong>
-                        {response.doctorName}
-                      </p>
-                      <p>
-                        <strong>Center Id : </strong>
-                        {response.centreId}
-                      </p>
-                      <p>
-                        <strong>Games Completed : </strong>
-                        {response.gamesCompleted}
-                      </p>
-                      <p>
-                        <strong>Admin Status : </strong>
-                        {response.adminStatus ? 'true' : 'false'}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </section>
+    <div className="parent-container container">
+      <div className='d-flex justify-content-between align-items-center'>
+        <h1 className="my-4">Parent</h1>
+        <div className=''>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => window.location.href = '/adminportal/parentdashboard/childregister'}>Add Child</button>
         </div>
       </div>
+      <div>
+        <section className="card-container">
+          {!children.length && <Loader />}
+          {children.map((child, index) => (
+            <div key={index} className="card rounded-5" onClick={() => handleClick(child)}>
+              <div className="card-body">
+                <h3 className="card-title">{child.name}</h3>
+                <p className="card-text"><strong>Age :</strong> {child.age}</p>
+                <p className="card-text"><strong>Parent Details :</strong> {child.parentDetails}</p>
+                <p className="card-text"><strong>Caretaker Name :</strong> {child.caretakerName}</p>
+                <p className="card-text"><strong>Doctor Name :</strong> {child.doctorName}</p>
+
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
+
+      {selectedChild && (
+        <div className={`modal fade ${isModalOpen ? 'show' : ''}`} style={{ display: isModalOpen ? 'block' : 'none' }} tabIndex="-1" role="dialog" aria-labelledby="childModalLabel" aria-hidden={!isModalOpen}>
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="childModalLabel">{selectedChild.name}</h5>
+                <button type="button" className="btn-close" aria-label="Close" onClick={closeModal}></button>
+              </div>
+              <div className="modal-body">
+                <p><strong>Age :</strong> {selectedChild.age}</p>
+                <p><strong>Parent Details :</strong> {selectedChild.parentDetails}</p>
+                <p><strong>Caretaker Name :</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Doctor Name :</strong> {selectedChild.doctorName}</p>
+                <p><strong>Center Id :</strong> {selectedChild.centreId}</p>
+                <p><strong>Games Completed :</strong> {selectedChild.gamesCompleted}</p>
+                <p><strong>Admin Status :</strong> {selectedChild.adminStatus ? 'true' : 'false'}</p>
+                {childFeedback && (
+                  <div>
+                    <h5 className="mt-4">Feedback:</h5>
+                    <ul className="list-unstyled">
+                      {childFeedback.feedback.map((fb, index) => (
+                        <li key={index}>{fb}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isModalOpen && <div className="modal-backdrop show"></div>}
     </div>
   );
 }

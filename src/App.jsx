@@ -14,7 +14,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Reports from './Components/Reports.jsx'
 import Admingamedetailsftech from './Components/Admingamedetailsftech.jsx'
+import ContactUs from './Components/ContactUs.jsx'
+import ChildRegister from './Components/Childform.jsx'
 import './App.css';
+import Feedback from './Components/Feedback.jsx'
+
 
 
 function App() {
@@ -25,14 +29,26 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/parentdashboard" element={<ParentHome />} />
+          <Route path="/parentdashboard/childregister" element={<ChildRegister/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Caretaker/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>
+          {/* <Route path="/doctordashboard/gamedetailsfetch" element={<Admingamedetailsftech/>}/> */}
+          {/* <Route path="/parentdashboard/details" element={<Details/>}/> */}
           <Route path="/doctordashboard" element={<Doctor/>}/>
           <Route path="/reports" element={<Reports/>}/>
           <Route path="/games" element={<Games/>}/>
+          <Route path="/contact" element={< ContactUs/>} />
+          <Route path="/feedback" element={<Feedback/>} />
+          <Route path="/" element={
+            <div className='container mt-5'>
+              <div className='fw-bolder fs-1 text-center'>
+                Welcome to the Admin Portal
+              </div>
+            </div>
+          } />
         </Routes>
       </Router> 
     </>
