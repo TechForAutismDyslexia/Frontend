@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmemorygame=self.webpackChunkmemorygame||[]).push([[8452],{8452:(a,e,m)=>{a.exports=m.p+"static/media/GoodJob.726aaafc9456d8b18aa2.mp3"}}]);

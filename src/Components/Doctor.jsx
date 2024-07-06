@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useNavigate} from 'react-router-dom';
 
 export default function Doctor() {
   const [children, setChildren] = useState([]);
@@ -11,7 +12,7 @@ export default function Doctor() {
   const [childFeedback, setChildFeedback] = useState(null);
   const [childGames, setChildGames] = useState([]);
   const [games, setGames] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getChildren = async () => {
       try {
@@ -53,21 +54,22 @@ export default function Doctor() {
       setChildGames([]);
     }
 
-    try {
-      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child._id}`, {
-        headers: {
-          Authorization: `${sessionStorage.getItem('logintoken')}`
-        }
-      });
-      setChildFeedback(response.data);
-    } catch (error) {
-      console.error('Error fetching feedback:', error);
-    }
+    // try {
+    //   const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child._id}`, {
+    //     headers: {
+    //       Authorization: `${sessionStorage.getItem('logintoken')}`
+    //     }
+    //   });
+    //   setChildFeedback(response.data);
+    // } catch (error) {
+    //   console.error('Error fetching feedback:', error);
+    // }
   };
 
   const handleSubmitFeedback = async () => {
     try {
-      const response = await axios.put(`https://jwlgamesbackend.vercel.app/api/doctor/feedback/${selectedChild._id}`, {
+      console.log(selectedChild._id);
+      const response = await axios.put(`https://jwlgamesbackend.vercel.app/api/data/feedback/${selectedChild._id}`, {
         feedback: feedback
       }, {
         headers: {
@@ -80,7 +82,10 @@ export default function Doctor() {
       console.error('Error submitting feedback:', error);
     }
   };
-
+  const handleReports = async()=>{
+    sessionStorage.setItem('childId', selectedChild._id);
+    navigate('/reports');
+  }
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedChild(null);
@@ -129,7 +134,7 @@ export default function Doctor() {
                 <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
                 <p><strong>Center ID:</strong> {selectedChild.centreId}</p>
-                <p><strong>Games Completed:</strong></p>
+                {/* <p><strong>Games Completed:</strong></p>
                 <ul>
                   {selectedChild.gamesCompleted.map((game, index) => (
                     <li key={index}>{game}</li>
@@ -153,9 +158,9 @@ export default function Doctor() {
                         <td>{game.tries}</td>
                         <td>{game.timer}</td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    ))} */}
+                  {/* </tbody> */}
+                {/* </table> */}
                 {childFeedback && (
                   <div>
                     <h5>Feedback:</h5>
@@ -167,13 +172,12 @@ export default function Doctor() {
                   </div>
                 )}
                 <div className="mt-3">
-                  <label htmlFor="feedbackInput" className="form-label">Add Feedback:</label>
-                  <textarea className="form-control" id="feedbackInput" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>
+                  
                 </div>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={handleSubmitFeedback}>Submit Feedback</button>
+                <button type="button" className="btn btn-primary" onClick={handleReports}>Reports</button>
               </div>
             </div>
           </div>
