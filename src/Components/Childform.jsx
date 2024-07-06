@@ -66,7 +66,7 @@ export default function ChildRegister() {
     return (
         <div className="register-container">
             <div className="register-header">
-                <p className="register-title">Register</p>
+                <p className="register-title">Child Registration</p>
             </div>
             <div className="register-form-container">
                 <form className="register-form" onSubmit={handleRegister}>

@@ -113,7 +113,9 @@ export default function Admin() {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }
       });
+      useNavigate('/');
       closeModal();
+
       // Fetch children again to update the state
       const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allchildren', {
         headers: {

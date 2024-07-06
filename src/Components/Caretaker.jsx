@@ -96,7 +96,7 @@ export default function Caretaker() {
                 </ul>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={gotoGames}>Games</button>
+                <button type="button" className="btn btn-success" onClick={gotoGames}>Games</button>
                 <button type="button" className="btn btn-primary" onClick={gotoReports}>Reports</button>
               </div>
             </div>
