@@ -23,7 +23,7 @@ export default function Feedback() {
     }
 
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(name, email, mobilenumber, feedback);
         try {
@@ -37,13 +37,13 @@ export default function Feedback() {
             toast.success("Feedback sent successfully!" , {autoClose:2000});
         } catch (error) {
             console.error('Feedback failed:', error);
+            toast.error("Registration failed. Please try again.");
         }
     }
-
-
     return (
 
-        <div className='container-fluid d-block' style={{ overflowX : "hidden"}} >
+        <div className='container-fluid d-block' style={{ overflowX: "hidden" }} >
+            <ToastContainer />
             <div className='fw-bold fs-5 text-center mb-3'>
                 Help us improve by providing your valuable feedback.
             </div>
