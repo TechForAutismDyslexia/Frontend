@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
-import './Register.css'
+import './Register.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -29,13 +31,16 @@ export default function Register() {
         try {
             const res = await axios.post('https://jwlgamesbackend.vercel.app/api/users/register',{username, password, name, mobilenumber,email});
             console.log(res);
+            toast.success("Registered successfully!" , {autoClose:2000});
         }
         catch (e) {
             console.log("data not sent")
+            toast.success("Error has occured. Please try again!" , {autoClose:2000});
         }
     }
     return (
         <div className="register-container">
+            <ToastContainer/>
             <div className="register-header">
                 <p className="register-title">Register</p>
             </div>

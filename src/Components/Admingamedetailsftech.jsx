@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
@@ -11,6 +12,7 @@ export default function Admingamedetailsftech() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childGames, setChildGames] = useState([]);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllGames = async () => {
@@ -73,9 +75,9 @@ export default function Admingamedetailsftech() {
       <div className="d-flex justify-content-between align-items-center">
         <h1 className="text-center mb-4">Admin Game Details Fetch</h1>
         <div className="">
-          <button className="btn m-1 fw-bold" style={{ backgroundColor: "rgb(100, 150, 200)" }} onClick={() => window.location.href = '/adminportal/register'}>Add Parent</button>
-          <button className="btn m-1 fw-bold" style={{ backgroundColor: "rgb(100, 150, 200)" }} onClick={() => window.location.href = '/adminportal/admindashboard/adminregister'}>Add Doctor/Caretaker</button>
-          <button className="btn m-1 fw-bold" style={{ backgroundColor: "#16a085" }} onClick={() => window.location.href = '/adminportal/admindashboard/admingamedetailsftech'}>Game Details</button>
+        <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/register')}>Add Parent</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Caretaker</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/admindashboard/admingamedetailsftech')}>Game Details</button>
         </div>
       </div>
       <div className="form-group row">

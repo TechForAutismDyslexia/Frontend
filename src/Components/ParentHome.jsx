@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ParentHome.css';
 import axios from 'axios';
 import Loader from './Loader.jsx';
@@ -8,6 +9,7 @@ export default function ParentHome() {
   const [selectedChild, setSelectedChild] = useState(null);
   const [childFeedback, setChildFeedback] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -58,7 +60,7 @@ export default function ParentHome() {
       <div className='d-flex justify-content-between align-items-center'>
         <h1 className="my-4">Parent</h1>
         <div className=''>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => window.location.href = '/adminportal/parentdashboard/childregister'}>Add Child</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/parentdashboard/childregister')}>Add Child</button>
         </div>
       </div>
       <div>
