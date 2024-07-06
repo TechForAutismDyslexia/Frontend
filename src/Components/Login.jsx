@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import Loader from './Loader.jsx';
+import {ToastContainer, toast } from 'react-toastify';
 
 
 export default function Login() {
@@ -37,11 +38,14 @@ export default function Login() {
 
         } catch (err) {
             console.log(err);
+            setLoading(false);
+            toast.error("Incorrect Username or Password. Please try again!");
         }
     };
 
     return (
         <div className="login-container">
+            <ToastContainer />
             <div className="login-header">
                 <p className="login-title">Login</p>
             </div>
