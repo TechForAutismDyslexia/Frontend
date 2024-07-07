@@ -89,7 +89,7 @@
         "name": "Animal Farm",
         "img": "AnimalFarm",
         "description": "This is a description of the game",
-        "route": "/games/animal_farm"
+        "route": "/games/animalfarm"
     },
     {   
         "gameId" : "14",
