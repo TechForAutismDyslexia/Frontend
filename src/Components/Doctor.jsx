@@ -115,7 +115,7 @@ export default function Doctor() {
                       <p className="card-text">Parent Details: {child.parentDetails}</p>
                       <p className="card-text">Caretaker: {child.caretakerName}</p>
                       <p className="card-text">Center ID: {child.centreId}</p>
-                      <p className="card-text">Games Completed: {child.gamesCompleted}</p>
+                      {/* <p className="card-text">Games Completed: {child.gamesCompleted}</p> */}
                     </div>
                   </div>
                 </div>
