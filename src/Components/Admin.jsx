@@ -195,10 +195,10 @@ export default function Admin() {
                 <h5 className="modal-title" id="childModalLabel">{selectedChild.name}</h5>
               </div>
               <div className="modal-body">
-                <p>Age: {selectedChild.age}</p>
-                <p>Doctor: {selectedChild.doctorName}</p>
-                <p>Caretaker: {selectedChild.caretakerName}</p>
-                <p>Parent: {selectedChild.parentDetails}</p>
+                <p><strong>Age:</strong> {selectedChild.age}</p>
+                <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
+                <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Parent:</strong> {selectedChild.parentDetails}</p>
                 {/* <p>Games Completed:</p>
                 <ul>
                   {selectedChild.gamesCompleted.map((game, index) => (
@@ -207,7 +207,7 @@ export default function Admin() {
                 </ul> */}
                 {childFeedback && (
                   <div>
-                    <h5>Feedback</h5>
+                    <h5><strong>Feedback</strong></h5>
                     <ul>
                       {childFeedback.feedback.map((fb, index) => (
                         <li key={index}>{fb}</li>
@@ -216,7 +216,7 @@ export default function Admin() {
                   </div>
                 )}
                 <div className="form-group">
-                  <label htmlFor="caretakerSelect">Assign Caretaker</label>
+                  <label htmlFor="caretakerSelect"><strong>Assign Caretaker</strong></label>
                   <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleCaretakerChange}>
                     <option value="">Select Caretaker</option>
                     {caretakers.map(caretaker => (
@@ -225,7 +225,7 @@ export default function Admin() {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="doctorSelect">Assign Doctor</label>
+                  <label htmlFor="doctorSelect"><strong>Assign Doctor</strong></label>
                   <select id="doctorSelect" className="form-control" value={selectedDoctor} onChange={handleDoctorChange}>
                     <option value="">Select Doctor</option>
                     {doctors.map(doctor => (

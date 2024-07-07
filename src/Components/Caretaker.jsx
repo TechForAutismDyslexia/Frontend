@@ -74,10 +74,10 @@ export default function Caretaker() {
                 </button>
               </div>
               <div className="modal-body">
-                <p>Age: {childDetails.age}</p>
-                <p>Doctor: {childDetails.doctorName}</p>
-                <p>Caretaker: {childDetails.caretakerName}</p>
-                <p>Parent: {childDetails.parentDetails}</p>
+                <p><strong>Age:</strong> {childDetails.age}</p>
+                <p><strong>Doctor:</strong> {childDetails.doctorName}</p>
+                <p><strong>Caretaker:</strong> {childDetails.caretakerName}</p>
+                <p><strong>Parent:</strong> {childDetails.parentDetails}</p>
                 {/* <p>Games Completed:</p>
                 <ul>
                   {childDetails.gamesCompleted.map((game, index) => (

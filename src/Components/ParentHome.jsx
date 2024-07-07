@@ -109,7 +109,7 @@ export default function ParentHome() {
                 {feedbackLoader && <Loader />}
                 {childFeedback && (
                   <div>
-                    <h5 className="mt-4">Feedback:</h5>
+                    <h5 className="mt-4"><strong>Feedback:</strong></h5>
                     <ul className="list-unstyled">
                       {childFeedback.feedback.map((fb, index) => (
                         <li key={index}>{fb}</li>

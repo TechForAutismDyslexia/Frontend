@@ -126,10 +126,10 @@ export default function Admingamedetailsftech() {
                 <h5 className="modal-title" id="childModalLabel">{selectedChild.name}</h5>
               </div>
               <div className="modal-body">
-                <p>Age: {selectedChild.age}</p>
-                <p>Doctor: {selectedChild.doctorName}</p>
-                <p>Caretaker: {selectedChild.caretakerName}</p>
-                <p>Parent: {selectedChild.parentDetails}</p>
+                <p><strong>Age:</strong> {selectedChild.age}</p>
+                <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
+                <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Parent:</strong> {selectedChild.parentDetails}</p>
                 {/* <p>Games Completed:</p> */}
                 {/* <table className="table">
                   <thead>

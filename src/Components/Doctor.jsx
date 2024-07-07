@@ -164,7 +164,7 @@ export default function Doctor() {
                 </table> */}
                 {childFeedback && (
                   <div>
-                    <h5>Feedback:</h5>
+                    <h5><strong>Feedback:</strong></h5>
                     <ul>
                       {childFeedback.feedback.map((fb, index) => (
                         <li key={index}>{fb}</li>
