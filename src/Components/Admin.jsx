@@ -199,12 +199,12 @@ export default function Admin() {
                 <p>Doctor: {selectedChild.doctorName}</p>
                 <p>Caretaker: {selectedChild.caretakerName}</p>
                 <p>Parent: {selectedChild.parentDetails}</p>
-                <p>Games Completed:</p>
+                {/* <p>Games Completed:</p>
                 <ul>
                   {selectedChild.gamesCompleted.map((game, index) => (
                     <li key={index}>{game}</li>
                   ))}
-                </ul>
+                </ul> */}
                 {childFeedback && (
                   <div>
                     <h5>Feedback</h5>

@@ -135,13 +135,13 @@ export default function Doctor() {
                 <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
                 <p><strong>Center ID:</strong> {selectedChild.centreId}</p>
-                <p><strong>Games Completed:</strong></p>
+                {/* <p><strong>Games Completed:</strong></p>
                 <ul>
                   {selectedChild.gamesCompleted.map((game, index) => (
                     <li key={index}>{game}</li>
                   ))}
-                </ul>
-                <p><strong>Game Table:</strong></p>
+                </ul> */}
+                {/* <p><strong>Game Table:</strong></p>
                 <table className="table">
                   <thead>
                     <tr>
@@ -161,7 +161,7 @@ export default function Doctor() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table> */}
                 {childFeedback && (
                   <div>
                     <h5>Feedback:</h5>

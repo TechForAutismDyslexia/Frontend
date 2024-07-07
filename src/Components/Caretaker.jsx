@@ -78,15 +78,15 @@ export default function Caretaker() {
                 <p>Doctor: {childDetails.doctorName}</p>
                 <p>Caretaker: {childDetails.caretakerName}</p>
                 <p>Parent: {childDetails.parentDetails}</p>
-                <p>Games Completed:</p>
+                {/* <p>Games Completed:</p>
                 <ul>
                   {childDetails.gamesCompleted.map((game, index) => (
                     <li key={index}>{game}</li>
                   ))}
-                </ul>
+                </ul> */}
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-success" onClick={gotoGames}>Games</button>
+                <button type="button" className="btn btn-success" onClick={gotoGames}>Play Games</button>
                 <button type="button" className="btn btn-primary" onClick={gotoReports}>Reports</button>
               </div>
             </div>
