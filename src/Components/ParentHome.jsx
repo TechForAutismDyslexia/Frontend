@@ -104,7 +104,7 @@ export default function ParentHome() {
                 <p><strong>Caretaker Name :</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor Name :</strong> {selectedChild.doctorName}</p>
                 <p><strong>Center Id :</strong> {selectedChild.centreId}</p>
-                <p><strong>Games Completed :</strong> {selectedChild.gamesCompleted}</p>
+                {/* <p><strong>Games Completed :</strong> {selectedChild.gamesCompleted}</p> */}
                 <p><strong>Admin Status :</strong> {selectedChild.adminStatus ? 'true' : 'false'}</p>
                 {feedbackLoader && <Loader />}
                 {childFeedback && (
@@ -120,6 +120,7 @@ export default function ParentHome() {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                <button type="button" className="btn btn-primary" onClick={() => navigate('/reports')}>Reports</button>
               </div>
             </div>
           </div>
