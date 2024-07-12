@@ -41,7 +41,7 @@ export default function Admin() {
     };
 
     fetchChildren();
-  }, []);
+  }, [verified, pending]);
 
   useEffect(() => {
     const fetchCaretakers = async () => {
@@ -115,7 +115,6 @@ export default function Admin() {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }
       });
-      useNavigate('/');
       closeModal();
 
       // Fetch children again to update the state
@@ -140,6 +139,7 @@ export default function Admin() {
 
   return (
     <div className="container">
+      <ToastContainer/>
       <div className='d-flex justify-content-between align-items-center'>
         <h1 className="my-4">Admin</h1>
         <div className=''>
