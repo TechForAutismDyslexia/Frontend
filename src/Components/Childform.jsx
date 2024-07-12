@@ -3,12 +3,14 @@ import axios from 'axios';
 import './Register.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function ChildRegister() {
     const [name, setName] = useState('');
     const [centreId, setCentreId] = useState('');
     const [age, setAge] = useState('');
     const [centres, setCentres] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCentres = async () => {
@@ -54,17 +56,19 @@ export default function ChildRegister() {
                     Authorization: `${sessionStorage.getItem('logintoken')}`
                 }
             });
-            console.log('Registration successful:', response.data);
             toast.success("Registered successfully!" , {autoClose:2000});
-            // Optionally, you can redirect or show a success message here
+            console.log('Registration successful:', response.data);
+            setTimeout(()=>{
+                navigate("/parentdashboard");
+            },2000);
         } catch (error) {
             console.error('Registration failed:', error);
-            // Handle error states, show a message to the user, etc.
         }
     };
 
     return (
         <div className="register-container">
+            <ToastContainer/>
             <div className="register-header">
                 <p className="register-title">Child Registration</p>
             </div>
