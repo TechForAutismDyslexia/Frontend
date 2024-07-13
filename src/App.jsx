@@ -3,7 +3,7 @@ import ParentHome from './Components/ParentHome.jsx'
 import Navbar from './Components/Navbar.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './Components/Register.jsx'
-import Caretaker from './Components/Caretaker.jsx'
+import Therapist from './Components/Therapist.jsx'
 import Admin from './Components/Admin.jsx'
 // import Details from './Components/Details.jsx'
 import Doctor from './Components/Doctor.jsx'
@@ -33,7 +33,7 @@ function App() {
           <Route path="/parentdashboard" element={<ParentHome />} />
           <Route path="/parentdashboard/childregister" element={<ChildRegister/>}/>
           <Route path="/register" element={<Register/>}/>
-          <Route path="/caretakerdashboard" element={<Caretaker/>}/>
+          <Route path="/caretakerdashboard" element={<Therapist/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>

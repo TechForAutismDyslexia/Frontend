@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from './Loader';
-export default function Caretaker() {
+export default function Therapist() {
   const [data, setData] = useState([]);
   const [childDetails, setChildDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,7 +76,7 @@ export default function Caretaker() {
               <div className="modal-body">
                 <p><strong>Age:</strong> {childDetails.age}</p>
                 <p><strong>Doctor:</strong> {childDetails.doctorName}</p>
-                <p><strong>Caretaker:</strong> {childDetails.caretakerName}</p>
+                <p><strong>Therapist:</strong> {childDetails.caretakerName}</p>
                 <p><strong>Parent:</strong> {childDetails.parentDetails}</p>
                 {/* <p>Games Completed:</p>
                 <ul>

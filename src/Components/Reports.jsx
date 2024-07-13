@@ -88,7 +88,7 @@ const Reports = () => {
               </svg>
               <Card.Title className="mt-2">{childData.name}</Card.Title>
               <Card.Text>
-                <strong>Caretaker:</strong> {childData.caretakerName}<br />
+                <strong>Therapist:</strong> {childData.caretakerName}<br />
                 <strong>Parent:</strong> {childData.parentDetails}<br />
                 <strong>Doctor:</strong> {childData.doctorName}<br />
                 {/* Uncomment the below line if there's progress data in your response */}

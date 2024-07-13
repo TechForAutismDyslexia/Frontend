@@ -10,10 +10,10 @@ export default function Admin() {
   const [children, setChildren] = useState([]);
   const [verified, setVerified] = useState([]);
   const [pending, setPending] = useState([]);
-  const [caretakers, setCaretakers] = useState([]);
+  const [therapists, setTherapists] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [selectedChild, setSelectedChild] = useState(null);
-  const [selectedCaretaker, setSelectedCaretaker] = useState('');
+  const [selectedTherapists, setSelectedTherapists] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childFeedback, setChildFeedback] = useState(null);
@@ -44,20 +44,20 @@ export default function Admin() {
   }, [verified, pending]);
 
   useEffect(() => {
-    const fetchCaretakers = async () => {
+    const fetchTherapists = async () => {
       try {
         const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allcaretakers', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`
           }
         });
-        setCaretakers(response.data);
+        setTherapists(response.data);
       } catch (error) {
         console.error('Error fetching caretakers:', error);
       }
     };
 
-    fetchCaretakers();
+    fetchTherapists();
   }, []);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export default function Admin() {
 
   const handleCardClick = async (child) => {
     setSelectedChild(child);
-    setSelectedCaretaker('');
+    setSelectedTherapists('');
     setSelectedDoctor('');
     setIsModalOpen(true);
     sessionStorage.setItem('childId', child._id);
@@ -96,8 +96,8 @@ export default function Admin() {
     }
   };
 
-  const handleCaretakerChange = (event) => {
-    setSelectedCaretaker(event.target.value);
+  const handleTherapistChange = (event) => {
+    setSelectedTherapists(event.target.value);
   };
 
   const handleDoctorChange = (event) => {
@@ -144,7 +144,7 @@ export default function Admin() {
         <h1 className="my-4">Admin</h1>
         <div className=''>
           <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/register')}>Add Parent</button>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Caretaker</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Therapist</button>
           <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/admindashboard/admingamedetailsftech')}>Game Details</button>
         </div>
       </div>
@@ -160,7 +160,7 @@ export default function Admin() {
                   <h5 className="card-title">{child.name}</h5>
                   <p className="card-text">Age: {child.age}</p>
                   <p className="card-text">Doctor: {child.doctorName}</p>
-                  <p className="card-text">Caretaker: {child.caretakerName}</p>
+                  <p className="card-text">Therapist: {child.caretakerName}</p>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function Admin() {
                   <h5 className="card-title">{child.name}</h5>
                   <p className="card-text">Age: {child.age}</p>
                   <p className="card-text">Doctor: {child.doctorName}</p>
-                  <p className="card-text">Caretaker: {child.caretakerName}</p>
+                  <p className="card-text">Therapist: {child.caretakerName}</p>
                 </div>
               </div>
             </div>
@@ -197,7 +197,7 @@ export default function Admin() {
               <div className="modal-body">
                 <p><strong>Age:</strong> {selectedChild.age}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
-                <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Therapist:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Parent:</strong> {selectedChild.parentDetails}</p>
                 {/* <p>Games Completed:</p>
                 <ul>
@@ -216,9 +216,9 @@ export default function Admin() {
                   </div>
                 )}
                 <div className="form-group">
-                  <label htmlFor="caretakerSelect"><strong>Assign Caretaker</strong></label>
-                  <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleCaretakerChange}>
-                    <option value="">Select Caretaker</option>
+                  <label htmlFor="caretakerSelect"><strong>Assign Therapist</strong></label>
+                  <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleTherapistChange}>
+                    <option value="">Select Therapist</option>
                     {caretakers.map(caretaker => (
                       <option key={caretaker._id} value={caretaker._id}>{caretaker.name}</option>
                     ))}

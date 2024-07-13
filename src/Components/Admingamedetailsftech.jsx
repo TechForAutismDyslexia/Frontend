@@ -76,7 +76,7 @@ export default function Admingamedetailsftech() {
         <h1 className="text-center mb-4">Admin Game Details Fetch</h1>
         <div className="">
         <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/register')}>Add Parent</button>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Caretaker</button>
+          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Therapist</button>
           <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/admindashboard/admingamedetailsftech')}>Game Details</button>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function Admingamedetailsftech() {
                     <h5 className="card-title">{child.name}</h5>
                     <p className="card-text">Age: {child.age}</p>
                     <p className="card-text">Doctor: {child.doctorName}</p>
-                    <p className="card-text">Caretaker: {child.caretakerName}</p>
+                    <p className="card-text">Therapist: {child.caretakerName}</p>
                   </div>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function Admingamedetailsftech() {
               <div className="modal-body">
                 <p><strong>Age:</strong> {selectedChild.age}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
-                <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Therapist:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Parent:</strong> {selectedChild.parentDetails}</p>
                 {/* <p>Games Completed:</p> */}
                 {/* <table className="table">

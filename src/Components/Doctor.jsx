@@ -113,7 +113,7 @@ export default function Doctor() {
                       <h5 className="card-title">{child.name}</h5>
                       <p className="card-text">Age: {child.age}</p>
                       <p className="card-text">Parent Details: {child.parentDetails}</p>
-                      <p className="card-text">Caretaker: {child.caretakerName}</p>
+                      <p className="card-text">Therapist: {child.caretakerName}</p>
                       <p className="card-text">Center ID: {child.centreId}</p>
                       {/* <p className="card-text">Games Completed: {child.gamesCompleted}</p> */}
                     </div>
@@ -132,7 +132,7 @@ export default function Doctor() {
               <div className="modal-body">
                 <p><strong>Age:</strong> {selectedChild.age}</p>
                 <p><strong>Parent Details:</strong> {selectedChild.parentDetails}</p>
-                <p><strong>Caretaker:</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Therapist:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
                 <p><strong>Center ID:</strong> {selectedChild.centreId}</p>
                 {/* <p><strong>Games Completed:</strong></p>

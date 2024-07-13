@@ -97,7 +97,7 @@ export default function AdminRegister() {
                     <div className="form-group">
                         <label htmlFor="role">Role</label>
                         <select id="role" value={role} onChange={handleRoleChange} className="form-input">
-                            <option value="caretaker">Caretaker</option>
+                            <option value="caretaker">Therapist</option>
                             <option value="doctor">Doctor</option>
                         </select>
                     </div>

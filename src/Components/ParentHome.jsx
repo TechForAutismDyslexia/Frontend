@@ -64,6 +64,12 @@ export default function ParentHome() {
     setChildFeedback(null);
   };
 
+  const gotoGames = (childId) => {
+    sessionStorage.setItem('childId', childId);
+    localStorage.setItem('childId', childId);
+    navigate('/games');
+  }
+
   return (
     <div className="parent-container container">
       <div className='d-flex justify-content-between align-items-center'>
@@ -82,7 +88,7 @@ export default function ParentHome() {
                 <h3 className="card-title">{child.name}</h3>
                 <p className="card-text"><strong>Age :</strong> {child.age}</p>
                 <p className="card-text"><strong>Parent Details :</strong> {child.parentDetails}</p>
-                <p className="card-text"><strong>Caretaker Name :</strong> {child.caretakerName}</p>
+                <p className="card-text"><strong>Therapist Name :</strong> {child.caretakerName}</p>
                 <p className="card-text"><strong>Doctor Name :</strong> {child.doctorName}</p>
               </div>
             </div>
@@ -101,7 +107,7 @@ export default function ParentHome() {
               <div className="modal-body">
                 <p><strong>Age :</strong> {selectedChild.age}</p>
                 <p><strong>Parent Details :</strong> {selectedChild.parentDetails}</p>
-                <p><strong>Caretaker Name :</strong> {selectedChild.caretakerName}</p>
+                <p><strong>Therapist Name :</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor Name :</strong> {selectedChild.doctorName}</p>
                 <p><strong>Center Id :</strong> {selectedChild.centreId}</p>
                 {/* <p><strong>Games Completed :</strong> {selectedChild.gamesCompleted}</p> */}
@@ -119,8 +125,10 @@ export default function ParentHome() {
                 )}
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                <button type="button" className='btn btn-success' onClick={() => gotoGames(selectedChild._id)}>Games</button>
                 <button type="button" className="btn btn-primary" onClick={() => navigate('/reports')}>Reports</button>
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+
               </div>
             </div>
           </div>

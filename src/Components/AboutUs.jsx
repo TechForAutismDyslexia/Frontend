@@ -8,7 +8,7 @@ export default function AboutUs() {
                 About us
             </div>
             <div className='text-break mt-3 fw-normal fs-5 text-center lh-base'>
-            Welcome to JoyWithLearning Admin Portal, a platform dedicated to providing support for individuals with dyslexia and autism spectrum disorder (ASD),Caretakers,Doctors,Parents. 
+            Welcome to JoyWithLearning Admin Portal, a platform dedicated to providing support for individuals with dyslexia and autism spectrum disorder (ASD),Therapists,Doctors,Parents. 
             Our mission is to empower individuals, families, and educators by offering valuable information, practical strategies, and a supportive community.
             </div>
         </div>
