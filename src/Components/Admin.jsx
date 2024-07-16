@@ -13,7 +13,7 @@ export default function Admin() {
   const [therapists, setTherapists] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [selectedChild, setSelectedChild] = useState(null);
-  const [selectedTherapists, setSelectedTherapists] = useState('');
+  const [selectedCaretaker, setSelectedCaretaker] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childFeedback, setChildFeedback] = useState(null);
@@ -41,7 +41,7 @@ export default function Admin() {
     };
 
     fetchChildren();
-  }, [verified, pending]);
+  }, []);
 
   useEffect(() => {
     const fetchTherapists = async () => {
@@ -79,7 +79,7 @@ export default function Admin() {
 
   const handleCardClick = async (child) => {
     setSelectedChild(child);
-    setSelectedTherapists('');
+    setSelectedCaretaker('');
     setSelectedDoctor('');
     setIsModalOpen(true);
     sessionStorage.setItem('childId', child._id);
@@ -96,8 +96,8 @@ export default function Admin() {
     }
   };
 
-  const handleTherapistChange = (event) => {
-    setSelectedTherapists(event.target.value);
+  const handleCaretakerChange = (event) => {
+    setSelectedCaretaker(event.target.value);
   };
 
   const handleDoctorChange = (event) => {
@@ -106,7 +106,6 @@ export default function Admin() {
 
   const handleSubmit = async () => {
     try {
-      console.log(selectedChild._id, selectedCaretaker, selectedDoctor);
       await axios.put(`https://jwlgamesbackend.vercel.app/api/admin/${selectedChild._id}/assign`, {
         caretakerId: selectedCaretaker,
         doctorId: selectedDoctor
@@ -198,28 +197,11 @@ export default function Admin() {
                 <p><strong>Age:</strong> {selectedChild.age}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
                 <p><strong>Therapist:</strong> {selectedChild.caretakerName}</p>
-                <p><strong>Parent:</strong> {selectedChild.parentDetails}</p>
-                {/* <p>Games Completed:</p>
-                <ul>
-                  {selectedChild.gamesCompleted.map((game, index) => (
-                    <li key={index}>{game}</li>
-                  ))}
-                </ul> */}
-                {childFeedback && (
-                  <div>
-                    <h5><strong>Feedback</strong></h5>
-                    <ul>
-                      {childFeedback.feedback.map((fb, index) => (
-                        <li key={index}>{fb}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
                 <div className="form-group">
                   <label htmlFor="caretakerSelect"><strong>Assign Therapist</strong></label>
-                  <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleTherapistChange}>
+                  <select id="caretakerSelect" className="form-control" value={selectedCaretaker} onChange={handleCaretakerChange}>
                     <option value="">Select Therapist</option>
-                    {caretakers.map(caretaker => (
+                    {therapists.map(caretaker => (
                       <option key={caretaker._id} value={caretaker._id}>{caretaker.name}</option>
                     ))}
                   </select>
