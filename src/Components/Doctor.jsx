@@ -13,6 +13,7 @@ export default function Doctor() {
   const [childFeedback, setChildFeedback] = useState(null);
   const [childGames, setChildGames] = useState([]);
   const [games, setGames] = useState([]);
+  const [responseText, setResponseText] = useState('');
   const navigate = useNavigate();
   useEffect(() => {
     const getChildren = async () => {
@@ -22,6 +23,11 @@ export default function Doctor() {
             Authorization: `${sessionStorage.getItem('logintoken')}`
           }
         });
+        if(res.data.length === 0){
+          setResponseText('No Children Assigned');
+          return;
+        }
+        setResponseText('');
         setChildren(res.data);
       } catch (error) {
         console.error('Error fetching children:', error);
@@ -104,7 +110,7 @@ export default function Doctor() {
         <div>
           <section className="my-4 row justify-content-center">
             {!children.length ? (
-              <Loader />
+              responseText ? <h3>{responseText}</h3> : <Loader />
             ) : (
               children.map((child, index) => (
                 <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 text-center">

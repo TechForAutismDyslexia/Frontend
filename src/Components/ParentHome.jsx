@@ -81,9 +81,9 @@ export default function ParentHome() {
       <div>
         <section className="card-container">
           {isLoading && <Loader />}
-          {!isLoading && children.length === 0 && <h3>No children found</h3>}
+          {!isLoading && children.length === 0 && <h3>No child has been registered</h3>}
           {!isLoading && children.map((child, index) => (
-            <div key={index} className="card rounded-5" onClick={() => handleClick(child)}>
+            <div key={index} className="card rounded-4" onClick={() => handleClick(child)}>
               <div className="card-body">
                 <h3 className="card-title">{child.name}</h3>
                 <p className="card-text"><strong>Age :</strong> {child.age}</p>

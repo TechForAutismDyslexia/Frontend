@@ -6,9 +6,11 @@ export default function Therapist() {
   const [data, setData] = useState([]);
   const [childDetails, setChildDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [responseText, setResponseText] = useState('');
+  const [loading,setLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const token = sessionStorage.getItem('logintoken');
         const response = await axios.get('https://jwlgamesbackend.vercel.app/api/caretaker/assigned', {
@@ -16,10 +18,17 @@ export default function Therapist() {
             Authorization: `${token}`
           }
         });
+        if(response.data.length === 0){
+          setResponseText('No Children Assigned');
+          setLoading(false);
+          return;
+        }
+        setResponseText('');
         setData(response.data);
       } catch (err) {
         console.log(err);
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -50,8 +59,9 @@ export default function Therapist() {
 
   return (
     <div className="container mt-4">
+      <h1>Therapist</h1>
+      {loading ? <Loader/> : responseText ? <h3>{responseText}</h3> : null}
       <div className="row">
-        {data.length === 0 && <Loader />}
         {data.map((item) => (
           <div key={item._id} className="col-md-4 mb-4">
             <div className="card" onClick={() => handleCardClick(item)}>

@@ -41,7 +41,7 @@ export default function Admin() {
     };
 
     fetchChildren();
-  }, []);
+  }, [verified, pending]);
 
   useEffect(() => {
     const fetchTherapists = async () => {

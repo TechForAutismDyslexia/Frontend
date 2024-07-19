@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import Loader from './Loader.jsx';
 
 export default function Admingamedetailsftech() {
   const [games, setGames] = useState([]);
@@ -12,6 +13,7 @@ export default function Admingamedetailsftech() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childGames, setChildGames] = useState([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +33,12 @@ export default function Admingamedetailsftech() {
   };
 
   const handleGetDetails = async () => {
+    if (!selectedGameId) {
+      setError("Please select an option");
+      return;
+    }
+    setError("");
+    setLoading(true);
     try {
       const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/admin/gamedetails/${selectedGameId}`, {
         headers: { Authorization: `${sessionStorage.getItem('logintoken')}` },
@@ -39,6 +47,7 @@ export default function Admingamedetailsftech() {
     } catch (error) {
       console.error('Error fetching game details:', error);
     }
+    setLoading(false);
   };
 
   const handleCardClick = (child) => {
@@ -63,7 +72,6 @@ export default function Admingamedetailsftech() {
         setChildGames(response.data);
       } catch (error) {
         console.error('Error fetching child games:', error);
-        setError('Failed to fetch child games');
         setChildGames([]); // Reset childGames to empty array on error
       }
     };
@@ -72,15 +80,15 @@ export default function Admingamedetailsftech() {
 
   return (
     <div className="container mt-5">
-      <div className="d-flex justify-content-between align-items-center">
-        <h1 className="text-center mb-4">Admin Game Details Fetch</h1>
-        <div className="">
-        <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/register')}>Add Parent</button>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Therapist</button>
-          <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/admindashboard/admingamedetailsftech')}>Game Details</button>
+      <div className="">
+        {/* <h1 className="text-center mb-4">Admin Game Details Fetch</h1> */}
+        <div className="d-flex justify-content-center align-items-center">
+          <button className="btn m-1 fw-bold" style={{ backgroundColor: "rgb(100, 150, 200)" }} onClick={() => navigate('/register')}>Add Parent</button>
+          <button className="btn m-1 fw-bold" style={{ backgroundColor: "rgb(100, 150, 200)" }} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Therapist</button>
+          <button className="btn m-1 fw-bold" style={{ backgroundColor: "#16a085" }} onClick={() => navigate('/admindashboard/admingamedetailsftech')}>Game Details</button>
         </div>
       </div>
-      <div className="form-group row">
+      <div className="form-group row mt-4">
         <label htmlFor="gameSelect" className="col-sm-2 col-form-label">Select Game: </label>
         <div className="col-sm-10">
           <select id="gameSelect" className="form-control" onChange={handleSelectChange}>
@@ -93,11 +101,19 @@ export default function Admingamedetailsftech() {
           </select>
         </div>
       </div>
+      {error &&
+        <div className='justify-content-center d-flex align-items-center'>
+          <div className='alert alert-warning text-center '>
+            {error}
+          </div>
+        </div>
+      }
       <div className="text-center mt-3">
         <button className="btn btn-primary" onClick={handleGetDetails}>Get</button>
       </div>
       <div className="mt-4">
         <h2>Game Details</h2>
+        {loading && <Loader />}
         {children.length > 0 ? (
           <div className="row">
             {children.map((child) => (
@@ -153,8 +169,8 @@ export default function Admingamedetailsftech() {
                 </table> */}
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
                 <button type="button" className="btn btn-primary" onClick={() => navigate('/reports')}>Reports</button>
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
               </div>
             </div>
           </div>
