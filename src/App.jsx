@@ -19,8 +19,8 @@ import ChildRegister from './Components/Childform.jsx'
 import './App.css';
 import Feedback from './Components/Feedback.jsx'
 import AboutUs from './Components/AboutUs.jsx'
-
-
+import IEPDoctor from './Components/IEPDoctor.jsx'
+import IEPTherapist from './Components/IEPTherapist.jsx'
 
 
 function App() {
@@ -34,6 +34,8 @@ function App() {
           <Route path="/parentdashboard/childregister" element={<ChildRegister/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/caretakerdashboard" element={<Therapist/>}/>
+          <Route path="/doctordashboard/iep" element={<IEPDoctor/>}/>
+          <Route path="/caretakerdashboard/iep" element={<IEPTherapist/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>

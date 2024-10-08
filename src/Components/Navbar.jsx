@@ -96,7 +96,6 @@ export default function Navbar() {
                                   
                                 }
                                 id="basic-nav-dropdown"
-                                alignRight
                             >
                                 <NavDropdown.Item className='fw-bold'>{username}</NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleLogout} className='text-danger fw-bolder'>Logout</NavDropdown.Item>
