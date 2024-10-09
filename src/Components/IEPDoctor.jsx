@@ -7,6 +7,7 @@ export default function Progress() {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [submitText, setSubmitText] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +15,7 @@ export default function Progress() {
       try {
         const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -29,7 +31,11 @@ export default function Progress() {
       const updatedData = { ...prevData };
       if (name === 'therapy') {
         updatedData.therapy = value;
-      } else if (name === 'feedback') {
+      } 
+      else if(name === 'therapistName') {
+        updatedData.therapistName = value;
+      }
+      else if (name === 'feedback') {
         updatedData.feedback = value;
       } else if (targetIndex !== undefined && goalIndex === undefined) {
         updatedData.targets[targetIndex].target = value;
@@ -46,9 +52,20 @@ export default function Progress() {
         therapy: '',
         therapistName: '',
         feedback: '',
-        targets: [{ target: '', goal: [''] }]
+        targets: [{ target: '', goal: [''] }],
+        iepId : null,
       }
     );
+    if(response) {
+      setFormData((prevData) => ({
+        ...prevData,
+        iepId: response._id,
+      }));
+      setSubmitText('Update Progress');
+    } 
+    else {
+      setSubmitText('Assign');
+    }
     setShowModal(true);
   };
 
@@ -60,10 +77,8 @@ export default function Progress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // await axios.put(
-      //   `http://localhost:4000/api/caretaker/childIEP/${formData._id}`,
-      //   formData
-      // );
+      const resp = await axios.put(`http://localhost:4000/api/doctor/assignIEP/${localStorage.getItem("childId")}`, formData);
+
       setShowModal(false);
       alert('Data saved successfully');
     } catch (error) {
@@ -106,24 +121,26 @@ export default function Progress() {
 
   return (
     <div className="container py-4">
-      <div className='d-flex justify-content-between'>
-        <h1 className="mb-4">Individual Education Plan (IEP)</h1>
-        <button type='button' className='btn btn-success' onClick={()=>handleModalOpen(null)}>Assign IEP</button>
+      <div className='mb-4 d-flex justify-content-between'>
+        <div className=''>
+          <h1 className="">Individual Education Plan (IEP)</h1>
+        </div>
+        <button type='button' className='btn btn-success' onClick={() => handleModalOpen(null)}>Assign IEP</button>
       </div>
       {loading ? <Loader /> : (
         <div className="row g-4">
           {responses.map((response, index) => (
             <div className="col-md-4" key={index}>
-              <div className="card">
+              <div className="card" onClick={() => handleModalOpen(response)}>
                 <div className="card-body">
-                  <h5 className="card-title">IEP {index+1}</h5>
-                  <ul>
+                  <h5 className="card-title">IEP {index + 1}</h5>
+                  <ul className='d-flex justify-content-around'>
                     {response.months.map((month, idx) => (
                       <li key={idx}>{month}</li>
                     ))}
                   </ul>
                   <button className="btn btn-primary" onClick={() => handleModalOpen(response)}>
-                    Open Progress
+                    Edit
                   </button>
                 </div>
               </div>
@@ -173,18 +190,12 @@ export default function Progress() {
                   <div className="mb-3">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <label className="form-label mb-0">Targets and Goals</label>
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={addTarget}
-                      >
-                        + Add Target
-                      </button>
                     </div>
 
                     {formData.targets.map((target, targetIndex) => (
                       <div key={targetIndex} className="card mb-3">
                         <div className="card-body">
+                          <label className='mb-3'>Target {targetIndex + 1}</label>
                           <div className="mb-3 d-flex gap-2">
                             <input
                               type="text"
@@ -204,22 +215,25 @@ export default function Progress() {
                           </div>
                           <div className="ms-3">
                             {target.goal.map((goal, goalIndex) => (
-                              <div key={goalIndex} className="d-flex gap-2 mb-2">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="goal"
-                                  value={goal}
-                                  onChange={(e) => handleInputChange(e, targetIndex, goalIndex)}
-                                  placeholder="Enter goal"
-                                />
-                                <button
-                                  type="button"
-                                  className="btn btn-outline-danger"
-                                  onClick={() => removeGoal(targetIndex, goalIndex)}
-                                >
-                                  ×
-                                </button>
+                              <div>
+                                <label className='mb-2'>Goal {goalIndex + 1}</label>
+                                <div key={goalIndex} className="d-flex gap-2 mb-2">
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    name="goal"
+                                    value={goal}
+                                    onChange={(e) => handleInputChange(e, targetIndex, goalIndex)}
+                                    placeholder="Enter goal"
+                                  />
+                                  <button
+                                    type="button"
+                                    className="btn btn-outline-danger"
+                                    onClick={() => removeGoal(targetIndex, goalIndex)}
+                                  >
+                                    ×
+                                  </button>
+                                </div>
                               </div>
                             ))}
                             <button
@@ -235,6 +249,13 @@ export default function Progress() {
                     ))}
                   </div>
 
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary btn-sm mb-3"
+                    onClick={addTarget}
+                  >
+                    + Add Target
+                  </button>
                   <div className="mb-3">
                     <label className="form-label">Feedback</label>
                     <textarea
@@ -256,7 +277,7 @@ export default function Progress() {
                       Close
                     </button>
                     <button type="submit" className="btn btn-primary">
-                      Save Progress
+                      {submitText}
                     </button>
                   </div>
                 </form>

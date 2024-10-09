@@ -108,7 +108,7 @@ export default function Doctor() {
   return (
     <div>
       <div className="parent-container container">
-        <div className='d-flex justify-content-between align-items-center'>
+        <div className='d-flex justify-content-center align-items-center'>
           <h1 className="my-4">Doctor</h1>
         </div>
         <div>

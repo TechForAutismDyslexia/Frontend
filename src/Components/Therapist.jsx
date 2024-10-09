@@ -58,7 +58,7 @@ export default function Therapist() {
   const gotoIEP = () => {
     sessionStorage.setItem('childId', childDetails._id);
     localStorage.setItem('childId', childDetails._id);
-    navigate('/caretakerdashboard/IEP');
+    navigate('/caretakerdashboard/iep');
   }
 
 
