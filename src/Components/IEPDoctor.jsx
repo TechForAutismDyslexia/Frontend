@@ -12,7 +12,7 @@ export default function Progress() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${localStorage.getItem("childId")}`);
+        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -41,7 +41,14 @@ export default function Progress() {
   };
 
   const handleModalOpen = (response) => {
-    setFormData(response);
+    setFormData(
+      response || {
+        therapy: '',
+        therapistName: '',
+        feedback: '',
+        targets: [{ target: '', goal: [''] }]
+      }
+    );
     setShowModal(true);
   };
 
@@ -53,10 +60,10 @@ export default function Progress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:4000/api/caretaker/childIEP/${formData._id}`,
-        formData
-      );
+      // await axios.put(
+      //   `http://localhost:4000/api/caretaker/childIEP/${formData._id}`,
+      //   formData
+      // );
       setShowModal(false);
       alert('Data saved successfully');
     } catch (error) {
@@ -99,14 +106,17 @@ export default function Progress() {
 
   return (
     <div className="container py-4">
-      <h1 className="mb-4">Individual Education Plan (IEP)</h1>
+      <div className='d-flex justify-content-between'>
+        <h1 className="mb-4">Individual Education Plan (IEP)</h1>
+        <button type='button' className='btn btn-success' onClick={()=>handleModalOpen(null)}>Assign IEP</button>
+      </div>
       {loading ? <Loader /> : (
         <div className="row g-4">
           {responses.map((response, index) => (
             <div className="col-md-4" key={index}>
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Months</h5>
+                  <h5 className="card-title">IEP {index+1}</h5>
                   <ul>
                     {response.months.map((month, idx) => (
                       <li key={idx}>{month}</li>

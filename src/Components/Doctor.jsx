@@ -93,6 +93,10 @@ export default function Doctor() {
     sessionStorage.setItem('childId', selectedChild._id);
     navigate('/reports');
   }
+  const handleIEP = async()=>{
+    sessionStorage.setItem('childId', selectedChild._id);
+    navigate('/doctordashboard/iep');
+  }
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedChild(null);
@@ -182,7 +186,8 @@ export default function Doctor() {
                   
                 </div>
               </div>
-              <div className="modal-footer">
+              <div className="modal-footer justify-content-between">
+                <button type="button" className="btn btn-primary" onClick={handleIEP}>IEP</button>
                 <button type="button" className="btn btn-success" onClick={handleReports}>Reports</button>
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
               </div>
