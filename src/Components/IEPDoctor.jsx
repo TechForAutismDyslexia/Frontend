@@ -8,6 +8,7 @@ export default function Progress() {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [submitText, setSubmitText] = useState('');
+  const [therapistName, setTherapistName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,7 +16,8 @@ export default function Progress() {
       try {
         const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
-        console.log(response.data);
+        setTherapistName(sessionStorage.getItem("therapistName"));
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -32,9 +34,6 @@ export default function Progress() {
       if (name === 'therapy') {
         updatedData.therapy = value;
       } 
-      else if(name === 'therapistName') {
-        updatedData.therapistName = value;
-      }
       else if (name === 'feedback') {
         updatedData.feedback = value;
       } else if (targetIndex !== undefined && goalIndex === undefined) {
@@ -50,7 +49,7 @@ export default function Progress() {
     setFormData(
       response || {
         therapy: '',
-        therapistName: '',
+        therapistName: therapistName,
         feedback: '',
         targets: [{ target: '', goal: [''] }],
         iepId : null,
@@ -128,6 +127,7 @@ export default function Progress() {
         <button type='button' className='btn btn-success' onClick={() => handleModalOpen(null)}>Assign IEP</button>
       </div>
       {loading ? <Loader /> : (
+        responses.length === 0 ? <h3>No IEPs assigned</h3> :
         <div className="row g-4">
           {responses.map((response, index) => (
             <div className="col-md-4" key={index}>
@@ -181,11 +181,28 @@ export default function Progress() {
                       type="text"
                       className="form-control"
                       name="therapistName"
-                      value={formData.therapistName}
-                      onChange={(e) => handleInputChange(e)}
-                      placeholder="Enter therapist name"
+                      value={therapistName}
+                      disabled
                     />
                   </div>
+                  {/* <div className='mb-3'>
+                    <label className="form-label">Starting Month</label>
+                    <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
+                      <option value="">Select month</option>
+                      <option value="1">January</option>
+                      <option value="2">February</option>
+                      <option value="3">March</option>
+                      <option value="4">April</option>
+                      <option value="5">May</option>
+                      <option value="6">June</option>
+                      <option value="7">July</option>
+                      <option value="8">August</option>
+                      <option value="9">September</option>
+                      <option value="10">October</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
+                    </select>
+                  </div> */}
 
                   <div className="mb-3">
                     <div className="d-flex justify-content-between align-items-center mb-3">

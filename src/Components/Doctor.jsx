@@ -95,6 +95,7 @@ export default function Doctor() {
   }
   const handleIEP = async()=>{
     sessionStorage.setItem('childId', selectedChild._id);
+    sessionStorage.setItem('therapistName', selectedChild.caretakerName);
     navigate('/doctordashboard/iep');
   }
   const closeModal = () => {
