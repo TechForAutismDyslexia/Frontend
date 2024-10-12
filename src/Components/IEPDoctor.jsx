@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
+import { start } from '@popperjs/core';
 
 export default function Progress() {
   const [responses, setResponses] = useState([]);
@@ -9,6 +10,7 @@ export default function Progress() {
   const [loading, setLoading] = useState(false);
   const [submitText, setSubmitText] = useState('');
   const [therapistName, setTherapistName] = useState('');
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,13 @@ export default function Progress() {
       const updatedData = { ...prevData };
       if (name === 'therapy') {
         updatedData.therapy = value;
-      } 
+      }
+      else if (name === 'startingMonth') {
+        updatedData.startingMonth = parseInt(value);
+      }
+      else if (name === 'year') {
+        updatedData.startingYear = value;
+      }
       else if (name === 'feedback') {
         updatedData.feedback = value;
       } else if (targetIndex !== undefined && goalIndex === undefined) {
@@ -52,16 +60,19 @@ export default function Progress() {
         therapistName: therapistName,
         feedback: '',
         targets: [{ target: '', goal: [''] }],
-        iepId : null,
+        iepId: null,
+        startingMonth: '',
+        startingYear: '',
+        doctorId: sessionStorage.getItem("id")
       }
     );
-    if(response) {
+    if (response) {
       setFormData((prevData) => ({
         ...prevData,
         iepId: response._id,
       }));
       setSubmitText('Update Progress');
-    } 
+    }
     else {
       setSubmitText('Assign');
     }
@@ -75,8 +86,14 @@ export default function Progress() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.doctorId) {
+      setFormData((prevData) => ({
+        ...prevData,
+        doctorId: sessionStorage.getItem("id"),
+      }));
+    }
     try {
-      const resp = await axios.put(`http://localhost:4000/api/doctor/assignIEP/${localStorage.getItem("childId")}`, formData);
+      const resp = await axios.put(`http://localhost:4000/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData);
 
       setShowModal(false);
       alert('Data saved successfully');
@@ -128,25 +145,26 @@ export default function Progress() {
       </div>
       {loading ? <Loader /> : (
         responses.length === 0 ? <h3>No IEPs assigned</h3> :
-        <div className="row g-4">
-          {responses.map((response, index) => (
-            <div className="col-md-4" key={index}>
-              <div className="card" onClick={() => handleModalOpen(response)}>
-                <div className="card-body">
-                  <h5 className="card-title">IEP {index + 1}</h5>
-                  <ul className='d-flex justify-content-around'>
-                    {response.months.map((month, idx) => (
-                      <li key={idx}>{month}</li>
-                    ))}
-                  </ul>
-                  <button className="btn btn-primary" onClick={() => handleModalOpen(response)}>
-                    Edit
-                  </button>
+          <div className="row g-4">
+            {responses.map((response, index) => (
+              <div className="col-md-4" key={index}>
+                <div className="card" onClick={() => handleModalOpen(response)}>
+                  <div className="card-body">
+                    <h5 className="card-title">IEP {index + 1}</h5>
+                    <ul className='d-flex justify-content-around'>
+                      {response.months.map((monthObj, idx) => (
+                        <li key={idx}>{monthObj.month}</li>
+                      ))}
+                    </ul>
+                    <h6 className="text-center">Starting Year: {response.startingYear}</h6>
+                    <button className="btn btn-primary" onClick={() => handleModalOpen(response)}>
+                      Edit
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
       )}
 
       {showModal && formData && (
@@ -185,25 +203,34 @@ export default function Progress() {
                       disabled
                     />
                   </div>
-                  {/* <div className='mb-3'>
-                    <label className="form-label">Starting Month</label>
-                    <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
-                      <option value="">Select month</option>
-                      <option value="1">January</option>
-                      <option value="2">February</option>
-                      <option value="3">March</option>
-                      <option value="4">April</option>
-                      <option value="5">May</option>
-                      <option value="6">June</option>
-                      <option value="7">July</option>
-                      <option value="8">August</option>
-                      <option value="9">September</option>
-                      <option value="10">October</option>
-                      <option value="11">November</option>
-                      <option value="12">December</option>
-                    </select>
-                  </div> */}
-
+                  <div className='d-flex'>
+                    <div className='mb-3'>
+                      <label className="form-label">Starting Month</label>
+                      <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
+                        <option value="">Select month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                    </div>
+                    <div className='mb-3 ms-4'>
+                      <label className="form-label">Year</label>
+                      <select className="form-select" name="year" value={formData.startingYear} onChange={(e) => handleInputChange(e)}>
+                        <option value="">Select year</option>
+                        <option value={currentYear}>{currentYear}</option>
+                        <option value={currentYear+1}>{currentYear+1}</option>
+                      </select>
+                    </div>
+                  </div>
                   <div className="mb-3">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <label className="form-label mb-0">Targets and Goals</label>
