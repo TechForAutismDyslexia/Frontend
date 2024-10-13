@@ -142,6 +142,7 @@ export default function Admin() {
       <div className='d-flex justify-content-between align-items-center'>
         <h1 className="my-4">Admin</h1>
         <div className=''>
+          <button className='btn m-1 fw-bold' style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={()=>navigate('/admindashboard/bookappointment')}>Book Appointment</button>
           <button className="btn  m-1 fw-bold" style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/register')}>Add Parent</button>
           <button className="btn  m-1 fw-bold"  style={{backgroundColor:"rgb(100, 150, 200)"}} onClick={() => navigate('/admindashboard/adminregister')}>Add Doctor/Therapist</button>
           <button className="btn  m-1 fw-bold"  style={{backgroundColor:"#16a085"}} onClick={() => navigate('/admindashboard/admingamedetailsftech')}>Game Details</button>

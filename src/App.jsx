@@ -21,6 +21,7 @@ import Feedback from './Components/Feedback.jsx'
 import AboutUs from './Components/AboutUs.jsx'
 import IEPDoctor from './Components/IEPDoctor.jsx'
 import IEPTherapist from './Components/IEPTherapist.jsx'
+import AppointmentBooking from './Components/BookAppointment.jsx'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/games" element={<Games/>}/>
           <Route path="/contact" element={< ContactUs/>} />
           <Route path="/feedback" element={<Feedback/>} />
+          <Route path="/admindashboard/bookappointment" element={<AppointmentBooking/>} />
           <Route path="/" element={
             <div className='container mt-5'>
               <div className='fw-bolder fs-1 text-center'>
