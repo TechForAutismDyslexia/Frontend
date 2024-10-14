@@ -14,6 +14,7 @@ export default function Doctor() {
   const [childGames, setChildGames] = useState([]);
   const [games, setGames] = useState([]);
   const [responseText, setResponseText] = useState('');
+  
   const navigate = useNavigate();
   useEffect(() => {
     const getChildren = async () => {
@@ -110,7 +111,8 @@ export default function Doctor() {
     <div>
       <div className="parent-container container">
         <div className='d-flex justify-content-center align-items-center'>
-          <h1 className="my-4">Doctor</h1>
+          <h1 className="my-4 mx-auto">Doctor</h1>
+          <button className='btn btn-success ml-auto'>View Consultations</button>
         </div>
         <div>
           <section className="my-4 row justify-content-center">
