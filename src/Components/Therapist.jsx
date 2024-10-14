@@ -2,12 +2,18 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from './Loader';
+import Calendar from './Calendar';
+import React from 'react';
+import { Button, Modal } from 'react-bootstrap';
 export default function Therapist() {
   const [data, setData] = useState([]);
   const [childDetails, setChildDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [responseText, setResponseText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -66,9 +72,20 @@ export default function Therapist() {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-5">
       <h1 className="text-center flex-grow-1">Therapist Dashboard</h1>
+      
+      <Button variant="" onClick={handleShow}>
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-calendar-event-fill" viewBox="0 0 16 16">
         <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
       </svg>
+      </Button>
+      <Modal show={show} onHide={handleClose} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Calendar</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Calendar />
+        </Modal.Body>
+      </Modal>
     </div>
       {loading ? (
         <div className="d-flex justify-content-center align-items-center">
