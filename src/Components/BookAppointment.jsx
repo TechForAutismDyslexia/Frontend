@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function BookAppointment() {
+  const navigate = useNavigate();
   const [childName, setChildName] = useState('');
   const [childAge, setChildAge] = useState(''); // No conversion to number
   const [parentName, setParentName] = useState('');
@@ -28,7 +30,7 @@ export default function BookAppointment() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/data/alldoctors', {
+        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/alldoctors', {
           headers: {
             Authorization: localStorage.getItem('logintoken'),
           },
@@ -48,7 +50,7 @@ export default function BookAppointment() {
       if (doctorId && date) {
         try {
           // Pass both doctorID and date to the API
-          const response = await axios.get(`http://localhost:4000/api/doctor/getConsultations/${doctorId}/${date}`, {
+          const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/doctor/getConsultations/${doctorId}/${date}`, {
             headers: {
               Authorization: localStorage.getItem('logintoken'),
             },
@@ -91,7 +93,7 @@ export default function BookAppointment() {
         },
       });
       console.log('Appointment booked:', response.data);
-      alert('Appointment booked successfully!');
+      navigate('/admindashboard');
     } catch (error) {
       console.error('Error booking appointment:', error);
       alert('Failed to book appointment. Please try again.');
