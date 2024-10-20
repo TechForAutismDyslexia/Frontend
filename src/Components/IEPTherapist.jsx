@@ -14,7 +14,7 @@ export default function IEPTherapist() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+        const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);

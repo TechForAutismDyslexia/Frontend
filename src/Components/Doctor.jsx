@@ -58,7 +58,7 @@ export default function Doctor() {
   const fetchEvents = async () => {
     const events = {};
     try {
-      const response = await axios.get('http://localhost:4000/api/doctor/getConsultations', {
+      const response = await axios.get('https://jwlgamesbackend.vercel.app/api/doctor/getConsultations', {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }
