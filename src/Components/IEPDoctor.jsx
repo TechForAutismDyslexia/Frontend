@@ -16,7 +16,7 @@ export default function Progress() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+        const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
         setTherapistName(sessionStorage.getItem("therapistName"));
 
@@ -93,7 +93,7 @@ export default function Progress() {
       }));
     }
     try {
-      const resp = await axios.put(`http://localhost:4000/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData);
+      const resp = await axios.put(`https://jwlgamesbackend.vercel.app/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData);
 
       setShowModal(false);
       alert('Data saved successfully');

@@ -8,12 +8,13 @@ export default function IEPTherapist() {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [performanceInputs, setPerformanceInputs] = useState({});
+  const [displayMonths, setDisplayMonths] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+        const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -26,6 +27,8 @@ export default function IEPTherapist() {
 
   const handleModalOpen = (response) => {
     setFormData(response);
+    const monthsArray = response.months.map((monthObj) => monthObj.month);
+    setDisplayMonths(monthsArray);
     setShowModal(true);
   };
 
@@ -35,12 +38,15 @@ export default function IEPTherapist() {
     setPerformanceInputs({});
   };
 
-  const handlePerformanceChange = (goalIndex, monthIndex, value) => {
+  const handlePerformanceChange = (targetIndex, goalIndex, monthIndex, value) => {
     setPerformanceInputs((prev) => ({
       ...prev,
-      [goalIndex]: {
-        ...(prev[goalIndex] || {}),
-        [monthIndex]: value,
+      [targetIndex]: {
+        ...(prev[targetIndex] || {}),
+        [goalIndex]: {
+          ...(prev[targetIndex]?.[goalIndex] || {}),
+          [monthIndex]: value,
+        },
       },
     }));
   };
@@ -75,7 +81,7 @@ export default function IEPTherapist() {
 
       {showModal && formData && (
         <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog modal-lg">
+          <div className="modal-dialog modal-xl">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">IEP Details</h5>
@@ -83,58 +89,40 @@ export default function IEPTherapist() {
               </div>
               <div className="modal-body">
                 <table className="table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Target</th>
+                      {displayMonths.map((month, idx) => (
+                        <th key={idx}>{month}</th>
+                      ))}
+                    </tr>
+                  </thead>
                   <tbody>
-                    <tr>
-                      <th>Therapy Type</th>
-                      <td>{formData.therapy}</td>
-                    </tr>
-                    <tr>
-                      <th>Feedback</th>
-                      <td>{formData.feedback}</td>
-                    </tr>
-                    <tr>
-                      <th>Targets and Goals</th>
-                      <td>
-                        {formData.targets.map((target, targetIndex) => (
-                          <div key={targetIndex} className="mb-3">
-                            <strong className='d-flex'>Target {targetIndex + 1} : </strong> {target.target}
-                            <ul>
-                              {target.goal.map((goal, goalIndex) => (
-                                <li key={goalIndex}>
-                                  <strong>Goal {goalIndex + 1} : </strong>{goal}
-                                  <div className="mt-2">
-                                    <table className="table">
-                                      <thead>
-                                        <tr>
-                                          <th>Month 1</th>
-                                          <th>Month 2</th>
-                                          <th>Month 3</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          {[0, 1, 2].map((monthIndex) => (
-                                            <td key={monthIndex}>
-                                              <input
-                                                type="number"
-                                                className="form-control"
-                                                value={performanceInputs[targetIndex]?.[monthIndex] || ''}
-                                                onChange={(e) => handlePerformanceChange(targetIndex, monthIndex, e.target.value)}
-                                                placeholder="Enter performance"
-                                              />
-                                            </td>
-                                          ))}
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                    {formData.targets.map((target, targetIndex) => (
+                      <React.Fragment key={targetIndex}>
+                        <tr>
+                          <td rowSpan={target.goal.length + 1}>{targetIndex + 1}</td>
+                          <td colSpan={displayMonths.length + 1}><strong>{target.target}</strong></td>
+                        </tr>
+                        {target.goal.map((goal, goalIndex) => (
+                          <tr key={goalIndex}>
+                            <td>{goal}</td>
+                            {displayMonths.map((_, monthIndex) => (
+                              <td key={monthIndex}>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  value={performanceInputs[targetIndex]?.[goalIndex]?.[monthIndex] || ''}
+                                  onChange={(e) => handlePerformanceChange(targetIndex, goalIndex, monthIndex, e.target.value)}
+                                  placeholder="Enter performance"
+                                />
+                              </td>
+                            ))}
+                          </tr>
                         ))}
-                      </td>
-                    </tr>
+                      </React.Fragment>
+                    ))}
                   </tbody>
                 </table>
               </div>

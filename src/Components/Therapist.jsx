@@ -66,10 +66,15 @@ export default function Therapist() {
     localStorage.setItem('childId', childDetails._id);
     navigate('/caretakerdashboard/iep');
   }
+  const events = {
+    "2024-10-14": [{ title: "Meeting at 10 AM" },{ title: "Lunch with friends" }],
+    "2024-10-20": [{ title: "Birthday Party" }]
+};
 
 
   return (
     <div className="container mt-4">
+    
       <div className="d-flex justify-content-between align-items-center mb-5">
       <h1 className="text-center flex-grow-1">Therapist Dashboard</h1>
       
@@ -83,7 +88,7 @@ export default function Therapist() {
           <Modal.Title>Calendar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Calendar />
+          <Calendar events={events}/>
         </Modal.Body>
       </Modal>
     </div>
