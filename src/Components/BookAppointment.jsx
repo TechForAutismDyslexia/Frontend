@@ -50,7 +50,7 @@ export default function BookAppointment() {
       if (doctorId && date) {
         try {
           // Pass both doctorID and date to the API
-          const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/doctor/getConsultations/${doctorId}/${date}`, {
+          const response = await axios.get(`http://localhost:4000/api/admin/getConsultations/${doctorId}/${date}`, {
             headers: {
               Authorization: localStorage.getItem('logintoken'),
             },
@@ -78,7 +78,7 @@ export default function BookAppointment() {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:4000/api/admin/bookAppointment', {
+      const response = await axios.post('https://jwlgamesbackend.vercel.app/api/admin/bookAppointment', {
             childName, 
             childAge, 
             parentName, 
