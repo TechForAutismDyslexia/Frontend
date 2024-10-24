@@ -22,7 +22,7 @@ import AboutUs from './Components/AboutUs.jsx'
 import IEPDoctor from './Components/IEPDoctor.jsx'
 import IEPTherapist from './Components/IEPTherapist.jsx'
 import AppointmentBooking from './Components/BookAppointment.jsx'
-import TaskCalendar  from './Components/Calender.jsx';
+import Calendar from './Components/Calendar.jsx'
 
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
           <Route path="/games" element={<Games/>}/>
           <Route path="/contact" element={< ContactUs/>} />
           <Route path="/feedback" element={<Feedback/>} />
-          <Route path="/calendar" element={<TaskCalendar/>} />
+          <Route path="/calendar" element={<Calendar/>} />
           <Route path="/admindashboard/bookappointment" element={<AppointmentBooking/>} />
           <Route path="/" element={
             <div className='container mt-5'>
