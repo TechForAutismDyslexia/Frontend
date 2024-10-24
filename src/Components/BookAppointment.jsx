@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css'; 
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function BookAppointment() {
   const navigate = useNavigate();
@@ -49,14 +51,12 @@ export default function BookAppointment() {
     const fetchBookedSlots = async () => {
       if (doctorId && date) {
         try {
-          // Pass both doctorID and date to the API
-          const response = await axios.get(`http://localhost:4000/api/admin/getConsultations/${doctorId}/${date}`, {
+          const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/admin/getConsultations/${doctorId}/${date}`, {
             headers: {
               Authorization: localStorage.getItem('logintoken'),
             },
           });
   
-          // Process slots as before
           const booked = response.data
             .flatMap(consultation =>
               consultation.slots.filter(slot => slot.booked).map(slot => slot.time)
@@ -72,7 +72,7 @@ export default function BookAppointment() {
     };
   
     fetchBookedSlots();
-  }, [doctorId, date]); // Re-run whenever doctorId or date changes
+  }, [doctorId, date]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,10 +93,16 @@ export default function BookAppointment() {
         },
       });
       console.log('Appointment booked:', response.data);
-      navigate('/admindashboard');
+      toast.success('Appointment booked successfully!');
+
+      setTimeout(() => {
+        navigate('/admindashboard');
+      }, 1500); // Wait 1.5 seconds before redirecting
     } catch (error) {
       console.error('Error booking appointment:', error);
-      alert('Failed to book appointment. Please try again.');
+      toast.error('Failed to book appointment. Please try again.', {
+        position: toast.POSITION.TOP_RIGHT
+      });
     }
   };
 
@@ -205,6 +211,7 @@ export default function BookAppointment() {
 
         <button type="submit" className="btn btn-primary btn-block">Book Appointment</button>
       </form>
+      <ToastContainer /> {/* Ensure ToastContainer is placed here for toasts to work */}
     </div>
   );
 }

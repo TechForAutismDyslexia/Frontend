@@ -39,7 +39,6 @@ function App() {
           <Route path="/doctordashboard/iep" element={<IEPDoctor/>}/>
           <Route path="/caretakerdashboard/iep" element={<IEPTherapist/>}/>
           <Route path="/admindashboard" element={<Admin/>}/>
-          <Route path="/calendar" element={<Calendar/>}/>
           <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
           <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>
           {/* <Route path="/doctordashboard/gamedetailsfetch" element={<Admingamedetailsftech/>}/> */}
