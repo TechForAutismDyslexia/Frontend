@@ -9,9 +9,10 @@ export default function BookAppointment() {
   const [childName, setChildName] = useState('');
   const [childAge, setChildAge] = useState(''); // No conversion to number
   const [parentName, setParentName] = useState('');
-  const [parentEmail, setParentEmail] = useState('');
+  const [email, setParentEmail] = useState('');
+  const [dob, setDob] = useState('');
   const [parentPhoneNo, setParentPhoneNo] = useState('');
-  const [date, setDate] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState('');
   const [time, setTime] = useState('');
   const [doctorId, setDoctorId] = useState('');
   const [schoolName, setSchoolName] = useState('');
@@ -66,18 +67,19 @@ export default function BookAppointment() {
     };
 
     fetchBookedSlots();
-  }, [doctorId, date]);
+  }, [doctorId, appointmentDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
       const response = await axios.post('http://localhost:4000/api/admin/bookAppointment', {
-        email: parentEmail,
-        fatherMotherName: parentName,
+        email,
+        parentName,
         childName,
         childAge,
-        date,
+        appointmentDate,
+        dob,
         gender,
         parentPhoneNo,
         alternativeNumber,
@@ -128,6 +130,10 @@ export default function BookAppointment() {
           <input type="text" className="form-control" value={childAge} onChange={(e) => setChildAge(e.target.value)} required />
         </div>
         <div className="form-group">
+          <label htmlFor="date">Date of Birth:</label>
+          <input type="date" className="form-control" value={dob} onChange={(e) => setDob(e.target.value)} required />
+        </div>
+        <div className="form-group">
           <label htmlFor="gender">Gender:</label>
           <select className="form-control" value={gender} onChange={(e) => setGender(e.target.value)} required>
             <option value="">Select Gender</option>
@@ -137,12 +143,12 @@ export default function BookAppointment() {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="parentName">Parent Name:</label>
+          <label htmlFor="parentName,">Parent Name:</label>
           <input type="text" className="form-control" value={parentName} onChange={(e) => setParentName(e.target.value)} required />
         </div>
         <div className="form-group">
-          <label htmlFor="parentEmail">Parent Email:</label>
-          <input type="email" className="form-control" value={parentEmail} onChange={(e) => setParentEmail(e.target.value)} required />
+          <label htmlFor="email">Parent Email:</label>
+          <input type="email" className="form-control" value={email} onChange={(e) => setParentEmail(e.target.value)} required />
         </div>
         <div className="form-group">
           <label htmlFor="parentPhoneNo">Parent Phone No:</label>
@@ -210,7 +216,7 @@ export default function BookAppointment() {
         </div>
         <div className="form-group">
           <label htmlFor="date">Appointment Date:</label>
-          <input type="date" className="form-control" value={date} onChange={(e) => setDate(e.target.value)} required />
+          <input type="date" className="form-control" value={appointmentDate} onChange={(e) => setAppointmentDate(e.target.value)} required />
         </div>
         <div className="form-group">
           <label htmlFor="doctorId">Doctor:</label>
