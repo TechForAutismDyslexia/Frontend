@@ -48,7 +48,7 @@ function App() {
           <Route path="/games" element={<Games/>}/>
           <Route path="/contact" element={< ContactUs/>} />
           <Route path="/feedback" element={<Feedback/>} />
-          <Route path="/calendar" element={<TaskCalendar/>} />
+          <Route path="/calendar" element={<Calendar/>} />
           <Route path="/bookappointment" element={<AppointmentBooking/>} />
           <Route path="/" element={
             <div className='container mt-5'>
