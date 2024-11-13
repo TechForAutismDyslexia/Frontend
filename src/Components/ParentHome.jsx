@@ -75,6 +75,7 @@ export default function ParentHome() {
       <div className='d-flex justify-content-between align-items-center'>
         <h1 className="my-4">Parent</h1>
         <div>
+          <button className="btn m-1 fw-bold" style={{ backgroundColor: "#16a085" }} onClick={() => navigate('/bookappointment')}>Book Appointment</button>
           <button className="btn m-1 fw-bold" style={{ backgroundColor: "#16a085" }} onClick={() => navigate('/parentdashboard/childregister')}>Add Child</button>
         </div>
       </div>

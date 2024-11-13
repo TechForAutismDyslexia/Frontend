@@ -49,7 +49,7 @@ function App() {
           <Route path="/contact" element={< ContactUs/>} />
           <Route path="/feedback" element={<Feedback/>} />
           <Route path="/calendar" element={<TaskCalendar/>} />
-          <Route path="/admindashboard/bookappointment" element={<AppointmentBooking/>} />
+          <Route path="/bookappointment" element={<AppointmentBooking/>} />
           <Route path="/" element={
             <div className='container mt-5'>
               <div className='fw-bolder fs-1 text-center'>
