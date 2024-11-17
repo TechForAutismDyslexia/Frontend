@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
-import { start } from '@popperjs/core';
 
 export default function Progress() {
   const [responses, setResponses] = useState([]);
@@ -10,16 +9,17 @@ export default function Progress() {
   const [loading, setLoading] = useState(false);
   const [submitText, setSubmitText] = useState('');
   const [therapistName, setTherapistName] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
         setResponses(response.data);
         setTherapistName(sessionStorage.getItem("therapistName"));
-
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -29,52 +29,68 @@ export default function Progress() {
     fetchData();
   }, []);
 
-  const handleInputChange = (e, targetIndex, goalIndex) => {
+  const handleInputChange = (e, monthIndex, goalIndex) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = { ...prevData };
-      if (name === 'therapy') {
+
+      if (monthIndex !== undefined && goalIndex !== undefined) {
+        updatedData.monthlyGoals[monthIndex].goals[goalIndex] = value;
+      } else if (monthIndex !== undefined) {
+        updatedData.monthlyGoals[monthIndex].target = value;
+      } else if (name === 'therapy') {
         updatedData.therapy = value;
-      }
-      else if (name === 'startingMonth') {
-        updatedData.startingMonth = parseInt(value);
-      }
-      else if (name === 'year') {
+      } else if (name === 'startingMonth') {
+        const startMonth = parseInt(value);
+        updatedData.startingMonth = new Date(0, startMonth - 1).toLocaleString('default', { month: 'long' });
+        updatedData.selectedMonths = [
+          startMonth,
+          (startMonth % 12) + 1,
+          ((startMonth + 1) % 12) + 1
+        ];
+        updatedData.monthlyGoals = updatedData.selectedMonths.map((month) => ({
+          month: new Date(0, month - 1).toLocaleString('default', { month: 'long' }),
+          target: '',
+          goals: ['']
+        }));
+        updatedData.selectedMonthsNames = updatedData.selectedMonths.map((month) => new Date(0, month - 1).toLocaleString('default', { month: 'long' }));
+      } else if (name === 'year') {
         updatedData.startingYear = value;
-      }
-      else if (name === 'feedback') {
+      } else if (name === 'feedback') {
         updatedData.feedback = value;
-      } else if (targetIndex !== undefined && goalIndex === undefined) {
-        updatedData.targets[targetIndex].target = value;
-      } else if (targetIndex !== undefined && goalIndex !== undefined) {
-        updatedData.targets[targetIndex].goal[goalIndex] = value;
       }
       return updatedData;
     });
   };
 
-  const handleModalOpen = (response) => {
-    setFormData(
-      response || {
+  const handleModalOpen = (response, monthIndex) => {
+    const isEdit = Boolean(response);
+    setIsEditMode(isEdit);
+    setSubmitText(isEdit ? 'Update Progress' : 'Assign');
+    
+    if (isEdit) {
+      setSelectedMonth(monthIndex);
+      const editData = JSON.parse(JSON.stringify(response));
+      editData.iepId = response._id;
+      setFormData(editData);
+    } else {
+      const initialSelectedMonths = [1, 2, 3];
+      setFormData({
+        iepId : '',
+        doctorId: sessionStorage.getItem("id"),
         therapy: '',
         therapistName: therapistName,
         feedback: '',
-        targets: [{ target: '', goal: [''] }],
-        iepId: null,
-        startingMonth: '',
-        startingYear: '',
-        doctorId: sessionStorage.getItem("id")
-      }
-    );
-    if (response) {
-      setFormData((prevData) => ({
-        ...prevData,
-        iepId: response._id,
-      }));
-      setSubmitText('Update Progress');
-    }
-    else {
-      setSubmitText('Assign');
+        monthlyGoals: initialSelectedMonths.map((month) => ({
+          month: new Date(0, month - 1).toLocaleString('default', { month: 'long' }),
+          target: '',
+          goals: ['']
+        })),
+        startingYear: currentYear,
+        startingMonth: 1,
+        selectedMonths: initialSelectedMonths,
+      });
+      setSelectedMonth(null);
     }
     setShowModal(true);
   };
@@ -82,56 +98,95 @@ export default function Progress() {
   const handleModalClose = () => {
     setFormData(null);
     setShowModal(false);
+    setIsEditMode(false);
+    setSelectedMonth(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.doctorId) {
-      setFormData((prevData) => ({
-        ...prevData,
-        doctorId: sessionStorage.getItem("id"),
-      }));
-    }
     try {
-      const resp = await axios.put(`https://jwlgamesbackend.vercel.app/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData);
-
+      await axios.put(`http://localhost:4000/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData);
+      console.log(formData);
       setShowModal(false);
       alert('Data saved successfully');
+      const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+      setResponses(response.data);
     } catch (error) {
       console.error('Error submitting form:', error);
     }
   };
 
-  const addTarget = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      targets: [
-        ...prevData.targets,
-        { target: '', goal: [''] }
-      ]
-    }));
-  };
-
-  const removeTarget = (index) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      targets: prevData.targets.filter((_, i) => i !== index)
-    }));
-  };
-
-  const addGoal = (targetIndex) => {
+  const addGoal = (monthIndex) => {
+    if (isEditMode && monthIndex !== selectedMonth) return;
+    
     setFormData((prevData) => {
-      const updatedTargets = [...prevData.targets];
-      updatedTargets[targetIndex].goal.push('');
-      return { ...prevData, targets: updatedTargets };
+      const updatedGoals = [...prevData.monthlyGoals];
+      updatedGoals[monthIndex].goals.push('');
+      return { ...prevData, monthlyGoals: updatedGoals };
     });
   };
 
-  const removeGoal = (targetIndex, goalIndex) => {
+  const removeGoal = (monthIndex, goalIndex) => {
+    if (isEditMode && monthIndex !== selectedMonth) return;
+    
     setFormData((prevData) => {
-      const updatedTargets = [...prevData.targets];
-      updatedTargets[targetIndex].goal = updatedTargets[targetIndex].goal.filter((_, i) => i !== goalIndex);
-      return { ...prevData, targets: updatedTargets };
+      const updatedGoals = [...prevData.monthlyGoals];
+      updatedGoals[monthIndex].goals = updatedGoals[monthIndex].goals.filter((_, index) => index !== goalIndex);
+      return { ...prevData, monthlyGoals: updatedGoals };
+    });
+  };
+
+  const renderMonthlyGoals = () => {
+    return (formData.selectedMonths ? formData.monthlyGoals : []).map((monthGoal, monthIndex) => {
+      if (isEditMode && monthIndex !== selectedMonth) return null;
+
+      const isDisabled = isEditMode && monthIndex !== selectedMonth;
+
+      return (
+        <div key={monthIndex} className="card mb-3">
+          <div className="card-body">
+            <h5>{monthGoal.month}</h5>
+            <input 
+              type="text" 
+              className="form-control mb-2" 
+              placeholder="Target for this month" 
+              value={monthGoal.target} 
+              onChange={(e) => handleInputChange(e, monthIndex)}
+              disabled={isDisabled}
+            />
+            {monthGoal.goals.map((goal, goalIndex) => (
+              <div key={goalIndex} className="input-group mb-2">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder={`Goal ${goalIndex + 1}`} 
+                  value={goal} 
+                  onChange={(e) => handleInputChange(e, monthIndex, goalIndex)}
+                  disabled={isDisabled}
+                />
+                {!isDisabled && (
+                  <button 
+                    type="button" 
+                    className="btn btn-outline-danger rounded-2" 
+                    onClick={() => removeGoal(monthIndex, goalIndex)}
+                  >
+                    x
+                  </button>
+                )}
+              </div>
+            ))}
+            {!isDisabled && (
+              <button 
+                type="button" 
+                className="btn btn-outline-success" 
+                onClick={() => addGoal(monthIndex)}
+              >
+                Add Goal
+              </button>
+            )}
+          </div>
+        </div>
+      );
     });
   };
 
@@ -147,22 +202,22 @@ export default function Progress() {
         responses.length === 0 ? <h3>No IEPs assigned</h3> :
           <div className="row g-4">
             {responses.map((response, index) => (
-              <div className="col-md-4" key={index}>
-                <div className="card" onClick={() => handleModalOpen(response)}>
-                  <div className="card-body">
-                    <h5 className="card-title">IEP {index + 1}</h5>
-                    <ul className='d-flex justify-content-around'>
-                      {response.months.map((monthObj, idx) => (
-                        <li key={idx}>{monthObj.month}</li>
-                      ))}
-                    </ul>
-                    <h6 className="text-center">Starting Year: {response.startingYear}</h6>
-                    <button className="btn btn-primary" onClick={() => handleModalOpen(response)}>
-                      Edit
-                    </button>
+              response.selectedMonthsNames.map((month, idx) => (
+                <div className="col-md-4" key={`response-${idx}`}>
+                  <div className="card" onClick={() => handleModalOpen(response, idx)}>
+                    <div className="card-body">
+                      <h5 className="card-title">IEP {index + 1}</h5>
+                      <ul className="d-flex justify-content-around">
+                        <h3 key={`month-${index}-${idx}`}>{month}</h3>
+                      </ul>
+                      <h6 className="text-center">Starting Year: {response.startingYear}</h6>
+                      <button className="btn btn-primary" onClick={() => handleModalOpen(response, idx)}>
+                        Edit
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))
             ))}
           </div>
       )}
@@ -172,158 +227,76 @@ export default function Progress() {
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">IEP Progress Form</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={handleModalClose}
-                ></button>
+                <h5 className="modal-title">{isEditMode ? 'Edit IEP Progress' : 'Assign New IEP'}</h5>
+                <button type="button" className="btn-close" onClick={handleModalClose}></button>
               </div>
               <div className="modal-body">
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label">Therapy Type</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="therapy"
-                      value={formData.therapy}
-                      onChange={(e) => handleInputChange(e)}
-                      placeholder="Enter therapy type"
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      name="therapy" 
+                      value={formData.therapy} 
+                      onChange={handleInputChange}
+                      placeholder="Enter therapy type" 
                     />
                   </div>
 
                   <div className="mb-3">
                     <label className="form-label">Therapist Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="therapistName"
-                      value={therapistName}
-                      disabled
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      name="therapistName" 
+                      value={therapistName} 
+                      disabled 
                     />
                   </div>
-                  <div className='d-flex'>
-                    <div className='mb-3'>
-                      <label className="form-label">Starting Month</label>
-                      <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
-                        <option value="">Select month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                      </select>
-                    </div>
-                    <div className='mb-3 ms-4'>
-                      <label className="form-label">Year</label>
-                      <select className="form-select" name="year" value={formData.startingYear} onChange={(e) => handleInputChange(e)}>
-                        <option value="">Select year</option>
-                        <option value={currentYear}>{currentYear}</option>
-                        <option value={currentYear+1}>{currentYear+1}</option>
-                      </select>
-                    </div>
-                  </div>
+
                   <div className="mb-3">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <label className="form-label mb-0">Targets and Goals</label>
-                    </div>
-
-                    {formData.targets.map((target, targetIndex) => (
-                      <div key={targetIndex} className="card mb-3">
-                        <div className="card-body">
-                          <label className='mb-3'>Target {targetIndex + 1}</label>
-                          <div className="mb-3 d-flex gap-2">
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="target"
-                              value={target.target}
-                              onChange={(e) => handleInputChange(e, targetIndex)}
-                              placeholder="Enter target"
-                            />
-                            <button
-                              type="button"
-                              className="btn btn-danger"
-                              onClick={() => removeTarget(targetIndex)}
-                            >
-                              ×
-                            </button>
-                          </div>
-                          <div className="ms-3">
-                            {target.goal.map((goal, goalIndex) => (
-                              <div>
-                                <label className='mb-2'>Goal {goalIndex + 1}</label>
-                                <div key={goalIndex} className="d-flex gap-2 mb-2">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    name="goal"
-                                    value={goal}
-                                    onChange={(e) => handleInputChange(e, targetIndex, goalIndex)}
-                                    placeholder="Enter goal"
-                                  />
-                                  <button
-                                    type="button"
-                                    className="btn btn-outline-danger"
-                                    onClick={() => removeGoal(targetIndex, goalIndex)}
-                                  >
-                                    ×
-                                  </button>
-                                </div>
-                              </div>
-                            ))}
-                            <button
-                              type="button"
-                              className="btn btn-outline-secondary btn-sm"
-                              onClick={() => addGoal(targetIndex)}
-                            >
-                              + Add Goal
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    <label className="form-label">Year</label>
+                    <select 
+                      className="form-select" 
+                      name="year" 
+                      value={formData.startingYear} 
+                      onChange={handleInputChange}
+                      disabled={isEditMode}
+                    >
+                      <option value="">Select year</option>
+                      <option value={currentYear}>{currentYear}</option>
+                      <option value={currentYear + 1}>{currentYear + 1}</option>
+                    </select>
                   </div>
 
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary btn-sm mb-3"
-                    onClick={addTarget}
-                  >
-                    + Add Target
-                  </button>
+                  <div className="mb-3">
+                    <label className="form-label">Select Starting Month</label>
+                    <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
+                      <option value="">Select month</option>
+                      {[...Array(12).keys()].map((i) => (
+                        <option key={i} value={i + 1}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Targets and Goals by Month</label>
+                    {renderMonthlyGoals()}
+                  </div>
+
                   <div className="mb-3">
                     <label className="form-label">Feedback</label>
-                    <textarea
-                      className="form-control"
-                      name="feedback"
-                      value={formData.feedback}
-                      onChange={(e) => handleInputChange(e)}
-                      placeholder="Enter feedback"
-                      rows="3"
-                    ></textarea>
+                    <textarea 
+                      className="form-control" 
+                      name="feedback" 
+                      value={formData.feedback} 
+                      onChange={handleInputChange} 
+                      placeholder="Feedback for the month"
+                    />
                   </div>
 
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleModalClose}
-                    >
-                      Close
-                    </button>
-                    <button type="submit" className="btn btn-primary">
-                      {submitText}
-                    </button>
-                  </div>
+                  <button type="submit" className="btn btn-primary">{submitText}</button>
                 </form>
               </div>
             </div>
