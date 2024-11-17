@@ -4,6 +4,7 @@ import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { toast, ToastContainer } from 'react-toastify';
 
+
 export default function BookAppointment() {
   const navigate = useNavigate();
   const [childName, setChildName] = useState('');
@@ -30,6 +31,7 @@ export default function BookAppointment() {
     '10:30 AM', '11:30 AM', '12:30 PM', '2:00 PM', '3:00 PM', '3:30 PM', '4:30 PM', '5:30 PM',
   ]);
   const [bookedSlots, setBookedSlots] = useState([]);
+  const [pdf,setPDF] = useState('');
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -48,9 +50,9 @@ export default function BookAppointment() {
 
   useEffect(() => {
     const fetchBookedSlots = async () => {
-      if (doctorId && date) {
+      if (doctorId && appointmentDate) {
         try {
-          const response = await axios.get(`http://localhost:4000/api/admin/getConsultations/${doctorId}/${date}`, {
+          const response = await axios.get(`http://localhost:4000/api/admin/getConsultations/${doctorId}/${appointmentDate}`, {
             headers: { Authorization: localStorage.getItem('logintoken') },
           });
           const booked = response.data
@@ -73,29 +75,41 @@ export default function BookAppointment() {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:4000/api/admin/bookAppointment', {
-        email,
-        parentName,
-        childName,
-        childAge,
-        appointmentDate,
-        dob,
-        gender,
-        parentPhoneNo,
-        alternativeNumber,
-        address,
-        schoolName,
-        classGrade,
-        schoolBoard,
-        consultationType,
-        referredBy,
-        childConcerns,
-        branch,
-        doctorId,
-        time 
-      }, {
-        headers: { Authorization: localStorage.getItem('logintoken') },
-      });
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('parentName', parentName);
+      formData.append('childName', childName);
+      formData.append('childAge', childAge);
+      formData.append('appointmentDate', appointmentDate);
+      formData.append('dob', dob);
+      formData.append('gender', gender);
+      formData.append('parentPhoneNo', parentPhoneNo);
+      formData.append('alternativeNumber', alternativeNumber);
+      formData.append('address', address);
+      formData.append('schoolName', schoolName);
+      formData.append('classGrade', classGrade);
+      formData.append('schoolBoard', schoolBoard);
+      formData.append('consultationType', consultationType);
+      formData.append('referredBy', referredBy);
+      formData.append('childConcerns', childConcerns);
+      formData.append('branch', branch);
+      formData.append('doctorId', doctorId);
+      formData.append('time', time);
+
+      if (pdf) {
+        formData.append('pdf', pdf); // Attach the file
+      }
+
+      const response = await axios.post(
+        'http://localhost:4000/api/admin/bookAppointment',
+        formData,
+        {
+          headers: {
+            Authorization: localStorage.getItem('logintoken'),
+            'Content-Type': 'multipart/form-data', 
+          },
+        }
+      );
 
       console.log('Appointment booked:', response.data);
       toast.success(response.data);
@@ -105,10 +119,11 @@ export default function BookAppointment() {
       }, 1500);
     } catch (error) {
       console.error('Error booking appointment:', error);
-      toast.error('Failed to book appointment. Please try again.', {
-        position: toast.POSITION.TOP_RIGHT
-      });
+      toast.error('Failed to book appointment. Please try again.');
     }
+  };
+  const handleFileChange = (e) => {
+    setPDF(e.target.files[0]); 
   };
 
   const handleTimeSelect = (selectedTime) => {
@@ -177,7 +192,7 @@ export default function BookAppointment() {
             <option value="CBSE">CBSE</option>
             <option value="SSC">SSC</option>
             <option value="ICSE">ICSE</option>
-            <option value="Cambridge (IB)">Cambridge (IB)</option>
+            <option value="Camebridge (IB)">Cambridge (IB)</option>
             <option value="NIOS">NIOS</option>
             <option value="Others">Others</option>
           </select>
@@ -241,6 +256,10 @@ export default function BookAppointment() {
               </button>
             ))}
           </div>
+        </div>
+        <div>
+          <label htmlFor="reports">Any medical reports/ Previous Assessment reports</label>
+          <input type="file" className="form-control" onChange={handleFileChange} />
         </div>
         <button type="submit" className="btn btn-primary mt-3" disabled={!doctorId || !time}>Book Appointment</button>
       </form>
