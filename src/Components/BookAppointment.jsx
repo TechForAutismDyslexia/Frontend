@@ -105,9 +105,7 @@ export default function BookAppointment() {
       }, 1500);
     } catch (error) {
       console.error('Error booking appointment:', error);
-      toast.error('Failed to book appointment. Please try again.', {
-        position: toast.POSITION.TOP_RIGHT
-      });
+      toast.error('Failed to book appointment. Please try again.');
     }
   };
 

@@ -23,6 +23,7 @@ import IEPDoctor from './Components/IEPDoctor.jsx'
 import IEPTherapist from './Components/IEPTherapist.jsx'
 import AppointmentBooking from './Components/BookAppointment.jsx'
 import Calendar from './Components/Calendar.jsx'
+import ApproveAppointments from './Components/ApproveAppointments.jsx'
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/feedback" element={<Feedback/>} />
           <Route path="/calendar" element={<Calendar/>} />
           <Route path="/bookappointment" element={<AppointmentBooking/>} />
+          <Route path="/approveappointment" element={<ApproveAppointments/>} />
           <Route path="/" element={
             <div className='container mt-5'>
               <div className='fw-bolder fs-1 text-center'>
