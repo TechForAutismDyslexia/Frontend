@@ -10,6 +10,7 @@ export default function BookAppointment() {
   const [childName, setChildName] = useState('');
   const [childAge, setChildAge] = useState(''); // No conversion to number
   const [parentName, setParentName] = useState('');
+  const [parentId,setParentId] = useState('');
   const [email, setParentEmail] = useState('');
   const [dob, setDob] = useState('');
   const [parentPhoneNo, setParentPhoneNo] = useState('');
@@ -44,10 +45,21 @@ export default function BookAppointment() {
         console.error('Error fetching doctors:', error);
       }
     };
-
+    const parentExists = ()=>{
+      if(sessionStorage.getItem("role")==="parent"){
+        // console.log("yes in parent");
+        setParentId(sessionStorage.getItem("id"));
+      }
+      else{
+        setParentId('');
+      }
+      
+    }
     fetchDoctors();
+    parentExists();
   }, []);
 
+  
   useEffect(() => {
     const fetchBookedSlots = async () => {
       if (doctorId && appointmentDate) {
@@ -78,6 +90,7 @@ export default function BookAppointment() {
       const formData = new FormData();
       formData.append('email', email);
       formData.append('parentName', parentName);
+      formData.append('parentId',parentId);
       formData.append('childName', childName);
       formData.append('childAge', childAge);
       formData.append('appointmentDate', appointmentDate);
