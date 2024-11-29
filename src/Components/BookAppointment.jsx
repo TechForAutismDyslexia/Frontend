@@ -38,7 +38,7 @@ export default function BookAppointment() {
     const fetchDoctors = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/data/alldoctors', {
-          headers: { Authorization: localStorage.getItem('logintoken') },
+          headers: { "Authorization" : sessionStorage.getItem('logintoken') },
         });
         setDoctors(response.data);
       } catch (error) {
@@ -51,7 +51,7 @@ export default function BookAppointment() {
         setParentId(sessionStorage.getItem("id"));
       }
       else{
-        setParentId('');
+        setParentId(null);
       }
       
     }
@@ -65,7 +65,7 @@ export default function BookAppointment() {
       if (doctorId && appointmentDate) {
         try {
           const response = await axios.get(`http://localhost:4000/api/admin/getConsultations/${doctorId}/${appointmentDate}`, {
-            headers: { Authorization: localStorage.getItem('logintoken') },
+            headers: { "Authorization": localStorage.getItem('logintoken') },
           });
           const booked = response.data
             .flatMap(consultation =>
@@ -90,7 +90,9 @@ export default function BookAppointment() {
       const formData = new FormData();
       formData.append('email', email);
       formData.append('parentName', parentName);
-      formData.append('parentId',parentId);
+      if (parentId) {
+        formData.append('parentId', parentId);
+      }
       formData.append('childName', childName);
       formData.append('childAge', childAge);
       formData.append('appointmentDate', appointmentDate);
@@ -118,7 +120,7 @@ export default function BookAppointment() {
         formData,
         {
           headers: {
-            Authorization: localStorage.getItem('logintoken'),
+            "Authorization": localStorage.getItem('logintoken'),
             'Content-Type': 'multipart/form-data', 
           },
         }
