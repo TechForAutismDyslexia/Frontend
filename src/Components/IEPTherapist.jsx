@@ -2,19 +2,23 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
 
+
 export default function IEPTherapist() {
   const [responses, setResponses] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState(null);
+  const [currentGoalData, setCurrentGoalData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [performanceInputs, setPerformanceInputs] = useState({});
-  const [displayMonths, setDisplayMonths] = useState([]);
+  const [performanceInputs, setPerformanceInputs] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+        const response = await axios.get(
+          `http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
+          {headers: {Authorization: `${sessionStorage.getItem("logintoken")}`}}
+        );
         setResponses(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -25,30 +29,59 @@ export default function IEPTherapist() {
     fetchData();
   }, []);
 
-  const handleModalOpen = (response) => {
-    setFormData(response);
-    const monthsArray = response.months.map((monthObj) => monthObj.month);
-    setDisplayMonths(monthsArray);
+  const handleModalOpen = (goalData, responseIndex, monthIndex) => {
+    setCurrentGoalData({ ...goalData, responseIndex, monthIndex });
+    setCurrentMonth(goalData.month);
+    setPerformanceInputs(
+      goalData.performance && goalData.performance.length
+        ? [...goalData.performance]
+        : goalData.goals.map(() => '')
+    );
     setShowModal(true);
   };
 
   const handleModalClose = () => {
-    setFormData(null);
     setShowModal(false);
-    setPerformanceInputs({});
+    setCurrentGoalData(null);
+    setPerformanceInputs([]);
   };
 
-  const handlePerformanceChange = (targetIndex, goalIndex, monthIndex, value) => {
-    setPerformanceInputs((prev) => ({
-      ...prev,
-      [targetIndex]: {
-        ...(prev[targetIndex] || {}),
-        [goalIndex]: {
-          ...(prev[targetIndex]?.[goalIndex] || {}),
-          [monthIndex]: value,
+  const handlePerformanceChange = (goalIndex, value) => {
+    setPerformanceInputs((prevInputs) => {
+      const updatedInputs = [...prevInputs];
+      updatedInputs[goalIndex] = value;
+      return updatedInputs;
+    });
+  };
+
+  const handleSavePerformance = async () => {
+    if (!performanceInputs.length) return;
+
+    try {
+      const childId = sessionStorage.getItem("childId");
+      await axios.put(
+        `http://localhost:4000/api/doctor/updateperformance/${childId}`,
+        {
+          performance: performanceInputs,
+          month: currentMonth,
         },
-      },
-    }));
+        {headers: {Authorization: `${sessionStorage.getItem("logintoken")}`}}
+      );
+
+      setResponses((prevResponses) => {
+        const updatedResponses = [...prevResponses];
+        const { responseIndex, monthIndex } = currentGoalData;
+        updatedResponses[responseIndex].monthlyGoals[monthIndex].performance =
+          [...performanceInputs];
+        return updatedResponses;
+      });
+
+      alert('Performance updated successfully!');
+    } catch (error) {
+      console.error("Error updating performance:", error);
+    } finally {
+      handleModalClose();
+    }
   };
 
   return (
@@ -57,80 +90,84 @@ export default function IEPTherapist() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="row g-4">
-          {responses.map((response, index) => (
-            <div className="col-md-4" key={index}>
-              <div className="card" onClick={() => handleModalOpen(response)}>
-                <div className="card-body">
-                  <h5 className="card-title">IEP {index + 1}</h5>
-                  <ul className="d-flex justify-content-around">
-                    {response.months.map((monthObj, idx) => (
-                      <li key={idx}>{monthObj.month}</li>
-                    ))}
-                  </ul>
-                  <h6 className="text-center">Starting Year: {response.startingYear}</h6>
-                  <button className="btn btn-primary" onClick={() => handleModalOpen(response)}>
-                    View Details
-                  </button>
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+          {responses.map((response, responseIndex) =>
+            response.monthlyGoals.map((goalData, monthIndex) => (
+              <div className="col" key={`${responseIndex}-${monthIndex}`}>
+                <div className="card h-100">
+                  <div className="card-body">
+                    <h5 className="card-title">{goalData.month}</h5>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() =>
+                        handleModalOpen(goalData, responseIndex, monthIndex)
+                      }
+                    >
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       )}
 
-      {showModal && formData && (
-        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog modal-xl">
+      {showModal && currentGoalData && (
+        <div
+          className="modal show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        >
+          <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">IEP Details</h5>
-                <button type="button" className="btn-close" onClick={handleModalClose}></button>
+                <h5 className="modal-title">IEP Details - {currentGoalData.month}</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleModalClose}
+                ></button>
               </div>
               <div className="modal-body">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Target</th>
-                      {displayMonths.map((month, idx) => (
-                        <th key={idx}>{month}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {formData.targets.map((target, targetIndex) => (
-                      <React.Fragment key={targetIndex}>
-                        <tr>
-                          <td rowSpan={target.goal.length + 1}>{targetIndex + 1}</td>
-                          <td colSpan={displayMonths.length + 1}><strong>{target.target}</strong></td>
-                        </tr>
-                        {target.goal.map((goal, goalIndex) => (
-                          <tr key={goalIndex}>
-                            <td>{goal}</td>
-                            {displayMonths.map((_, monthIndex) => (
-                              <td key={monthIndex}>
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  value={performanceInputs[targetIndex]?.[goalIndex]?.[monthIndex] || ''}
-                                  onChange={(e) => handlePerformanceChange(targetIndex, goalIndex, monthIndex, e.target.value)}
-                                  placeholder="Enter performance"
-                                />
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
+                <h6>Targets:</h6>
+                <ul>
+                  <li>{currentGoalData.target}</li>
+                </ul>
+
+                <h6>Goals:</h6>
+                <ul>
+                  {currentGoalData.goals.map((goal, goalIndex) => (
+                    <li key={goalIndex}>
+                      {goal}
+                      <div className="mt-2">
+                        <input
+                          type="number"
+                          className="form-control"
+                          value={performanceInputs[goalIndex] || ''}
+                          onChange={(e) =>
+                            handlePerformanceChange(goalIndex, e.target.value)
+                          }
+                          placeholder="Enter performance (0-100 %)"
+                        />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-primary" onClick={handleModalClose}>
-                  Add Performance
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleSavePerformance}
+                >
+                  Save Performance
                 </button>
-                <button type="button" className="btn btn-secondary" onClick={handleModalClose}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleModalClose}
+                >
                   Close
                 </button>
               </div>

@@ -17,7 +17,9 @@ export default function Progress() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
+          { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
+      );
         setResponses(response.data);
         setTherapistName(sessionStorage.getItem("therapistName"));
       } catch (error) {
@@ -29,15 +31,15 @@ export default function Progress() {
     fetchData();
   }, []);
 
-  const handleInputChange = (e, monthIndex, goalIndex) => {
+  const handleInputChange = (e, monthIndex, goalIndex,field) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = { ...prevData };
 
-      if (monthIndex !== undefined && goalIndex !== undefined) {
+      if (field==='goals'&&monthIndex !== undefined && goalIndex !== undefined) {
         updatedData.monthlyGoals[monthIndex].goals[goalIndex] = value;
-      } else if (monthIndex !== undefined) {
-        updatedData.monthlyGoals[monthIndex].target = value;
+      } else if (field==='target' && monthIndex !== undefined && goalIndex === null) {
+        updatedData.monthlyGoals[monthIndex].target= value;
       } else if (name === 'therapy') {
         updatedData.therapy = value;
       } else if (name === 'startingMonth') {
@@ -50,7 +52,7 @@ export default function Progress() {
         ];
         updatedData.monthlyGoals = updatedData.selectedMonths.map((month) => ({
           month: new Date(0, month - 1).toLocaleString('default', { month: 'long' }),
-          target: '',
+          target: [''],
           goals: ['']
         }));
         updatedData.selectedMonthsNames = updatedData.selectedMonths.map((month) => new Date(0, month - 1).toLocaleString('default', { month: 'long' }));
@@ -67,7 +69,7 @@ export default function Progress() {
     const isEdit = Boolean(response);
     setIsEditMode(isEdit);
     setSubmitText(isEdit ? 'Update Progress' : 'Assign');
-    
+
     if (isEdit) {
       setSelectedMonth(monthIndex);
       const editData = JSON.parse(JSON.stringify(response));
@@ -76,14 +78,14 @@ export default function Progress() {
     } else {
       const initialSelectedMonths = [1, 2, 3];
       setFormData({
-        iepId : '',
+        iepId: '',
         doctorId: sessionStorage.getItem("id"),
         therapy: '',
         therapistName: therapistName,
         feedback: '',
         monthlyGoals: initialSelectedMonths.map((month) => ({
           month: new Date(0, month - 1).toLocaleString('default', { month: 'long' }),
-          target: '',
+          target: [''],
           goals: ['']
         })),
         startingYear: currentYear,
@@ -105,11 +107,15 @@ export default function Progress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:4000/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData);
+      await axios.put(`http://localhost:4000/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData, 
+        { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
+    );
       console.log(formData);
       setShowModal(false);
       alert('Data saved successfully');
-      const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`);
+      const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
+        { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
+    );
       setResponses(response.data);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -118,7 +124,7 @@ export default function Progress() {
 
   const addGoal = (monthIndex) => {
     if (isEditMode && monthIndex !== selectedMonth) return;
-    
+
     setFormData((prevData) => {
       const updatedGoals = [...prevData.monthlyGoals];
       updatedGoals[monthIndex].goals.push('');
@@ -126,15 +132,17 @@ export default function Progress() {
     });
   };
 
+
   const removeGoal = (monthIndex, goalIndex) => {
     if (isEditMode && monthIndex !== selectedMonth) return;
-    
+
     setFormData((prevData) => {
       const updatedGoals = [...prevData.monthlyGoals];
       updatedGoals[monthIndex].goals = updatedGoals[monthIndex].goals.filter((_, index) => index !== goalIndex);
       return { ...prevData, monthlyGoals: updatedGoals };
     });
   };
+
 
   const renderMonthlyGoals = () => {
     return (formData.selectedMonths ? formData.monthlyGoals : []).map((monthGoal, monthIndex) => {
@@ -145,29 +153,33 @@ export default function Progress() {
       return (
         <div key={monthIndex} className="card mb-3">
           <div className="card-body">
-            <h5>{monthGoal.month}</h5>
-            <input 
-              type="text" 
-              className="form-control mb-2" 
-              placeholder="Target for this month" 
-              value={monthGoal.target} 
-              onChange={(e) => handleInputChange(e, monthIndex)}
-              disabled={isDisabled}
-            />
+            <h5 className="mb-3">{monthGoal.month}</h5>
+            <h6 className="text-primary">Targets</h6>
+              <div className="input-group mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Target`}
+                  value={monthGoal.target}
+                  onChange={(e) => handleInputChange(e, monthIndex,null, 'target')}
+                  disabled={isDisabled}
+                />
+              </div>
+            <h6 className="text-primary">Goals</h6>
             {monthGoal.goals.map((goal, goalIndex) => (
-              <div key={goalIndex} className="input-group mb-2">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder={`Goal ${goalIndex + 1}`} 
-                  value={goal} 
-                  onChange={(e) => handleInputChange(e, monthIndex, goalIndex)}
+              <div key={goalIndex} className="d-flex align-items-center mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Goal ${goalIndex + 1}`}
+                  value={goal}
+                  onChange={(e) => handleInputChange(e, monthIndex, goalIndex, 'goals')}
                   disabled={isDisabled}
                 />
                 {!isDisabled && (
-                  <button 
-                    type="button" 
-                    className="btn btn-outline-danger rounded-2" 
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger ms-2 rounded-2"
                     onClick={() => removeGoal(monthIndex, goalIndex)}
                   >
                     x
@@ -175,10 +187,11 @@ export default function Progress() {
                 )}
               </div>
             ))}
+      
             {!isDisabled && (
-              <button 
-                type="button" 
-                className="btn btn-outline-success" 
+              <button
+                type="button"
+                className="btn btn-outline-success"
                 onClick={() => addGoal(monthIndex)}
               >
                 Add Goal
@@ -187,6 +200,7 @@ export default function Progress() {
           </div>
         </div>
       );
+      
     });
   };
 
@@ -234,33 +248,33 @@ export default function Progress() {
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label">Therapy Type</label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      name="therapy" 
-                      value={formData.therapy} 
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="therapy"
+                      value={formData.therapy}
                       onChange={handleInputChange}
-                      placeholder="Enter therapy type" 
+                      placeholder="Enter therapy type"
                     />
                   </div>
 
                   <div className="mb-3">
                     <label className="form-label">Therapist Name</label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      name="therapistName" 
-                      value={therapistName} 
-                      disabled 
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="therapistName"
+                      value={therapistName}
+                      disabled
                     />
                   </div>
 
                   <div className="mb-3">
                     <label className="form-label">Year</label>
-                    <select 
-                      className="form-select" 
-                      name="year" 
-                      value={formData.startingYear} 
+                    <select
+                      className="form-select"
+                      name="year"
+                      value={formData.startingYear}
                       onChange={handleInputChange}
                       disabled={isEditMode}
                     >
@@ -270,16 +284,17 @@ export default function Progress() {
                     </select>
                   </div>
 
-                  <div className="mb-3">
-                    <label className="form-label">Select Starting Month</label>
-                    <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
-                      <option value="">Select month</option>
-                      {[...Array(12).keys()].map((i) => (
-                        <option key={i} value={i + 1}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>
-                      ))}
-                    </select>
-                  </div>
-
+                  {!isEditMode && (
+                    <div className="mb-3">
+                      <label className="form-label">Select Starting Month</label>
+                      <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
+                        <option value="">Select month</option>
+                        {[...Array(12).keys()].map((i) => (
+                          <option key={i} value={i + 1}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                   <div className="mb-3">
                     <label className="form-label">Targets and Goals by Month</label>
                     {renderMonthlyGoals()}
@@ -287,11 +302,11 @@ export default function Progress() {
 
                   <div className="mb-3">
                     <label className="form-label">Feedback</label>
-                    <textarea 
-                      className="form-control" 
-                      name="feedback" 
-                      value={formData.feedback} 
-                      onChange={handleInputChange} 
+                    <textarea
+                      className="form-control"
+                      name="feedback"
+                      value={formData.feedback}
+                      onChange={handleInputChange}
                       placeholder="Feedback for the month"
                     />
                   </div>
