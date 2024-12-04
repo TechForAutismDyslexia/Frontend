@@ -22,7 +22,7 @@ export default function Admin() {
   useEffect(() => {
     const fetchChildren = async () => {
       try {
-        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allchildren', {
+        const response = await axios.get('https://joywithlearning.com/api/data/allchildren', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`
           }
@@ -46,7 +46,7 @@ export default function Admin() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try {
-        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allcaretakers', {
+        const response = await axios.get('https://joywithlearning.com/api/data/allcaretakers', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`
           }
@@ -63,7 +63,7 @@ export default function Admin() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/alldoctors', {
+        const response = await axios.get('https://joywithlearning.com/api/data/alldoctors', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`
           }
@@ -85,7 +85,7 @@ export default function Admin() {
     sessionStorage.setItem('childId', child._id);
 
     try {
-      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child._id}`, {
+      const response = await axios.get(`https://joywithlearning.com/api/data/feedback/${child._id}`, {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }
@@ -106,7 +106,7 @@ export default function Admin() {
 
   const handleSubmit = async () => {
     try {
-      await axios.put(`https://jwlgamesbackend.vercel.app/api/admin/${selectedChild._id}/assign`, {
+      await axios.put(`https://joywithlearning.com/api/admin/${selectedChild._id}/assign`, {
         caretakerId: selectedCaretaker,
         doctorId: selectedDoctor
       }, {
@@ -117,7 +117,7 @@ export default function Admin() {
       closeModal();
 
       // Fetch children again to update the state
-      const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allchildren', {
+      const response = await axios.get('https://joywithlearning.com/api/data/allchildren', {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }

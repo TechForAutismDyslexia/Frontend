@@ -19,7 +19,7 @@ export default function Admingamedetailsftech() {
   useEffect(() => {
     const fetchAllGames = async () => {
       try {
-        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allgames');
+        const response = await axios.get('https://joywithlearning.com/api/data/allgames');
         setGames(response.data);
       } catch (error) {
         console.error('Error fetching games:', error);
@@ -40,7 +40,7 @@ export default function Admingamedetailsftech() {
     setError("");
     setLoading(true);
     try {
-      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/admin/gamedetails/${selectedGameId}`, {
+      const response = await axios.get(`https://joywithlearning.com/api/admin/gamedetails/${selectedGameId}`, {
         headers: { Authorization: `${sessionStorage.getItem('logintoken')}` },
       });
       setChildren(response.data);
@@ -66,7 +66,7 @@ export default function Admingamedetailsftech() {
     const fetchChildGames = async () => {
       if (!selectedChild) return;
       try {
-        const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/admin/gametable/${selectedChild._id}`, {
+        const response = await axios.get(`https://joywithlearning.com/api/admin/gametable/${selectedChild._id}`, {
           headers: { Authorization: `${sessionStorage.getItem('logintoken')}` },
         });
         setChildGames(response.data);

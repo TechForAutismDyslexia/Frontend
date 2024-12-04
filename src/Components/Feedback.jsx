@@ -28,7 +28,7 @@ export default function Feedback() {
 
         console.log(name, email, mobilenumber, feedback);
         try {
-            const response = await axios.post('https://jwlgamesbackend.vercel.app/api/userfeedback', {
+            const response = await axios.post('https://joywithlearning.com/api/userfeedback', {
                 name,
                 email,
                 mobilenumber,

@@ -36,7 +36,7 @@ export default function Register() {
         setLoading(true);
         e.preventDefault(); 
         try {
-            const res = await axios.post('https://jwlgamesbackend.vercel.app/api/users/register',{username, password, name, mobilenumber,email});
+            const res = await axios.post('https://joywithlearning.com/api/users/register',{username, password, name, mobilenumber,email});
             console.log(res);
             setLoading(false);
             toast.success("Registered successfully!" , {autoClose:2000});

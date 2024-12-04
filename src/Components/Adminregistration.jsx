@@ -24,7 +24,7 @@ export default function AdminRegister() {
         e.preventDefault();
         const endpoint = role === 'caretaker' ? 'careTakerRegister' : 'doctorRegister';
         try {
-            const res = await axios.post(`https://jwlgamesbackend.vercel.app/api/admin/${endpoint}`, { name, username, email, mobilenumber, password },
+            const res = await axios.post(`https://joywithlearning.com/api/admin/${endpoint}`, { name, username, email, mobilenumber, password },
                 { headers: { Authorization: `${sessionStorage.getItem('logintoken')}` } }
             );
             console.log(res.data);

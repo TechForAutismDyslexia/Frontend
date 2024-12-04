@@ -19,7 +19,7 @@ export default function Therapist() {
       setLoading(true);
       try {
         const token = sessionStorage.getItem('logintoken');
-        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/caretaker/assigned', {
+        const response = await axios.get('https://joywithlearning.com/api/caretaker/assigned', {
           headers: {
             Authorization: `${token}`
           }

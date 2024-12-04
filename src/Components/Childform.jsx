@@ -15,7 +15,7 @@ export default function ChildRegister() {
     useEffect(() => {
         const fetchCentres = async () => {
             try {
-                const res = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allcentres', {
+                const res = await axios.get('https://joywithlearning.com/api/data/allcentres', {
                     headers: {
                         Authorization: `${sessionStorage.getItem('logintoken')}`
                     }
@@ -46,7 +46,7 @@ export default function ChildRegister() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://jwlgamesbackend.vercel.app/api/parent/childinfo', {
+            const response = await axios.post('https://joywithlearning.com/api/parent/childinfo', {
                 name,
                 centreId,
                 age

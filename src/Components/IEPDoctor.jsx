@@ -17,7 +17,7 @@ export default function Progress() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
+        const response = await axios.get(`https://joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
           { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
       );
         setResponses(response.data);
@@ -107,13 +107,13 @@ export default function Progress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:4000/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData, 
+      await axios.put(`https://joywithlearning.com/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData, 
         { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
     );
       console.log(formData);
       setShowModal(false);
       alert('Data saved successfully');
-      const response = await axios.get(`http://localhost:4000/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
+      const response = await axios.get(`https://joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
         { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
     );
       setResponses(response.data);

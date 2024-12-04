@@ -30,7 +30,7 @@ const Reports = () => {
       setIsLoading1(true);
       setIsLoading2(true);
       const token = sessionStorage.getItem('logintoken');
-      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}/gamesplayed`, {
+      const response = await axios.get(`https://joywithlearning.com/api/data/${child}/gamesplayed`, {
         headers: {
           Authorization: `${token}`
         }
@@ -38,7 +38,7 @@ const Reports = () => {
       setData(response.data);
       // console.log('Games played response:', response.data);
 
-      const res = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/${child}`, {
+      const res = await axios.get(`https://joywithlearning.com/api/data/${child}`, {
         headers: {
           Authorization: `${token}`
         }
@@ -47,7 +47,7 @@ const Reports = () => {
       setIsLoading1(false);
       console.log('Child data response:', res.data);
 
-      const gamesRes = await axios.get('https://jwlgamesbackend.vercel.app/api/data/allgames');
+      const gamesRes = await axios.get('https://joywithlearning.com/api/data/allgames');
       const gameresdata = gamesRes.data;
       setGames(gameresdata);
       setIsLoading2(false);
@@ -59,7 +59,7 @@ const Reports = () => {
 
   const handleSubmitFeedback = async () => {
     try {
-      const response = await axios.put(`https://jwlgamesbackend.vercel.app/api/data/feedback/${child}`, {
+      const response = await axios.put(`https://joywithlearning.com/api/data/feedback/${child}`, {
         feedback: feedback
       }, {
         headers: {

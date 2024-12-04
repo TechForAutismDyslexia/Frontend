@@ -22,7 +22,7 @@ export default function ParentHome() {
     const fetchChildren = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('https://jwlgamesbackend.vercel.app/api/parent/children', {
+        const response = await axios.get('https://joywithlearning.com/api/parent/children', {
         headers: {
            Authorization: `${sessionStorage.getItem('logintoken')}`,
           
@@ -47,7 +47,7 @@ export default function ParentHome() {
   const fetchEvents = async () => {
     const events = {};
     try {
-      const response = await axios.get('http://localhost:4000/api/parent/getConsultations', {
+      const response = await axios.get('https://joywithlearning.com/api/parent/getConsultations', {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }
@@ -70,7 +70,7 @@ export default function ParentHome() {
   const fetchChildFeedback = async (childId) => {
     try {
       setFeedbackLoader(true);
-      const response = await axios.get(`https://jwlgamesbackend.vercel.app/api/data/feedback/${childId}`, {
+      const response = await axios.get(`https://joywithlearning.com/api/data/feedback/${childId}`, {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`,
         },

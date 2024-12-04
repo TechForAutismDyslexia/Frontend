@@ -14,7 +14,7 @@ export default function ApproveAppointments() {
     async function getAppointments() {
       try {
         setIsLoading(true);
-        const res = await axios.get("http://localhost:4000/api/admin/getAppointments", {
+        const res = await axios.get("https://joywithlearning.com/api/admin/getAppointments", {
           headers: { Authorization: localStorage.getItem("logintoken") },
         });
         setAppointment(res.data); // Assume res.data is an array of appointments
@@ -42,7 +42,7 @@ export default function ApproveAppointments() {
     try {
       setIsLoading(true);
       await axios.put(
-        `http://localhost:4000/api/admin/verifyAppointment/${appointmentID}`,
+        `https://joywithlearning.com/api/admin/verifyAppointment/${appointmentID}`,
         { status: "rejected" },
         {
           headers: {
@@ -65,7 +65,7 @@ export default function ApproveAppointments() {
     try {
       setIsLoading(true);
       await axios.put(
-        `http://localhost:4000/api/admin/verifyAppointment/${appointmentID}`,
+        `https://joywithlearning.com/api/admin/verifyAppointment/${appointmentID}`,
         { status: "confirmed" },
         {
           headers: {
@@ -86,7 +86,7 @@ export default function ApproveAppointments() {
 
   async function refreshAppointments() {
     try {
-      const res = await axios.get("http://localhost:4000/api/admin/getAppointments", {
+      const res = await axios.get("https://joywithlearning.com/api/admin/getAppointments", {
         headers: { Authorization: localStorage.getItem("logintoken") },
       });
       setAppointment(res.data);

@@ -37,7 +37,7 @@ export default function BookAppointment() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/data/alldoctors', {
+        const response = await axios.get('https://joywithlearning.com/api/data/alldoctors', {
           headers: { "Authorization" : sessionStorage.getItem('logintoken') },
         });
         setDoctors(response.data);
@@ -64,7 +64,7 @@ export default function BookAppointment() {
     const fetchBookedSlots = async () => {
       if (doctorId && appointmentDate) {
         try {
-          const response = await axios.get(`http://localhost:4000/api/admin/getConsultations/${doctorId}/${appointmentDate}`, {
+          const response = await axios.get(`https://joywithlearning.com/api/admin/getConsultations/${doctorId}/${appointmentDate}`, {
             headers: { "Authorization": localStorage.getItem('logintoken') },
           });
           const booked = response.data
@@ -116,7 +116,7 @@ export default function BookAppointment() {
       }
 
       const response = await axios.post(
-        'http://localhost:4000/api/admin/bookAppointment',
+        'https://joywithlearning.com/api/admin/bookAppointment',
         formData,
         {
           headers: {
