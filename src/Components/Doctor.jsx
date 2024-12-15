@@ -51,9 +51,6 @@ export default function Doctor() {
       }
     };
     fetchAllGames();
-
-    
-    // fetchEvents();
   }, []);
   const fetchEvents = async () => {
     const events = {};
@@ -76,7 +73,6 @@ export default function Doctor() {
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-    console.log(events);
   };
   const handleCardClick = async (child) => {
     setSelectedChild(child);
@@ -91,23 +87,10 @@ export default function Doctor() {
       console.error('Error fetching child games:', error);
       setChildGames([]);
     }
-
-
-    // try {
-    //   const response = await axios.get(`https://joywithlearning.com/api/data/feedback/${child._id}`, {
-    //     headers: {
-    //       Authorization: `${sessionStorage.getItem('logintoken')}`
-    //     }
-    //   });
-    //   setChildFeedback(response.data);
-    // } catch (error) {
-    //   console.error('Error fetching feedback:', error);
-    // }
   };
 
   const handleSubmitFeedback = async () => {
     try {
-      console.log(selectedChild._id);
       const response = await axios.put(`https://joywithlearning.com/api/data/feedback/${selectedChild._id}`, {
         feedback: feedback
       }, {
@@ -142,7 +125,7 @@ export default function Doctor() {
     <div>
       <div className="parent-container container">
         <div className='d-flex justify-content-between align-items-center'>
-          <h1 className="my-4 text-center flex-grow-1">Doctor</h1>
+          <h1 className="my-4 text-center flex-grow-1">Doctor Dashboard</h1>
           <Button variant="" onClick={()=>{handleShow(); fetchEvents(); }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-calendar-event-fill" viewBox="0 0 16 16">
               <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
@@ -173,7 +156,6 @@ export default function Doctor() {
                       <p className="card-text">Parent Details: {child.parentDetails}</p>
                       <p className="card-text">Therapist: {child.caretakerName}</p>
                       <p className="card-text">Center ID: {child.centreId}</p>
-                      {/* <p className="card-text">Games Completed: {child.gamesCompleted}</p> */}
                     </div>
                   </div>
                 </div>
@@ -193,33 +175,6 @@ export default function Doctor() {
                 <p><strong>Therapist:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
                 <p><strong>Center ID:</strong> {selectedChild.centreId}</p>
-                {/* <p><strong>Games Completed:</strong></p>
-                <ul>
-                  {selectedChild.gamesCompleted.map((game, index) => (
-                    <li key={index}>{game}</li>
-                  ))}
-                </ul> */}
-                {/* <p><strong>Game Table:</strong></p>
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Game ID</th>
-                      <th>Game Name</th>
-                      <th>Tries</th>
-                      <th>Timer</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {childGames.map((game) => (
-                      <tr key={game._id}>
-                        <td>{game.gameId}</td>
-                        <td>{games.find(g => g.gameId === game.gameId)?.gamename || 'Unknown Game'}</td>
-                        <td>{game.tries}</td>
-                        <td>{game.timer}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table> */}
                 {childFeedback && (
                   <div>
                     <h5><strong>Feedback:</strong></h5>

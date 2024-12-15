@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
+import {ToastContainer, toast } from 'react-toastify';
 
 export default function Progress() {
   const [responses, setResponses] = useState([]);
@@ -10,8 +11,12 @@ export default function Progress() {
   const [submitText, setSubmitText] = useState('');
   const [therapistName, setTherapistName] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState('1');
   const currentYear = new Date().getFullYear();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null);
+  const [doctorFeedback, setDoctorFeedback] = useState('');
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,11 +24,12 @@ export default function Progress() {
       try {
         const response = await axios.get(`https://joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
           { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
-      );
+        );
         setResponses(response.data);
         setTherapistName(sessionStorage.getItem("therapistName"));
       } catch (error) {
         console.error('Error fetching data:', error);
+        toast.error("Error fetching data",{autoClose:2000});
       } finally {
         setLoading(false);
       }
@@ -31,15 +37,15 @@ export default function Progress() {
     fetchData();
   }, []);
 
-  const handleInputChange = (e, monthIndex, goalIndex,field) => {
+  const handleInputChange = (e, monthIndex, goalIndex, field) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = { ...prevData };
 
-      if (field==='goals'&&monthIndex !== undefined && goalIndex !== undefined) {
+      if (field === 'goals' && monthIndex !== undefined && goalIndex !== undefined) {
         updatedData.monthlyGoals[monthIndex].goals[goalIndex] = value;
-      } else if (field==='target' && monthIndex !== undefined && goalIndex === null) {
-        updatedData.monthlyGoals[monthIndex].target= value;
+      } else if (field === 'target' && monthIndex !== undefined && goalIndex === null) {
+        updatedData.monthlyGoals[monthIndex].target = value;
       } else if (name === 'therapy') {
         updatedData.therapy = value;
       } else if (name === 'startingMonth') {
@@ -64,6 +70,24 @@ export default function Progress() {
       return updatedData;
     });
   };
+
+  const handleViewPerformance = (response, monthIndex) => {
+    const monthDetails = {
+      month: response.selectedMonthsNames[monthIndex],
+      performance: response.monthlyGoals[monthIndex]?.performance,
+      target: response.monthlyGoals[monthIndex]?.target,
+      goals: response.monthlyGoals[monthIndex]?.goals,
+      therapistFeedback: response.monthlyGoals[monthIndex]?.therapistFeedback
+    };
+
+    setDoctorFeedback(response.monthlyGoals[monthIndex].doctorFeedback || '');
+
+    setSelectedMonthDetails(monthDetails);
+    setIsModalOpen(true);
+  };
+
+
+
 
   const handleModalOpen = (response, monthIndex) => {
     const isEdit = Boolean(response);
@@ -91,6 +115,7 @@ export default function Progress() {
         startingYear: currentYear,
         startingMonth: 1,
         selectedMonths: initialSelectedMonths,
+        selectedMonthsNames: initialSelectedMonths.map((month) => new Date(0, month - 1).toLocaleString('default', { month: 'long' }))
       });
       setSelectedMonth(null);
     }
@@ -107,18 +132,18 @@ export default function Progress() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://joywithlearning.com/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData, 
+      await axios.put(`https://joywithlearning.com/api/doctor/assignIEP/${sessionStorage.getItem("childId")}`, formData,
         { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
-    );
-      console.log(formData);
+      );
       setShowModal(false);
-      alert('Data saved successfully');
+      toast.success('Data saved successfully',{autoClose:2000});
       const response = await axios.get(`https://joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
         { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
-    );
+      );
       setResponses(response.data);
     } catch (error) {
       console.error('Error submitting form:', error);
+      toast.success("Error submitting form",{autoClose:2000});
     }
   };
 
@@ -143,6 +168,34 @@ export default function Progress() {
     });
   };
 
+  const handleDoctorFeedback = (e) => {
+    setDoctorFeedback(e.target.value);
+  }
+
+  const handleFeedback = async () => {
+    try {
+      const response = await axios.put(`https://joywithlearning.com/api/doctor/IEPfeedback/${sessionStorage.getItem("childId")}`, {
+        feedback: doctorFeedback,
+        month: selectedMonthDetails.month
+      },
+        { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
+      );
+      if (response.status === 200) {
+        setIsModalOpen(false);
+        toast.success('Feedback submitted successfully',{autoClose:2000});
+        const updatedResponses = await axios.get(
+          `https://joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
+          { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
+        );
+        setResponses(updatedResponses.data);
+      }
+    }
+    catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error("Error submitting form",{autoClose:2000});
+    }
+  }
+
 
   const renderMonthlyGoals = () => {
     return (formData.selectedMonths ? formData.monthlyGoals : []).map((monthGoal, monthIndex) => {
@@ -155,16 +208,16 @@ export default function Progress() {
           <div className="card-body">
             <h5 className="mb-3">{monthGoal.month}</h5>
             <h6 className="text-primary">Targets</h6>
-              <div className="input-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={`Target`}
-                  value={monthGoal.target}
-                  onChange={(e) => handleInputChange(e, monthIndex,null, 'target')}
-                  disabled={isDisabled}
-                />
-              </div>
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder={`Target`}
+                value={monthGoal.target}
+                onChange={(e) => handleInputChange(e, monthIndex, null, 'target')}
+                disabled={isDisabled}
+              />
+            </div>
             <h6 className="text-primary">Goals</h6>
             {monthGoal.goals.map((goal, goalIndex) => (
               <div key={goalIndex} className="d-flex align-items-center mb-3">
@@ -187,7 +240,7 @@ export default function Progress() {
                 )}
               </div>
             ))}
-      
+
             {!isDisabled && (
               <button
                 type="button"
@@ -200,15 +253,16 @@ export default function Progress() {
           </div>
         </div>
       );
-      
+
     });
   };
 
   return (
     <div className="container py-4">
+      <ToastContainer/>
       <div className='mb-4 d-flex justify-content-between'>
-        <div className=''>
-          <h1 className="">Individual Education Plan (IEP)</h1>
+        <div>
+          <h1>Individual Education Plan (IEP)</h1>
         </div>
         <button type='button' className='btn btn-success' onClick={() => handleModalOpen(null)}>Assign IEP</button>
       </div>
@@ -218,16 +272,26 @@ export default function Progress() {
             {responses.map((response, index) => (
               response.selectedMonthsNames.map((month, idx) => (
                 <div className="col-md-4" key={`response-${idx}`}>
-                  <div className="card" onClick={() => handleModalOpen(response, idx)}>
+                  <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">IEP {index + 1}</h5>
                       <ul className="d-flex justify-content-around">
                         <h3 key={`month-${index}-${idx}`}>{month}</h3>
                       </ul>
                       <h6 className="text-center">Starting Year: {response.startingYear}</h6>
-                      <button className="btn btn-primary" onClick={() => handleModalOpen(response, idx)}>
-                        Edit
-                      </button>
+                      <div className='d-flex justify-content-between mt-3'>
+                        <button className="btn btn-primary" onClick={() => handleModalOpen(response, idx)}>
+                          Edit
+                        </button>
+                        {response.monthlyGoals[idx]?.performance && (
+                          <button
+                            className="btn btn-success ms-2"
+                            onClick={() => handleViewPerformance(response, idx)}
+                          >
+                            View Performance
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -288,7 +352,7 @@ export default function Progress() {
                     <div className="mb-3">
                       <label className="form-label">Select Starting Month</label>
                       <select className="form-select" name="startingMonth" value={formData.startingMonth} onChange={(e) => handleInputChange(e)}>
-                        <option value="">Select month</option>
+                        <option value="January">Select month</option>
                         {[...Array(12).keys()].map((i) => (
                           <option key={i} value={i + 1}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>
                         ))}
@@ -318,6 +382,121 @@ export default function Progress() {
           </div>
         </div>
       )}
+      {isModalOpen && selectedMonthDetails && (
+        <div
+          className="modal fade show"
+          style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+          tabIndex="-1"
+          role="dialog"
+        >
+          <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-header bg-primary text-white">
+                <h5 className="modal-title">Performance for {selectedMonthDetails.month}</h5>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={() => setIsModalOpen(false)}
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="card mb-3">
+                  <div className="card-header bg-primary text-white">
+                    Monthly Target
+                  </div>
+                  <div className="card-body">
+                    <h6 className="card-title">{selectedMonthDetails.target}</h6>
+                  </div>
+                </div>
+
+                <div className="card">
+                  <div className="card-header bg-primary text-white">
+                    Goals and Performances
+                  </div>
+                  <div className="card-body">
+                    {selectedMonthDetails.goals &&
+                      selectedMonthDetails.performance &&
+                      selectedMonthDetails.goals.length > 0 ? (
+                      <div className="list-group">
+                        {selectedMonthDetails.goals.map((goal, index) => (
+                          <div
+                            key={index}
+                            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              <h6 className="my-0">Goal: {goal}</h6>
+                              <small className="text-muted">
+                                Performance: {selectedMonthDetails.performance[index] || "N/A"}
+                              </small>
+                            </div>
+                            {selectedMonthDetails.performance[index] && (
+                              <span
+                                className={`badge ${parseFloat(selectedMonthDetails.performance[index]) >= 100
+                                  ? 'bg-success'
+                                  : 'bg-warning'
+                                  } rounded-pill`}
+                              >
+                                {selectedMonthDetails.performance[index]}%
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                    ) : (
+                      <p className="text-muted fst-italic">
+                        No goals or performance data available.
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="card mb-3">
+                  <div className="card-header bg-primary text-white">
+                    Therapist Feedback
+                  </div>
+                  <div className="card-body">
+                    <p>{selectedMonthDetails.therapistFeedback || 'No feedback available'}</p>
+                  </div>
+                </div>
+                <div className="card mb-3">
+                  <div className="card-header bg-primary text-white">
+                    Feedback
+                  </div>
+                  <div className="card-body">
+                    <input
+                      type="text"
+                      className='form-control'
+                      value={doctorFeedback}
+                      onChange={(e) => handleDoctorFeedback(e)}
+                      placeholder='Enter feedback based on the child performance'
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleFeedback}
+                >
+                  Submit Feedback
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
     </div>
   );
 }

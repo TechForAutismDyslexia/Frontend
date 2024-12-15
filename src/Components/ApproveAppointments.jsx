@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
-import Loader from './Loader';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loader from "./Loader";
 
 export default function ApproveAppointments() {
   const [appointment, setAppointment] = useState([]);
@@ -14,14 +14,17 @@ export default function ApproveAppointments() {
     async function getAppointments() {
       try {
         setIsLoading(true);
-        const res = await axios.get("https://joywithlearning.com/api/admin/getAppointments", {
-          headers: { Authorization: localStorage.getItem("logintoken") },
-        });
-        setAppointment(res.data); // Assume res.data is an array of appointments
+        const res = await axios.get(
+          "https://joywithlearning.com/api/admin/getAppointments",
+          {
+            headers: { Authorization: localStorage.getItem("logintoken") },
+          }
+        );
+        setAppointment(res.data);
         setIsLoading(false);
       } catch (e) {
         setIsLoading(false);
-        toast.error('Failed to fetch appointments!');
+        toast.error("Failed to fetch appointments!");
         console.error(e);
       }
     }
@@ -46,7 +49,7 @@ export default function ApproveAppointments() {
         { status: "rejected" },
         {
           headers: {
-            Authorization: `${sessionStorage.getItem('logintoken')}`,
+            Authorization: `${sessionStorage.getItem("logintoken")}`,
           },
         }
       );
@@ -69,7 +72,7 @@ export default function ApproveAppointments() {
         { status: "confirmed" },
         {
           headers: {
-            Authorization: `${sessionStorage.getItem('logintoken')}`,
+            Authorization: `${sessionStorage.getItem("logintoken")}`,
           },
         }
       );
@@ -86,9 +89,12 @@ export default function ApproveAppointments() {
 
   async function refreshAppointments() {
     try {
-      const res = await axios.get("https://joywithlearning.com/api/admin/getAppointments", {
-        headers: { Authorization: localStorage.getItem("logintoken") },
-      });
+      const res = await axios.get(
+        "https://joywithlearning.com/api/admin/getAppointments",
+        {
+          headers: { Authorization: localStorage.getItem("logintoken") },
+        }
+      );
       setAppointment(res.data);
     } catch (e) {
       toast.error("Failed to refresh appointments!");
@@ -99,8 +105,17 @@ export default function ApproveAppointments() {
   return (
     <div className="parent-container container">
       <ToastContainer />
-      {isLoading && <Loader />}
-      {!isLoading && appointment.length === 0 && <h3>No Appointments Pending</h3>}
+      {isLoading && (
+        <div
+          className="d-flex justify-content-center align-items-top"
+          style={{ height: "80vh" }}
+        >
+          <Loader />
+        </div>
+      )}
+      {!isLoading && appointment.length === 0 && (
+        <h3 className="text-center">No Appointments Pending</h3>
+      )}
       {!isLoading && appointment.length > 0 && (
         <section className="card-container row">
           {appointment.map((item) => (
@@ -111,9 +126,13 @@ export default function ApproveAppointments() {
             >
               <div className="card h-100">
                 <div className="card-body">
-                  <h5 className="card-title">Appointment Request by {item.parentName}</h5>
+                  <h5 className="card-title">
+                    Appointment Request by {item.parentName}
+                  </h5>
                   <p className="card-text mt-1">Child Name: {item.childName}</p>
-                  <p className="card-text mt-1">Phone No: {item.parentPhoneNo}</p>
+                  <p className="card-text mt-1">
+                    Phone No: {item.parentPhoneNo}
+                  </p>
                   <p className="card-text mt-1">Address: {item.address}</p>
                 </div>
               </div>
@@ -144,13 +163,29 @@ export default function ApproveAppointments() {
                 ></button>
               </div>
               <div className="modal-body">
-                <p><strong>Parent Name:</strong> {selectedItem.parentName}</p>
-                <p><strong>Child Name:</strong> {selectedItem.childName}</p>
-                <p><strong>Parent Phone No:</strong> {selectedItem.parentPhoneNo}</p>
-                <p><strong>Address:</strong> {selectedItem.address}</p>
-                <p><strong>Appointment Date:</strong> {selectedItem.appointmentDate}</p>
-                <p><strong>Time:</strong> {selectedItem.time}</p>
-                <p><strong>Consultation Type:</strong> {selectedItem.consultationType}</p>
+                <p>
+                  <strong>Parent Name:</strong> {selectedItem.parentName}
+                </p>
+                <p>
+                  <strong>Child Name:</strong> {selectedItem.childName}
+                </p>
+                <p>
+                  <strong>Parent Phone No:</strong> {selectedItem.parentPhoneNo}
+                </p>
+                <p>
+                  <strong>Address:</strong> {selectedItem.address}
+                </p>
+                <p>
+                  <strong>Appointment Date:</strong>{" "}
+                  {selectedItem.appointmentDate}
+                </p>
+                <p>
+                  <strong>Time:</strong> {selectedItem.time}
+                </p>
+                <p>
+                  <strong>Consultation Type:</strong>{" "}
+                  {selectedItem.consultationType}
+                </p>
               </div>
               <div className="modal-footer">
                 <button

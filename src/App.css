@@ -1,10 +1,9 @@
-body{
-    background-color: #f7eecb;
-    background-image: url('/parent-caretaker-portal.png');
-    background-attachment: fixed;
-    background-size: cover;
-    max-width: 100%;
-   
+body {
+  background-color: #f7eecb;
+  background-image: url("/src/Components/images/parent-caretaker-portal.png");
+  background-attachment: fixed;
+  background-size: cover;
+  max-width: 100%;
 }
 
 .fc .fc-daygrid-day-number,
@@ -12,4 +11,3 @@ body{
   text-decoration: none;
   color: black;
 }
-

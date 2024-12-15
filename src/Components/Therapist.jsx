@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Loader from './Loader';
-import Calendar from './Calendar';
-import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Loader from "./Loader";
+import Calendar from "./Calendar";
+import { Button, Modal } from "react-bootstrap";
 export default function Therapist() {
   const [data, setData] = useState([]);
   const [childDetails, setChildDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [responseText, setResponseText] = useState('');
+  const [responseText, setResponseText] = useState("");
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -18,21 +17,24 @@ export default function Therapist() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const token = sessionStorage.getItem('logintoken');
-        const response = await axios.get('https://joywithlearning.com/api/caretaker/assigned', {
-          headers: {
-            Authorization: `${token}`
+        const token = sessionStorage.getItem("logintoken");
+        const response = await axios.get(
+          "https://joywithlearning.com/api/caretaker/assigned",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
           }
-        });
+        );
         if (response.data.length === 0) {
-          setResponseText('No Children Assigned');
+          setResponseText("No Children Assigned");
           setLoading(false);
           return;
         }
-        setResponseText('');
+        setResponseText("");
         setData(response.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
       setLoading(false);
     };
@@ -48,50 +50,55 @@ export default function Therapist() {
   const closeModal = () => {
     setIsModalOpen(false);
     setChildDetails(null);
-    localStorage.removeItem('childId');
-    sessionStorage.removeItem('childId');
+    sessionStorage.removeItem("childId");
   };
   const navigate = useNavigate();
   const gotoGames = () => {
-    sessionStorage.setItem('childId', childDetails._id);
-    localStorage.setItem('childId', childDetails._id);
-    navigate('/games');
-  }
+    sessionStorage.setItem("childId", childDetails._id);
+    navigate("/games");
+  };
   const gotoReports = () => {
-    sessionStorage.setItem('childId', childDetails._id);
-    navigate('/reports');
-  }
+    sessionStorage.setItem("childId", childDetails._id);
+    navigate("/reports");
+  };
   const gotoIEP = () => {
-    sessionStorage.setItem('childId', childDetails._id);
-    localStorage.setItem('childId', childDetails._id);
-    navigate('/caretakerdashboard/iep');
-  }
+    sessionStorage.setItem("childId", childDetails._id);
+    navigate("/caretakerdashboard/iep");
+  };
   const events = {
-    "2024-10-14": [{ title: "Meeting at 10 AM" },{ title: "Lunch with friends" }],
-    "2024-10-20": [{ title: "Birthday Party" }]
-};
-
+    "2024-10-14": [
+      { title: "Meeting at 10 AM" },
+      { title: "Lunch with friends" },
+    ],
+    "2024-10-20": [{ title: "Birthday Party" }],
+  };
 
   return (
     <div className="container mt-4">
-    
       <div className="d-flex justify-content-between align-items-center mb-5">
-      <h1 className="text-center flex-grow-1">Therapist Dashboard</h1>
-      
-      <Button variant="" onClick={handleShow}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-calendar-event-fill" viewBox="0 0 16 16">
-        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
-      </svg>
-      </Button>
-      <Modal show={show} onHide={handleClose} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Calendar</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Calendar events={events}/>
-        </Modal.Body>
-      </Modal>
-    </div>
+        <h1 className="text-center flex-grow-1 ">Therapist Dashboard</h1>
+
+        <Button variant="" onClick={handleShow}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            fill="currentColor"
+            className="bi bi-calendar-event-fill"
+            viewBox="0 0 16 16"
+          >
+            <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5" />
+          </svg>
+        </Button>
+        <Modal show={show} onHide={handleClose} size="lg" centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Calendar</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Calendar events={events} />
+          </Modal.Body>
+        </Modal>
+      </div>
       {loading ? (
         <div className="d-flex justify-content-center align-items-center">
           <Loader />
@@ -105,7 +112,7 @@ export default function Therapist() {
             <div
               className="card h-100 shadow-sm"
               onClick={() => handleCardClick(item)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <div className="card-body text-center">
                 <h5 className="card-title">{item.name}</h5>
@@ -118,8 +125,8 @@ export default function Therapist() {
 
       {childDetails && (
         <div
-          className={`modal fade ${isModalOpen ? 'show' : ''}`}
-          style={{ display: isModalOpen ? 'block' : 'none' }}
+          className={`modal fade ${isModalOpen ? "show" : ""}`}
+          style={{ display: isModalOpen ? "block" : "none" }}
           tabIndex="-1"
           role="dialog"
           aria-labelledby="childModalLabel"
@@ -153,13 +160,25 @@ export default function Therapist() {
                 </p>
               </div>
               <div className="modal-footer justify-content-between">
-                <button type="button" className="btn btn-secondary" onClick={gotoIEP}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={gotoIEP}
+                >
                   IEP
                 </button>
-                <button type="button" className="btn btn-success" onClick={gotoGames}>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={gotoGames}
+                >
                   Play Games
                 </button>
-                <button type="button" className="btn btn-primary" onClick={gotoReports}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={gotoReports}
+                >
                   Reports
                 </button>
               </div>
@@ -169,12 +188,8 @@ export default function Therapist() {
       )}
 
       {isModalOpen && (
-        <div
-          className="modal-backdrop fade show"
-          onClick={closeModal}
-        ></div>
+        <div className="modal-backdrop fade show" onClick={closeModal}></div>
       )}
     </div>
   );
 }
-

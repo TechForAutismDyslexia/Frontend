@@ -1,69 +1,174 @@
-import Login from './Components/Login.jsx'
-import ParentHome from './Components/ParentHome.jsx'
-import Navbar from './Components/Navbar.jsx'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Register from './Components/Register.jsx'
-import Therapist from './Components/Therapist.jsx'
-import Admin from './Components/Admin.jsx'
-// import Details from './Components/Details.jsx'
-import Doctor from './Components/Doctor.jsx'
-import Games from './Components/Games.jsx'
-import './Components/Admin.css';
-import AdminRegister from './Components/Adminregistration.jsx'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import Reports from './Components/Reports.jsx'
-import Admingamedetailsftech from './Components/Admingamedetailsftech.jsx'
-import ContactUs from './Components/ContactUs.jsx'
-import ChildRegister from './Components/Childform.jsx'
-import './App.css';
-import Feedback from './Components/Feedback.jsx'
-import AboutUs from './Components/AboutUs.jsx'
-import IEPDoctor from './Components/IEPDoctor.jsx'
-import IEPTherapist from './Components/IEPTherapist.jsx'
-import AppointmentBooking from './Components/BookAppointment.jsx'
-import Calendar from './Components/Calendar.jsx'
-import ApproveAppointments from './Components/ApproveAppointments.jsx'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./Components/Login.jsx";
+import ParentHome from "./Components/ParentHome.jsx";
+import Navbar from "./Components/Navbar.jsx";
+import Register from "./Components/Register.jsx";
+import Therapist from "./Components/Therapist.jsx";
+import Admin from "./Components/Admin.jsx";
+import Doctor from "./Components/Doctor.jsx";
+import Games from "./Components/Games.jsx";
+import AdminRegister from "./Components/Adminregistration.jsx";
+import Reports from "./Components/Reports.jsx";
+import ContactUs from "./Components/ContactUs.jsx";
+import ChildRegister from "./Components/Childform.jsx";
+import Feedback from "./Components/Feedback.jsx";
+import AboutUs from "./Components/AboutUs.jsx";
+import IEPDoctor from "./Components/IEPDoctor.jsx";
+import IEPTherapist from "./Components/IEPTherapist.jsx";
+import AppointmentBooking from "./Components/BookAppointment.jsx";
+import Calendar from "./Components/Calendar.jsx";
+import ApproveAppointments from "./Components/ApproveAppointments.jsx";
+import JWLenquiries from "./Components/JWLenquiries.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute.jsx";
+import "./App.css";
 
+const NotFound = () => {
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center text-center">
+      <h1 className="display-1 fw-bold text-dark">404</h1>
+      <p className="fs-4 text-secondary">
+        The page you&apos;re looking for doesn&apos;t exist.
+      </p>
+    </div>
+  );
+};
+
+const Forbidden = () => {
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center text-center">
+      <h1 className="display-1 fw-bold text-dark">403</h1>
+      <p className="fs-4 text-secondary">
+        You are not Authorised for this page
+      </p>
+    </div>
+  );
+};
 
 function App() {
   return (
     <>
-      <Router basename="/adminportal">
+      <Router basename='/adminportal'>
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/parentdashboard" element={<ParentHome />} />
-          <Route path="/parentdashboard/childregister" element={<ChildRegister/>}/>
-          <Route path="/register" element={<Register/>}/>
-          <Route path="/caretakerdashboard" element={<Therapist/>}/>
-          <Route path="/doctordashboard/iep" element={<IEPDoctor/>}/>
-          <Route path="/caretakerdashboard/iep" element={<IEPTherapist/>}/>
-          <Route path="/admindashboard" element={<Admin/>}/>
-          <Route path="/admindashboard/adminregister" element={<AdminRegister/>}/>
-          <Route path="/admindashboard/admingamedetailsftech" element={<Admingamedetailsftech/>}/>
-          {/* <Route path="/doctordashboard/gamedetailsfetch" element={<Admingamedetailsftech/>}/> */}
-          {/* <Route path="/parentdashboard/details" element={<Details/>}/> */}
-          <Route path="/doctordashboard" element={<Doctor/>}/>
-          <Route path="/reports" element={<Reports/>}/>
-          <Route path="/games" element={<Games/>}/>
-          <Route path="/contact" element={< ContactUs/>} />
-          <Route path="/feedback" element={<Feedback/>} />
-          <Route path="/calendar" element={<Calendar/>} />
-          <Route path="/bookappointment" element={<AppointmentBooking/>} />
-          <Route path="/approveappointment" element={<ApproveAppointments/>} />
-          <Route path="/" element={
-            <div className='container mt-5'>
-              <div className='fw-bolder fs-1 text-center'>
-                Welcome to the Admin Portal
+
+          <Route
+            path="/parentdashboard"
+            element={
+              <ProtectedRoute requiredRole="parent">
+                <ParentHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/parentdashboard/childregister"
+            element={
+              <ProtectedRoute requiredRole="parent">
+                <ChildRegister />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/caretakerdashboard"
+            element={
+              <ProtectedRoute requiredRole="caretaker">
+                <Therapist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/caretakerdashboard/iep"
+            element={
+              <ProtectedRoute requiredRole="caretaker">
+                <IEPTherapist />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/doctordashboard"
+            element={
+              <ProtectedRoute requiredRole="doctor">
+                <Doctor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctordashboard/iep"
+            element={
+              <ProtectedRoute requiredRole="doctor">
+                <IEPDoctor />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admindashboard"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admindashboard/adminregister"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminRegister />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route
+            path="/bookappointment"
+            element={
+              <ProtectedRoute requiredRole={["admin", "parent"]}>
+                <AppointmentBooking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/approveappointment"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <ApproveAppointments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/jwlenquiries"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <JWLenquiries />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/register" element={<Register />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route
+            path="/"
+            element={
+              <div className="container mt-5">
+                <div className="fw-bolder fs-1 text-center">
+                  Welcome to the Admin Portal
+                </div>
               </div>
-            </div>
-          } />
-          <Route path="/about" element={<AboutUs/>}/>
+            }
+          />
+
+          {/* Catch-All for 404 */}
+          <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-      </Router> 
+      </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

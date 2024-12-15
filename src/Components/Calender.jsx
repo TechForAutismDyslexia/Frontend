@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const TaskCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -13,17 +13,22 @@ const TaskCalendar = () => {
   };
 
   const handlePrevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
   };
 
   const handleTaskChange = (day, task) => {
-    setTasks(prevTasks => ({
+    setTasks((prevTasks) => ({
       ...prevTasks,
-      [`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`]: task
+      [`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`]:
+        task,
     }));
   };
 
@@ -37,14 +42,16 @@ const TaskCalendar = () => {
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateKey = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
+      const dateKey = `${currentDate.getFullYear()}-${
+        currentDate.getMonth() + 1
+      }-${day}`;
       days.push(
         <div key={day} className="calendar-day">
           <div className="day-number">{day}</div>
           <input
             type="text"
             className="task-input"
-            value={tasks[dateKey] || ''}
+            value={tasks[dateKey] || ""}
             onChange={(e) => handleTaskChange(day, e.target.value)}
             placeholder="Add task"
           />
@@ -60,17 +67,22 @@ const TaskCalendar = () => {
       <div className="calendar-header">
         <button onClick={handlePrevMonth}>&lt;</button>
         <h2>
-          {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+          {currentDate.toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          })}
         </h2>
         <button onClick={handleNextMonth}>&gt;</button>
       </div>
       <div className="calendar-days">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="day-name">{day}</div>
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+          <div key={day} className="day-name">
+            {day}
+          </div>
         ))}
         {renderCalendar()}
       </div>
-      <style jsx>{`
+      <style>{`
         .task-calendar {
           max-width: 800px;
           margin: 20px auto;

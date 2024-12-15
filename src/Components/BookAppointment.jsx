@@ -1,79 +1,104 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import 'react-toastify/dist/ReactToastify.css'; 
-import { toast, ToastContainer } from 'react-toastify';
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function BookAppointment() {
   const navigate = useNavigate();
-  const [childName, setChildName] = useState('');
-  const [childAge, setChildAge] = useState(''); // No conversion to number
-  const [parentName, setParentName] = useState('');
-  const [parentId,setParentId] = useState('');
-  const [email, setParentEmail] = useState('');
-  const [dob, setDob] = useState('');
-  const [parentPhoneNo, setParentPhoneNo] = useState('');
-  const [appointmentDate, setAppointmentDate] = useState('');
-  const [time, setTime] = useState('');
-  const [doctorId, setDoctorId] = useState('');
-  const [schoolName, setSchoolName] = useState('');
-  const [classGrade, setClassGrade] = useState('');
-  const [schoolBoard, setSchoolBoard] = useState('');
-  const [childConcerns, setChildConcerns] = useState('');
-  const [branch, setBranch] = useState('');
-  const [gender, setGender] = useState('');                 
-  const [alternativeNumber, setAlternativeNumber] = useState(''); 
-  const [address, setAddress] = useState('');               
-  const [consultationType, setConsultationType] = useState(''); 
-  const [referredBy, setReferredBy] = useState('');         
+
+  const [formState, setFormState] = useState({
+    childName: "",
+    childAge: "",
+    parentName: "",
+    parentId: null,
+    email: "",
+    dob: "",
+    parentPhoneNo: "",
+    appointmentDate: "",
+    time: "",
+    doctorId: "",
+    schoolName: "",
+    classGrade: "",
+    schoolBoard: "",
+    childConcerns: "",
+    branch: "",
+    gender: "",
+    alternativeNumber: "",
+    address: "",
+    consultationType: "",
+    referredBy: "",
+  });
+
   const [doctors, setDoctors] = useState([]);
   const [timeSlots, setTimeSlots] = useState([
-    '10:30 AM', '11:30 AM', '12:30 PM', '2:00 PM', '3:00 PM', '3:30 PM', '4:30 PM', '5:30 PM',
+    "10:30 AM",
+    "11:30 AM",
+    "12:30 PM",
+    "2:00 PM",
+    "3:00 PM",
+    "3:30 PM",
+    "4:30 PM",
+    "5:30 PM",
   ]);
   const [bookedSlots, setBookedSlots] = useState([]);
-  const [pdf,setPDF] = useState('');
+  const [pdf, setPDF] = useState(null);
+
+  const updateFormState = (key, value) => {
+    setFormState((prevState) => ({ ...prevState, [key]: value }));
+  };
+  const initializeParent = () => {
+    const parentId = sessionStorage.getItem("id");
+    if (sessionStorage.getItem("role") === "parent" && parentId) {
+      updateFormState("parentId", parentId); // Set the valid parentId
+    } else {
+      updateFormState("parentId", null); // Explicitly set null
+    }
+  };
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('https://joywithlearning.com/api/data/alldoctors', {
-          headers: { "Authorization" : sessionStorage.getItem('logintoken') },
-        });
+        const response = await axios.get(
+          "https://joywithlearning.com/api/data/alldoctors",
+          {
+            headers: { Authorization: sessionStorage.getItem("logintoken") },
+          }
+        );
         setDoctors(response.data);
       } catch (error) {
-        console.error('Error fetching doctors:', error);
+        toast.error("Error fetching doctors");
+        console.error("Error fetching doctors:", error);
       }
     };
-    const parentExists = ()=>{
-      if(sessionStorage.getItem("role")==="parent"){
-        // console.log("yes in parent");
-        setParentId(sessionStorage.getItem("id"));
+
+    const initializeParent = () => {
+      if (sessionStorage.getItem("role") === "parent") {
+        updateFormState("parentId", sessionStorage.getItem("id"));
       }
-      else{
-        setParentId(null);
-      }
-      
-    }
+    };
+
     fetchDoctors();
-    parentExists();
+    initializeParent();
   }, []);
 
-  
   useEffect(() => {
     const fetchBookedSlots = async () => {
-      if (doctorId && appointmentDate) {
+      if (formState.doctorId && formState.appointmentDate) {
         try {
-          const response = await axios.get(`https://joywithlearning.com/api/admin/getConsultations/${doctorId}/${appointmentDate}`, {
-            headers: { "Authorization": localStorage.getItem('logintoken') },
-          });
-          const booked = response.data
-            .flatMap(consultation =>
-              consultation.slots.filter(slot => slot.booked).map(slot => slot.time)
-            );
+          const response = await axios.get(
+            `https://joywithlearning.com/api/admin/getConsultations/${formState.doctorId}/${formState.appointmentDate}`,
+            { headers: { Authorization: localStorage.getItem("logintoken") } }
+          );
+          const booked = response.data.flatMap((consultation) =>
+            consultation.slots
+              .filter((slot) => slot.booked)
+              .map((slot) => slot.time)
+          );
           setBookedSlots(booked);
         } catch (error) {
-          console.error('Error fetching consultations:', error);
+          toast.error("Error fetching booked slots");
+          console.error("Error fetching consultations:", error);
         }
       } else {
         setBookedSlots([]);
@@ -81,204 +106,396 @@ export default function BookAppointment() {
     };
 
     fetchBookedSlots();
-  }, [doctorId, appointmentDate]);
+  }, [formState.doctorId, formState.appointmentDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    initializeParent();
     try {
       const formData = new FormData();
-      formData.append('email', email);
-      formData.append('parentName', parentName);
-      if (parentId) {
-        formData.append('parentId', parentId);
-      }
-      formData.append('childName', childName);
-      formData.append('childAge', childAge);
-      formData.append('appointmentDate', appointmentDate);
-      formData.append('dob', dob);
-      formData.append('gender', gender);
-      formData.append('parentPhoneNo', parentPhoneNo);
-      formData.append('alternativeNumber', alternativeNumber);
-      formData.append('address', address);
-      formData.append('schoolName', schoolName);
-      formData.append('classGrade', classGrade);
-      formData.append('schoolBoard', schoolBoard);
-      formData.append('consultationType', consultationType);
-      formData.append('referredBy', referredBy);
-      formData.append('childConcerns', childConcerns);
-      formData.append('branch', branch);
-      formData.append('doctorId', doctorId);
-      formData.append('time', time);
-
+      Object.entries(formState).forEach(([key, value]) =>
+        formData.append(key, value)
+      );
       if (pdf) {
-        formData.append('pdf', pdf); // Attach the file
+        formData.append("pdf", pdf);
       }
 
-      const response = await axios.post(
-        'https://joywithlearning.com/api/admin/bookAppointment',
+      await axios.post(
+        "https://joywithlearning.com/api/admin/bookAppointment",
         formData,
         {
           headers: {
-            "Authorization": localStorage.getItem('logintoken'),
-            'Content-Type': 'multipart/form-data', 
+            Authorization: localStorage.getItem("logintoken"),
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      console.log('Appointment booked:', response.data);
-      toast.success(response.data);
-
-      setTimeout(() => {
-        navigate(-1);
-      }, 1500);
+      toast.success("Appointment booked successfully!");
+      setTimeout(() => navigate(-1), 1500);
     } catch (error) {
-      console.error('Error booking appointment:', error);
-      toast.error('Failed to book appointment. Please try again.');
+      toast.error("Failed to book appointment. Please try again.");
+      console.error("Error booking appointment:", error);
     }
-  };
-  const handleFileChange = (e) => {
-    setPDF(e.target.files[0]); 
   };
 
   const handleTimeSelect = (selectedTime) => {
     if (!bookedSlots.includes(selectedTime)) {
-      setTime(selectedTime);
+      updateFormState("time", selectedTime);
     }
   };
 
+  const validateForm = () => {
+    const requiredFields = [
+      "childName",
+      "childAge",
+      "parentName",
+      "email",
+      "parentPhoneNo",
+      "appointmentDate",
+      "time",
+      "doctorId",
+    ];
+    return requiredFields.every((field) => formState[field]);
+  };
+
+  const getAvailableTimes = () => {
+    const availableSlots = timeSlots.filter(
+      (time) => !bookedSlots.includes(time)
+    );
+    return availableSlots.slice(0, 4);
+  };
+
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Book Appointment</h2>
-      <form onSubmit={handleSubmit} className="border p-4 rounded shadow">
-        <div className="form-group">
-          <label htmlFor="childName">Child Name:</label>
-          <input type="text" className="form-control" value={childName} onChange={(e) => setChildName(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="childAge">Child Age:</label>
-          <input type="text" className="form-control" value={childAge} onChange={(e) => setChildAge(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="date">Date of Birth:</label>
-          <input type="date" className="form-control" value={dob} onChange={(e) => setDob(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="gender">Gender:</label>
-          <select className="form-control" value={gender} onChange={(e) => setGender(e.target.value)} required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="parentName,">Parent Name:</label>
-          <input type="text" className="form-control" value={parentName} onChange={(e) => setParentName(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Parent Email:</label>
-          <input type="email" className="form-control" value={email} onChange={(e) => setParentEmail(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="parentPhoneNo">Parent Phone No:</label>
-          <input type="tel" className="form-control" value={parentPhoneNo} onChange={(e) => setParentPhoneNo(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="alternativeNumber">Alternative Contact Number:</label>
-          <input type="tel" className="form-control" value={alternativeNumber} onChange={(e) => setAlternativeNumber(e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="address">Address:</label>
-          <input type="text" className="form-control" value={address} onChange={(e) => setAddress(e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="schoolName">School Name:</label>
-          <input type="text" className="form-control" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="classGrade">Class/Grade:</label>
-          <input type="text" className="form-control" value={classGrade} onChange={(e) => setClassGrade(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="schoolBoard">School Board:</label>
-          <select className="form-control" value={schoolBoard} onChange={(e) => setSchoolBoard(e.target.value)} required>
-            <option value="">Select School Board</option>
-            <option value="CBSE">CBSE</option>
-            <option value="SSC">SSC</option>
-            <option value="ICSE">ICSE</option>
-            <option value="Camebridge (IB)">Cambridge (IB)</option>
-            <option value="NIOS">NIOS</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="consultationType">Consultation Type:</label>
-          <select className="form-control" value={consultationType} onChange={(e) => setConsultationType(e.target.value)} required>
-            <option value="">Select Consultation Type</option>
-            <option value="New Consultation">New Consultation Rs.700/-</option>
-            <option value="Assessment(IQ)">Assessment (IQ) Rs.6000/-</option>
-            <option value="For IB board Assessment(IQ)">For IB board Assessment (IQ) Rs.12000/-</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="referredBy">Referred By:</label>
-          <input type="text" className="form-control" value={referredBy} onChange={(e) => setReferredBy(e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="childConcerns">Child Concerns:</label>
-          <textarea className="form-control" value={childConcerns} onChange={(e) => setChildConcerns(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="Branch">Branch:</label>
-          <select className="form-control" value={branch} onChange={(e) => setBranch(e.target.value)} required>
-            <option value="">Select Branch</option>
-            <option value="Bowenpally">Bowenpally</option>
-            <option value="Barkathpura">Barkathpura</option>
-            <option value="Champapet">Champapet</option>
-            <option value="Nacharam">Nacharam</option>
-            <option value="Neredmet">Neredmet</option>
-            <option value="Kukatpally">Kukatpally</option>
-            <option value="Banjarahills">Banjarahills</option>
-            <option value="Manikonda">Manikonda</option>
-            <option value="Suchitra">Suchitra</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="date">Appointment Date:</label>
-          <input type="date" className="form-control" value={appointmentDate} onChange={(e) => setAppointmentDate(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="doctorId">Doctor:</label>
-          <select className="form-control" value={doctorId} onChange={(e) => setDoctorId(e.target.value)} required>
-            <option value="">Select Doctor</option>
-            {doctors.map((doctor) => (
-              <option key={doctor._id} value={doctor._id}>{doctor.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Time Slot:</label>
-          <div className="d-flex flex-wrap">
-            {timeSlots.map((slot) => (
-              <button
-                key={slot}
-                type="button"
-                className={`btn m-1 ${bookedSlots.includes(slot) && !time.includes(slot) ? 'disabled btn-primary' : 'btn-outline-primary' } ${time.includes(slot) ? 'btn-primary text-light' : ''}`}
-                onClick={() => handleTimeSelect(slot)}
-              >
-                {slot}
-              </button>
-            ))}
+    <div className="container-lg py-5">
+      <ToastContainer />
+      <div className="row justify-content-center">
+        <div className="col-lg-8 col-md-10">
+          <div className="card shadow-lg border-0 rounded-lg">
+            <div className="card-header text-center py-3">
+              <h2 className="mb-0">Book Appointment</h2>
+            </div>
+            <div className="card-body p-4">
+              <form onSubmit={handleSubmit}>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Child Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formState.childName}
+                      onChange={(e) =>
+                        updateFormState("childName", e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Child Age</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      value={formState.childAge}
+                      onChange={(e) =>
+                        updateFormState("childAge", e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  {/* Date of Birth Field */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Date of Birth</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={formState.dob}
+                      onChange={(e) => updateFormState("dob", e.target.value)}
+                      max={new Date().toISOString().split("T")[0]}
+                      required
+                    />
+                  </div>
+
+                  {/* Gender Field */}
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Gender</label>
+                    <select
+                      className="form-select"
+                      value={formState.gender}
+                      onChange={(e) =>
+                        updateFormState("gender", e.target.value)
+                      }
+                      required
+                    >
+                      <option value="">-- Select Gender --</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Parent Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formState.parentName}
+                      onChange={(e) =>
+                        updateFormState("parentName", e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Parent Email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      value={formState.email}
+                      onChange={(e) => updateFormState("email", e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Parent Phone Number</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formState.parentPhoneNo}
+                      onChange={(e) =>
+                        updateFormState("parentPhoneNo", e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Alternate Number</label>
+                    <input
+                      type="String"
+                      className="form-control"
+                      value={formState.alternativeNumber}
+                      onChange={(e) =>
+                        updateFormState("alternativeNumber", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="childConcerns" className="form-label">
+                      Child Concerns:
+                    </label>
+                    <textarea
+                      id="childConcerns"
+                      className="form-control"
+                      rows="3"
+                      value={formState.childConcerns}
+                      onChange={(e) =>
+                        updateFormState("childConcerns", e.target.value)
+                      }
+                      required
+                    ></textarea>
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="address" className="form-label">
+                      Address:
+                    </label>
+                    <textarea
+                      id="address"
+                      className="form-control"
+                      rows="3"
+                      value={formState.address}
+                      onChange={(e) =>
+                        updateFormState("address", e.target.value)
+                      }
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">School Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formState.schoolName}
+                      onChange={(e) =>
+                        updateFormState("schoolName", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Class/Grade</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formState.classGrade}
+                      onChange={(e) =>
+                        updateFormState("classGrade", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="schoolBoard">School Board:</label>
+                    <select
+                      id="schoolBoard"
+                      className="form-select"
+                      value={formState.schoolBoard}
+                      onChange={(e) =>
+                        updateFormState("schoolBoard", e.target.value)
+                      }
+                      required
+                    >
+                      {" "}
+                      <option value="">Select School Board</option>
+                      <option value="CBSE">CBSE</option>
+                      <option value="SSC">SSC</option>
+                      <option value="ICSE">ICSE</option>
+                      <option value="Camebridge (IB)">Cambridge (IB)</option>
+                      <option value="NIOS">NIOS</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Referred By</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formState.referredBy}
+                      onChange={(e) =>
+                        updateFormState("referredBy", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Appointment Date</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={formState.appointmentDate}
+                      onChange={(e) =>
+                        updateFormState("appointmentDate", e.target.value)
+                      }
+                      min={new Date().toISOString().split("T")[0]}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Select Branch</label>
+                    <select
+                      className="form-select"
+                      value={formState.branch}
+                      onChange={(e) =>
+                        updateFormState("branch", e.target.value)
+                      }
+                      required
+                    >
+                      <option value="">Select Branch</option>
+                      <option value="Bowenpally">Bowenpally</option>
+                      <option value="Barkathpura">Barkathpura</option>
+                      <option value="Champapet">Champapet</option>
+                      <option value="Nacharam">Nacharam</option>
+                      <option value="Neredmet">Neredmet</option>
+                      <option value="Kukatpally">Kukatpally</option>
+                      <option value="Banjarahills">Banjarahills</option>
+                      <option value="Manikonda">Manikonda</option>
+                      <option value="Suchitra">Suchitra</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Select Branch</label>
+                  <select
+                    className="form-select"
+                    value={formState.consultationType}
+                    onChange={(e) =>
+                      updateFormState("consultationType", e.target.value)
+                    }
+                    required
+                  >
+                    <option value="">Select Consultation Type</option>
+                    <option value="New Consultation">
+                      New Consultation Rs.700/-
+                    </option>
+                    <option value="Assessment(IQ)">
+                      Assessment (IQ) Rs.6000/-
+                    </option>
+                    <option value="For IB board Assessment(IQ)">
+                      For IB board Assessment (IQ) Rs.12000/-
+                    </option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Select Doctor</label>
+                  <select
+                    className="form-select"
+                    value={formState.doctorId}
+                    onChange={(e) =>
+                      updateFormState("doctorId", e.target.value)
+                    }
+                    required
+                  >
+                    <option value="">-- Select a Doctor --</option>
+                    {doctors.map((doctor) => (
+                      <option key={doctor._id} value={doctor._id}>
+                        {doctor.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="d-flex gap-2 flex-wrap">
+                  <label className="form-label">Time</label>
+                  {getAvailableTimes().map((time) => (
+                    <button
+                      type="button"
+                      className={`btn ${
+                        formState.time === time
+                          ? "btn-primary"
+                          : "btn-outline-primary"
+                      }`}
+                      key={time}
+                      onClick={() => handleTimeSelect(time)}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="uploadFile" className="form-label">
+                      Upload File:
+                    </label>
+                    <input
+                      type="file"
+                      id="uploadFile"
+                      className="form-control"
+                      onChange={(e) => setPDF(e.target.files[0])}
+                      accept=".pdf"
+                      color="blue"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary mt-3"
+                  disabled={!validateForm()}
+                >
+                  Book Appointment
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-        <div>
-          <label htmlFor="reports">Any medical reports/ Previous Assessment reports</label>
-          <input type="file" className="form-control" onChange={handleFileChange} />
-        </div>
-        <button type="submit" className="btn btn-primary mt-3" disabled={!doctorId || !time}>Book Appointment</button>
-      </form>
-      <ToastContainer />
+      </div>
     </div>
   );
 }
