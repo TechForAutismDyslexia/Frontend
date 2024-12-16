@@ -47,7 +47,7 @@ const Forbidden = () => {
 function App() {
   return (
     <>
-      <Router basename='/adminportal'>
+      <Router>
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
