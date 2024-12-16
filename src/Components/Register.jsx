@@ -18,7 +18,7 @@ export default function Register() {
     setLoading(true);
     e.preventDefault();
     try {
-      const res = await axios.post("https://joywithlearning.com/api/users/register", {
+      const res = await axios.post("https://api.joywithlearning.com/api/users/register", {
         username,
         password,
         name,

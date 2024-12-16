@@ -24,7 +24,7 @@ export default function ParentHome() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "https://joywithlearning.com/api/parent/children",
+          "https://api.joywithlearning.com/api/parent/children",
           {
             headers: {
               Authorization: `${sessionStorage.getItem("logintoken")}`,
@@ -53,7 +53,7 @@ export default function ParentHome() {
     const events = {};
     try {
       const response = await axios.get(
-        "https://joywithlearning.com/api/parent/getConsultations",
+        "https://api.joywithlearning.com/api/parent/getConsultations",
         {
           headers: { Authorization: `${sessionStorage.getItem("logintoken")}` },
         }
@@ -75,7 +75,7 @@ export default function ParentHome() {
     try {
       setFeedbackLoader(true);
       const response = await axios.get(
-        `https://joywithlearning.com/api/data/feedback/${childId}`,
+        `https://api.joywithlearning.com/api/data/feedback/${childId}`,
         {
           headers: { Authorization: `${sessionStorage.getItem("logintoken")}` },
         }

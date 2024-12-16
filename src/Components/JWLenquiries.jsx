@@ -21,7 +21,7 @@ const JWLenquiries = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        "https://joywithlearning.com/api/admin/get-jwl-enquiries",
+        "https://api.joywithlearning.com/api/admin/get-jwl-enquiries",
         {
           headers: { Authorization: localStorage.getItem("logintoken") },
         }
@@ -43,7 +43,7 @@ const JWLenquiries = () => {
 
     try {
       const response = await axios.get(
-        `https://joywithlearning.com/api/admin/get-jwluser-video/${card.parentEmail}`,
+        `https://api.joywithlearning.com/api/admin/get-jwluser-video/${card.parentEmail}`,
         {
           responseType: "blob",
           headers: { Authorization: localStorage.getItem("logintoken") },
@@ -71,7 +71,7 @@ const JWLenquiries = () => {
       setIsLoading(true);
       setShowDeleteModal(false);
       await axios.delete(
-        `https://joywithlearning.com/api/admin/delete-jwl-enquiry/${parentEmail}`,
+        `https://api.joywithlearning.com/api/admin/delete-jwl-enquiry/${parentEmail}`,
         {
           headers: { Authorization: localStorage.getItem("logintoken") },
         }

@@ -19,7 +19,7 @@ export default function Therapist() {
       try {
         const token = sessionStorage.getItem("logintoken");
         const response = await axios.get(
-          "https://joywithlearning.com/api/caretaker/assigned",
+          "https://api.joywithlearning.com/api/caretaker/assigned",
           {
             headers: {
               Authorization: `${token}`,

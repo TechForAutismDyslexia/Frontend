@@ -18,7 +18,7 @@ export default function IEPTherapist() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem(
+          `https://api.joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem(
             "childId"
           )}`,
           {
@@ -75,7 +75,7 @@ export default function IEPTherapist() {
     try {
       const childId = sessionStorage.getItem("childId");
       await axios.put(
-        `https://joywithlearning.com/api/doctor/updateperformance/${childId}`,
+        `https://api.joywithlearning.com/api/doctor/updateperformance/${childId}`,
         {
           performance: performanceInputs,
           month: currentMonth,

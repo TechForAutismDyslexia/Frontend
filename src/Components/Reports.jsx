@@ -29,7 +29,7 @@ const Reports = () => {
       setIsLoading2(true);
       const token = sessionStorage.getItem("logintoken");
       const response = await axios.get(
-        `https://joywithlearning.com/api/data/${child}/gamesplayed`,
+        `https://api.joywithlearning.com/api/data/${child}/gamesplayed`,
         {
           headers: {
             Authorization: `${token}`,
@@ -38,7 +38,7 @@ const Reports = () => {
       );
       setData(response.data);
 
-      const res = await axios.get(`https://joywithlearning.com/api/data/${child}`, {
+      const res = await axios.get(`https://api.joywithlearning.com/api/data/${child}`, {
         headers: {
           Authorization: `${token}`,
         },
@@ -47,7 +47,7 @@ const Reports = () => {
       setIsLoading1(false);
 
       const gamesRes = await axios.get(
-        "https://joywithlearning.com/api/data/allgames"
+        "https://api.joywithlearning.com/api/data/allgames"
       );
       const gameresdata = gamesRes.data;
       setGames(gameresdata);
@@ -62,7 +62,7 @@ const Reports = () => {
   const handleSubmitFeedback = async () => {
     try {
       const response = await axios.put(
-        `https://joywithlearning.com/api/data/feedback/${child}`,
+        `https://api.joywithlearning.com/api/data/feedback/${child}`,
         {
           feedback: feedback,
         },
