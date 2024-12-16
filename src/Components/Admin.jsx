@@ -30,7 +30,7 @@ export default function Admin() {
       setLoading(true);
       try {
         const response = await axios.get(
-          "https://joywithlearning.com/api/data/allchildren",
+          "https://api.joywithlearning.com/api/data/allchildren",
           {
             headers: {
               Authorization: `${sessionStorage.getItem("logintoken")}`,
@@ -62,7 +62,7 @@ export default function Admin() {
     const fetchTherapists = async () => {
       try {
         const response = await axios.get(
-          "https://joywithlearning.com/api/data/allcaretakers",
+          "https://api.joywithlearning.com/api/data/allcaretakers",
           {
             headers: {
               Authorization: `${sessionStorage.getItem("logintoken")}`,
@@ -82,7 +82,7 @@ export default function Admin() {
     const fetchDoctors = async () => {
       try {
         const response = await axios.get(
-          "https://joywithlearning.com/api/data/alldoctors",
+          "https://api.joywithlearning.com/api/data/alldoctors",
           {
             headers: {
               Authorization: `${sessionStorage.getItem("logintoken")}`,
@@ -107,7 +107,7 @@ export default function Admin() {
 
     try {
       const response = await axios.get(
-        `https://joywithlearning.com/api/data/feedback/${child._id}`,
+        `https://api.joywithlearning.com/api/data/feedback/${child._id}`,
         {
           headers: {
             Authorization: `${sessionStorage.getItem("logintoken")}`,
@@ -131,7 +131,7 @@ export default function Admin() {
   const handleSubmit = async () => {
     try {
       await axios.put(
-        `https://joywithlearning.com/api/admin/${selectedChild._id}/assign`,
+        `https://api.joywithlearning.com/api/admin/${selectedChild._id}/assign`,
         {
           caretakerId: selectedCaretaker,
           doctorId: selectedDoctor,
@@ -144,7 +144,7 @@ export default function Admin() {
       );
       closeModal();
       const response = await axios.get(
-        "https://joywithlearning.com/api/data/allchildren",
+        "https://api.joywithlearning.com/api/data/allchildren",
         {
           headers: {
             Authorization: `${sessionStorage.getItem("logintoken")}`,

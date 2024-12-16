@@ -12,7 +12,7 @@ export default function Feedback() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://joywithlearning.com/api/userfeedback", {
+      await axios.post("https://api.joywithlearning.com/api/userfeedback", {
         name,
         email,
         mobilenumber,

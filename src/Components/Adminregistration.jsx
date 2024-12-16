@@ -29,7 +29,7 @@ export default function AdminRegister() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `https://joywithlearning.com/api/admin/${endpoint}`,
+        `https://api.joywithlearning.com/api/admin/${endpoint}`,
         { name, username, email, mobilenumber, password },
         {
           headers: { Authorization: `${sessionStorage.getItem("logintoken")}` },

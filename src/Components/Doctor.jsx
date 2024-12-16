@@ -24,7 +24,7 @@ export default function Doctor() {
   useEffect(() => {
     const getChildren = async () => {
       try {
-        const res = await axios.get('https://joywithlearning.com/api/doctor/assigned', {
+        const res = await axios.get('https://api.joywithlearning.com/api/doctor/assigned', {
           headers: {
             Authorization: `${sessionStorage.getItem('logintoken')}`
           }
@@ -44,7 +44,7 @@ export default function Doctor() {
 
     const fetchAllGames = async () => {
       try {
-        const response = await axios.get('https://joywithlearning.com/api/data/allgames');
+        const response = await axios.get('https://api.joywithlearning.com/api/data/allgames');
         setGames(response.data);
       } catch (error) {
         console.error('Error fetching games:', error);
@@ -55,7 +55,7 @@ export default function Doctor() {
   const fetchEvents = async () => {
     const events = {};
     try {
-      const response = await axios.get('https://joywithlearning.com/api/doctor/getConsultations', {
+      const response = await axios.get('https://api.joywithlearning.com/api/doctor/getConsultations', {
         headers: {
           Authorization: `${sessionStorage.getItem('logintoken')}`
         }
@@ -79,7 +79,7 @@ export default function Doctor() {
     setIsModalOpen(true);
 
     try {
-      const response = await axios.get(`https://joywithlearning.com/api/admin/gametable/${child._id}`, {
+      const response = await axios.get(`https://api.joywithlearning.com/api/admin/gametable/${child._id}`, {
         headers: { Authorization: `${sessionStorage.getItem('logintoken')}` },
       });
       setChildGames(response.data);
@@ -91,7 +91,7 @@ export default function Doctor() {
 
   const handleSubmitFeedback = async () => {
     try {
-      const response = await axios.put(`https://joywithlearning.com/api/data/feedback/${selectedChild._id}`, {
+      const response = await axios.put(`https://api.joywithlearning.com/api/data/feedback/${selectedChild._id}`, {
         feedback: feedback
       }, {
         headers: {

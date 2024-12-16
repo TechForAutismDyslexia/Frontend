@@ -16,7 +16,7 @@ export default function ChildRegister() {
   useEffect(() => {
     const fetchCentres = async () => {
       try {
-        const res = await axios.get("https://joywithlearning.com/api/data/allcentres", {
+        const res = await axios.get("https://api.joywithlearning.com/api/data/allcentres", {
           headers: {
             Authorization: `${sessionStorage.getItem("logintoken")}`,
           },
@@ -35,7 +35,7 @@ export default function ChildRegister() {
     setLoading(true);
     try {
       await axios.post(
-        "https://joywithlearning.com/api/parent/childinfo",
+        "https://api.joywithlearning.com/api/parent/childinfo",
         {
           name,
           centreId,

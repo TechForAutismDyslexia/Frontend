@@ -60,7 +60,7 @@ export default function BookAppointment() {
     const fetchDoctors = async () => {
       try {
         const response = await axios.get(
-          "https://joywithlearning.com/api/data/alldoctors",
+          "https://api.joywithlearning.com/api/data/alldoctors",
           {
             headers: { Authorization: sessionStorage.getItem("logintoken") },
           }
@@ -87,7 +87,7 @@ export default function BookAppointment() {
       if (formState.doctorId && formState.appointmentDate) {
         try {
           const response = await axios.get(
-            `https://joywithlearning.com/api/admin/getConsultations/${formState.doctorId}/${formState.appointmentDate}`,
+            `https://api.joywithlearning.com/api/admin/getConsultations/${formState.doctorId}/${formState.appointmentDate}`,
             { headers: { Authorization: localStorage.getItem("logintoken") } }
           );
           const booked = response.data.flatMap((consultation) =>
@@ -121,7 +121,7 @@ export default function BookAppointment() {
       }
 
       await axios.post(
-        "https://joywithlearning.com/api/admin/bookAppointment",
+        "https://api.joywithlearning.com/api/admin/bookAppointment",
         formData,
         {
           headers: {
