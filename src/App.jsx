@@ -183,7 +183,7 @@ function App() {
             element={
               <div className="container mt-5">
                 <div className="fw-bolder fs-1 text-center">
-                  Welcome to the Admin Portal
+                  Welcome to the Joy With Learning Portal
                 </div>
               </div>
             }

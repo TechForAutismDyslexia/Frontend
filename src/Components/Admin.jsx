@@ -179,7 +179,7 @@ export default function Admin() {
           style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
           onClick={() => navigate("/approveappointment")}
         >
-          Approve Appointments
+          Manage Appointments
         </button>
         <button
           className="btn m-2 fw-bold card shadow-lg btn-outline-info "
