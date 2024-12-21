@@ -115,6 +115,13 @@ export default function ParentHome() {
           Book Appointment
         </button>
         <button
+          className="btn fw-bold card shadow-lg btn-outline-info"
+          style={{ backgroundColor: "rgb(100, 150, 200)" }} 
+          onClick={() => navigate("/viewappointmentparent")}
+        >
+          View Appointments
+        </button>
+        <button
           className="btn  fw-bold card shadow-lg btn-outline-info"
           onClick={() => navigate("/parentdashboard/childregister")}
           style={{ backgroundColor: "rgb(100,150,200)" }}

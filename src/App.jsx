@@ -21,6 +21,8 @@ import ApproveAppointments from "./Components/ApproveAppointments.jsx";
 import JWLenquiries from "./Components/JWLenquiries.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import ViewAppointment from "./Components/Viewappointmentsadmin.jsx";
+import Appointments from "./Components/viewappointmentsdoctor.jsx";
+import ParentAppointments from "./Components/viewappointmentsparent.jsx";
 import "./App.css";
 
 const NotFound = () => {
@@ -137,6 +139,22 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <ViewAppointment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/viewappointmentdoctor"
+            element={
+              <ProtectedRoute requiredRole="doctor">
+                <Appointments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/viewappointmentparent"
+            element={
+              <ProtectedRoute requiredRole="parent">
+                <ParentAppointments />
               </ProtectedRoute>
             }
           />
