@@ -106,7 +106,7 @@ export default function ViewAppointment() {
 
   const handleViewPrescription = (prescriptionPath) => {
     if (prescriptionPath) {
-      window.open(`https://api.joywithlearning.com/${prescriptionPath}`, "_blank");
+      window.open(`https://api.joywithlearning.com${prescriptionPath}`, "_blank");
     } else {
       alert("No prescription found.");
     }
