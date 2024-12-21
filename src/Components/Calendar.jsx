@@ -24,7 +24,7 @@ const Calendar = ({ events }) => {
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [eventList, setEventList] = useState([]);
-
+  const [dateSelected, setDateSelected] = useState("");
   useEffect(() => {
     initCalendar(currentMonth, currentYear);
   }, [currentMonth, currentYear]);
@@ -50,14 +50,27 @@ const Calendar = ({ events }) => {
       calendarDays.push(
         <div
           key={day}
-          className={`day-cell ${hasEvent ? "event" : ""}} ${
-            year === new Date().getFullYear() &&
-            month === new Date().getMonth() &&
-            day === new Date().getDate()
+          className={`day-cell ${hasEvent ? "event" : ""}} ${year === new Date().getFullYear() &&
+              month === new Date().getMonth() &&
+              day === new Date().getDate()
               ? "marktoday"
               : ""
-          }`}
-          onClick={() => showEvents(dateString)}
+            }
+          ${ 
+            dateSelected && year === parseInt(dateSelected.split(",")[0]) && (month === parseInt(dateSelected.split(",")[1]))
+            && day === parseInt(dateSelected.split(",")[2]) ? "mark-day" : ""
+            }`
+          }
+          onClick={() => {
+            showEvents(dateString)
+            if(day !== new Date().getDate()){
+              setDateSelected(`${year},${month},${day}`);
+            }
+            else{
+              setDateSelected("");
+            }
+          }
+          }
         >
           {day}
           {hasEvent && <div className="event-indicator"></div>}

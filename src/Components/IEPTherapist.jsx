@@ -143,86 +143,109 @@ export default function IEPTherapist() {
         <h4>No IEP data available!</h4>
       )}
 
-      {showModal && currentGoalData && (
-        <div
-          className="modal show d-block"
-          tabIndex="-1"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-        >
-          <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">
-                  IEP Details - {currentGoalData.month}
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={handleModalClose}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <h6>Targets:</h6>
-                <ul>
-                  <li>{currentGoalData.target}</li>
-                </ul>
-
-                <h6>Goals:</h6>
-                <ul>
-                  {currentGoalData.goals.map((goal, goalIndex) => (
-                    <li key={goalIndex}>
-                      {goal}
-                      <div className="mt-2">
-                        <input
-                          type="number"
-                          className="form-control"
-                          value={performanceInputs[goalIndex] || ""}
-                          onChange={(e) =>
-                            handlePerformanceChange(goalIndex, e.target.value)
-                          }
-                          placeholder="Enter performance (0-100 %)"
-                        />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <ul>
-                  <h6>Feedback:</h6>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={therapistFeedback}
-                    onChange={(e) => handleTherapistFeedback(e)}
-                    placeholder="Enter feedback based on the child performance"
-                  />
-                </ul>
-                {doctorFeedback && (
-                  <ul>
-                    <h6>Doctor&apos;s Feedback:</h6>
-                    <p>{doctorFeedback}</p>
-                  </ul>
-                )}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleSavePerformance}
-                >
-                  Save Performance
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleModalClose}
-                >
-                  Close
-                </button>
-              </div>
+{showModal && currentGoalData && (
+  <div
+    className="modal fade show"
+    style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+    tabIndex="-1"
+    role="dialog"
+  >
+    <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title text-truncate">
+            IEP Details - {currentGoalData.month}
+          </h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={handleModalClose}
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="modal-body">
+          <div className="card mb-3">
+            <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
+              Target
+            </div>
+            <div className="card-body">
+                <h4>{currentGoalData.target}</h4>
             </div>
           </div>
+
+          <div className="card mb-3">
+            <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
+              Goals
+            </div>
+            <div className="card-body">
+              <ul>
+                {currentGoalData.goals.map((goal, goalIndex) => (
+                  <li key={goalIndex}>
+                    {goal}
+                    <div className="mt-2">
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={performanceInputs[goalIndex] || ""}
+                        onChange={(e) =>
+                          handlePerformanceChange(goalIndex, e.target.value)
+                        }
+                        placeholder="Enter performance (0-100 %)"
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="card mb-3">
+            <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
+              Feedback
+            </div>
+            <div className="card-body">
+              <input
+                type="text"
+                className="form-control border border-4"
+                value={therapistFeedback}
+                onChange={(e) => handleTherapistFeedback(e)}
+                placeholder="Enter feedback based on the child performance"
+              />
+            </div>
+          </div>
+
+          {doctorFeedback && (
+            <div className="card mb-3">
+              <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
+                Doctor's Feedback
+              </div>
+              <div className="card-body">
+                <p>{doctorFeedback}</p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleSavePerformance}
+          >
+            Save Performance
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleModalClose}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

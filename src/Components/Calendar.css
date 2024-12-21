@@ -59,9 +59,9 @@
   transition: background-color 0.3s;
 }
 
-.day-cell:hover {
-  background-color: #e0e0e0; /* Darker gray on hover */
-}
+/* .day-cell:hover {
+  background-color: #e0e0e0;
+} */
 
 .event-indicator {
   width: 0.5rem;
@@ -93,4 +93,8 @@
 
 .marktoday {
   background-color: rgb(85, 141, 209);
+}
+
+.mark-day{
+  background-color: rgb(137, 179, 231);
 }

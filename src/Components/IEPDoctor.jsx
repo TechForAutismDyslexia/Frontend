@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
-import {ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Progress() {
   const [responses, setResponses] = useState([]);
@@ -29,7 +29,7 @@ export default function Progress() {
         setTherapistName(sessionStorage.getItem("therapistName"));
       } catch (error) {
         console.error('Error fetching data:', error);
-        toast.error("Error fetching data",{autoClose:2000});
+        toast.error("Error fetching data", { autoClose: 2000 });
       } finally {
         setLoading(false);
       }
@@ -136,14 +136,14 @@ export default function Progress() {
         { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
       );
       setShowModal(false);
-      toast.success('Data saved successfully',{autoClose:2000});
+      toast.success('Data saved successfully', { autoClose: 2000 });
       const response = await axios.get(`https://api.joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
         { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
       );
       setResponses(response.data);
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.success("Error submitting form",{autoClose:2000});
+      toast.success("Error submitting form", { autoClose: 2000 });
     }
   };
 
@@ -182,7 +182,7 @@ export default function Progress() {
       );
       if (response.status === 200) {
         setIsModalOpen(false);
-        toast.success('Feedback submitted successfully',{autoClose:2000});
+        toast.success('Feedback submitted successfully', { autoClose: 2000 });
         const updatedResponses = await axios.get(
           `https://api.joywithlearning.com/api/caretaker/childIEP/${sessionStorage.getItem("childId")}`,
           { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
@@ -192,7 +192,7 @@ export default function Progress() {
     }
     catch (error) {
       console.error('Error submitting form:', error);
-      toast.error("Error submitting form",{autoClose:2000});
+      toast.error("Error submitting form", { autoClose: 2000 });
     }
   }
 
@@ -259,7 +259,7 @@ export default function Progress() {
 
   return (
     <div className="container py-4">
-      <ToastContainer/>
+      <ToastContainer />
       <div className='mb-4 d-flex justify-content-between'>
         <div>
           <h1>Individual Education Plan (IEP)</h1>
@@ -269,35 +269,41 @@ export default function Progress() {
       {loading ? <Loader /> : (
         responses.length === 0 ? <h3>No IEPs assigned</h3> :
           <div className="row g-4">
-            {responses.map((response, index) => (
+            {responses.map((response, index) =>
               response.selectedMonthsNames.map((month, idx) => (
-                <div className="col-md-4" key={`response-${idx}`}>
-                  <div className="card">
-                    <div className="card-body">
+                <div className="col-md-4 col-sm-6" key={`response-${idx}`}>
+                  <div className="card h-100">
+                    <div className="card-body d-flex flex-column">
                       <h5 className="card-title">IEP {index + 1}</h5>
                       <ul className="d-flex justify-content-around">
                         <h3 key={`month-${index}-${idx}`}>{month}</h3>
                       </ul>
                       <h6 className="text-center">Starting Year: {response.startingYear}</h6>
-                      <div className='d-flex justify-content-between mt-3'>
-                        <button className="btn btn-primary" onClick={() => handleModalOpen(response, idx)}>
-                          Edit
-                        </button>
-                        {response.monthlyGoals[idx]?.performance && (
+                      <div className="mt-auto">
+                        <div className="d-flex flex-wrap justify-content-between gap-2">
                           <button
-                            className="btn btn-success ms-2"
-                            onClick={() => handleViewPerformance(response, idx)}
+                            className="btn btn-primary flex-grow-1"
+                            onClick={() => handleModalOpen(response, idx)}
                           >
-                            View Performance
+                            Edit
                           </button>
-                        )}
+                          {response.monthlyGoals[idx]?.performance && (
+                            <button
+                              className="btn btn-success flex-grow-1"
+                              onClick={() => handleViewPerformance(response, idx)}
+                            >
+                              View Performance
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ))
-            ))}
+            )}
           </div>
+
       )}
 
       {showModal && formData && (
@@ -391,27 +397,29 @@ export default function Progress() {
         >
           <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div className="modal-content">
-              <div className="modal-header bg-primary text-white">
-                <h5 className="modal-title">Performance for {selectedMonthDetails.month}</h5>
+              <div className="modal-header" >
+                <h5 className="modal-title text-truncate"  >
+                  Performance for {selectedMonthDetails.month}
+                </h5>
                 <button
                   type="button"
-                  className="btn-close btn-close-white"
+                  className="btn-close"
                   onClick={() => setIsModalOpen(false)}
                   aria-label="Close"
                 ></button>
               </div>
               <div className="modal-body">
                 <div className="card mb-3">
-                  <div className="card-header bg-primary text-white">
+                  <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
                     Monthly Target
                   </div>
                   <div className="card-body">
-                    <h6 className="card-title">{selectedMonthDetails.target}</h6>
+                    <h6 className="card-title text-truncate">{selectedMonthDetails.target}</h6>
                   </div>
                 </div>
 
-                <div className="card">
-                  <div className="card-header bg-primary text-white">
+                <div className="card mb-3">
+                  <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
                     Goals and Performances
                   </div>
                   <div className="card-body">
@@ -422,28 +430,28 @@ export default function Progress() {
                         {selectedMonthDetails.goals.map((goal, index) => (
                           <div
                             key={index}
-                            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-wrap"
                           >
-                            <div>
-                              <h6 className="my-0">Goal: {goal}</h6>
+                            <div className="w-100 w-md-auto mb-2 mb-md-0">
+                              <h6 className="my-0 text-truncate">Goal: {goal}</h6>
                               <small className="text-muted">
-                                Performance: {selectedMonthDetails.performance[index] || "N/A"}
+                                Performance: {selectedMonthDetails.performance[index] ? (
+                                  <p
+                                    className={`badge bg-primary rounded-pill fs-6 mt-2`}
+                                  >
+                                    {selectedMonthDetails.performance[index]}%
+                                  </p>
+                                )
+                                  : (
+                                    <small>Performance not given</small>
+                                  )
+                                }
                               </small>
                             </div>
-                            {selectedMonthDetails.performance[index] && (
-                              <span
-                                className={`badge ${parseFloat(selectedMonthDetails.performance[index]) >= 100
-                                  ? 'bg-success'
-                                  : 'bg-warning'
-                                  } rounded-pill`}
-                              >
-                                {selectedMonthDetails.performance[index]}%
-                              </span>
-                            )}
+
                           </div>
                         ))}
                       </div>
-
                     ) : (
                       <p className="text-muted fst-italic">
                         No goals or performance data available.
@@ -451,25 +459,27 @@ export default function Progress() {
                     )}
                   </div>
                 </div>
+
                 <div className="card mb-3">
-                  <div className="card-header bg-primary text-white">
+                  <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
                     Therapist Feedback
                   </div>
                   <div className="card-body">
-                    <p>{selectedMonthDetails.therapistFeedback || 'No feedback available'}</p>
+                    <p className="text-wrap">{selectedMonthDetails.therapistFeedback || "No feedback available"}</p>
                   </div>
                 </div>
+
                 <div className="card mb-3">
-                  <div className="card-header bg-primary text-white">
+                  <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
                     Feedback
                   </div>
                   <div className="card-body">
                     <input
                       type="text"
-                      className='form-control'
+                      className="form-control border border-4"
                       value={doctorFeedback}
                       onChange={(e) => handleDoctorFeedback(e)}
-                      placeholder='Enter feedback based on the child performance'
+                      placeholder="Enter feedback based on the child performance"
                     />
                   </div>
                 </div>
@@ -494,6 +504,7 @@ export default function Progress() {
           </div>
         </div>
       )}
+
 
 
 
