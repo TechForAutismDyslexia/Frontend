@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Loader from "./Loader";
 
 const ParentAppointments = () => {
   const [appointments, setAppointments] = useState([]);
-
+  const [loading, setLoading] = useState(false);  
   useEffect(() => {
     // Fetch appointments data
     const fetchAppointments = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`https://api.joywithlearning.com/api/parent/getAppointments/${sessionStorage.getItem("id")}`, {
           headers: {
             Authorization: `${sessionStorage.getItem("logintoken")}`,
           },
         });
         setAppointments(response.data); 
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching appointments:", error);
+        setLoading(false);
       }
     };
 
@@ -26,6 +30,11 @@ const ParentAppointments = () => {
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">My Appointments</h1>
+      {loading ? 
+      <div className="d-flex justify-content-center">
+              <Loader />
+              </div>
+              : (
       <table className="table table-bordered table-hover">
         <thead className="thead-dark">
           <tr>
@@ -64,6 +73,7 @@ const ParentAppointments = () => {
           ))}
         </tbody>
       </table>
+              )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Loader from "./Loader";
 
 export default function ViewAppointment() {
   const [doctors, setDoctors] = useState([]);
@@ -8,6 +9,7 @@ export default function ViewAppointment() {
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const logintoken = sessionStorage.getItem("logintoken");
 
@@ -40,6 +42,7 @@ export default function ViewAppointment() {
     }
 
     try {
+      setLoading(true);
       const response = await axios.get(
         `https://api.joywithlearning.com/api/admin/getappointments/${doctorId}`,
         {
@@ -50,8 +53,10 @@ export default function ViewAppointment() {
       );
       setAppointments(response.data);
       setFilteredAppointments(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching appointments:", error.message);
+      setLoading(false);
     }
   };
 
@@ -141,6 +146,12 @@ export default function ViewAppointment() {
         </div>
       )}
 
+      {loading ? 
+        <div className="d-flex justify-content-center">
+      <Loader /> 
+        </div>
+      : (
+        <>
       {filteredAppointments.length > 0 && (
         <div className="mt-4">
           <table className="table table-bordered table-striped">
@@ -189,6 +200,8 @@ export default function ViewAppointment() {
             </tbody>
           </table>
         </div>
+      )}
+      </>
       )}
     </div>
   );
