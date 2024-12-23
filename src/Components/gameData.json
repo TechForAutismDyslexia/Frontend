@@ -31,8 +31,8 @@
       },
       {
         "gameId": "2",
-        "name": "Missing Letter",
-        "img": "MissingLetter",
+        "name": "Memory Game",
+        "img": "Memorygame",
         "description": "This is a description of the game",
         "route": "/games/memorygame"
       },
