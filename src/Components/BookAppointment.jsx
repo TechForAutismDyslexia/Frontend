@@ -125,8 +125,8 @@ export default function BookAppointment() {
         formData,
         {
           headers: {
-            Authorization: localStorage.getItem("logintoken"),
-            "Content-Type": "multipart/form-data",
+            "Authorization": sessionStorage.getItem('logintoken'),
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
@@ -179,7 +179,7 @@ export default function BookAppointment() {
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Child Name</label>
+                    <label className="form-label">Child Name<span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       className="form-control"
@@ -191,7 +191,7 @@ export default function BookAppointment() {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Child Age</label>
+                    <label className="form-label">Child Age<span style={{color:"red"}}>*</span></label>
                     <input
                       type="number"
                       className="form-control"
@@ -206,7 +206,7 @@ export default function BookAppointment() {
                 <div className="row">
                   {/* Date of Birth Field */}
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Date of Birth</label>
+                    <label className="form-label">Date of Birth<span style={{color:"red"}}>*</span></label>
                     <input
                       type="date"
                       className="form-control"
@@ -219,7 +219,7 @@ export default function BookAppointment() {
 
                   {/* Gender Field */}
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Gender</label>
+                    <label className="form-label">Gender<span style={{color:"red"}}>*</span></label>
                     <select
                       className="form-select"
                       value={formState.gender}
@@ -238,7 +238,7 @@ export default function BookAppointment() {
 
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Parent Name</label>
+                    <label className="form-label">Parent Name<span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       className="form-control"
@@ -250,7 +250,7 @@ export default function BookAppointment() {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Parent Email</label>
+                    <label className="form-label">Parent Email<span style={{color:"red"}}>*</span></label>
                     <input
                       type="email"
                       className="form-control"
@@ -262,7 +262,7 @@ export default function BookAppointment() {
                 </div>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Parent Phone Number</label>
+                    <label className="form-label">Parent Phone Number<span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       className="form-control"
@@ -288,7 +288,8 @@ export default function BookAppointment() {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="childConcerns" className="form-label">
-                      Child Concerns:
+                      Concerns:
+                      <span style={{color:"red"}}>*</span>
                     </label>
                     <textarea
                       id="childConcerns"
@@ -313,7 +314,6 @@ export default function BookAppointment() {
                       onChange={(e) =>
                         updateFormState("address", e.target.value)
                       }
-                      required
                     ></textarea>
                   </div>
                 </div>
@@ -377,7 +377,7 @@ export default function BookAppointment() {
                 </div>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Appointment Date</label>
+                    <label className="form-label">Appointment Date<span style={{color:"red"}}>*</span></label>
                     <input
                       type="date"
                       className="form-control"
@@ -390,7 +390,7 @@ export default function BookAppointment() {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Select Branch</label>
+                    <label className="form-label">Select Branch<span style={{color:"red"}}>*</span></label>
                     <select
                       className="form-select"
                       value={formState.branch}
@@ -400,20 +400,15 @@ export default function BookAppointment() {
                       required
                     >
                       <option value="">Select Branch</option>
-                      <option value="Bowenpally">Bowenpally</option>
+                      <option value="Himayathnagar">Himayathnagar</option>
                       <option value="Barkathpura">Barkathpura</option>
                       <option value="Champapet">Champapet</option>
                       <option value="Nacharam">Nacharam</option>
-                      <option value="Neredmet">Neredmet</option>
-                      <option value="Kukatpally">Kukatpally</option>
-                      <option value="Banjarahills">Banjarahills</option>
-                      <option value="Manikonda">Manikonda</option>
-                      <option value="Suchitra">Suchitra</option>
                     </select>
                   </div>
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Select Branch</label>
+                  <label className="form-label">Select Consultation type<span style={{color:"red"}}>*</span></label>
                   <select
                     className="form-select"
                     value={formState.consultationType}
@@ -435,7 +430,7 @@ export default function BookAppointment() {
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Select Doctor</label>
+                  <label className="form-label">Select Doctor<span style={{color:"red"}}>*</span></label>
                   <select
                     className="form-select"
                     value={formState.doctorId}
@@ -453,7 +448,7 @@ export default function BookAppointment() {
                   </select>
                 </div>
                 <div className="d-flex gap-2 flex-wrap">
-                  <label className="form-label">Time</label>
+                  <label className="form-label">Time<span style={{color:"red"}}>*</span></label>
                   {getAvailableTimes().map((time) => (
                     <button
                       type="button"
@@ -472,7 +467,7 @@ export default function BookAppointment() {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="uploadFile" className="form-label">
-                      Upload File:
+                      Upload previous reports (if any):
                     </label>
                     <input
                       type="file"

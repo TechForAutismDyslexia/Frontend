@@ -20,10 +20,11 @@ const JWLenquiries = () => {
   const fetchEnquiries = async () => {
     try {
       setIsLoading(true);
+      const centreId = sessionStorage.getItem("centreId");
       const response = await axios.get(
-        "https://api.joywithlearning.com/api/admin/get-jwl-enquiries",
+        `https://api.joywithlearning.com/api/admin/get-jwl-enquiries/${centreId}`,
         {
-          headers: { Authorization: localStorage.getItem("logintoken") },
+          headers: { Authorization: sessionStorage.getItem("logintoken") },
         }
       );
       setData(response.data);
@@ -70,16 +71,16 @@ const JWLenquiries = () => {
       handleCloseCardModal();
       setIsLoading(true);
       setShowDeleteModal(false);
-      await axios.delete(
-        `https://api.joywithlearning.com/api/admin/delete-jwl-enquiry/${parentEmail}`,
+      await axios.put(
+        `https://api.joywithlearning.com/api/admin/archive-jwl-enquiry/${parentEmail}`,
         {
           headers: { Authorization: localStorage.getItem("logintoken") },
         }
       );
-      toast.success("Record deleted successfully!");
+      toast.success("Record archived successfully!");
       fetchEnquiries();
     } catch (error) {
-      console.error("There was an error deleting the record!", error);
+      console.error("There was an error archiving the record!", error);
     }
   };
 
@@ -133,7 +134,8 @@ const JWLenquiries = () => {
             <div className="modal-content">
               <div className="modal-header bg-light">
                 <h5 className="modal-title">
-                  Details of <p className="fw-bold fs-3">{selectedCard.parentName}</p>
+                  Enquiry Information
+                  {/* <p className="fw-bold fs-3">{selectedCard.parentName}</p> */}
                 </h5>
                 <button
                   type="button"
@@ -142,6 +144,12 @@ const JWLenquiries = () => {
                 ></button>
               </div>
               <div className="modal-body">
+                <p>
+                  <strong>Email:</strong> {selectedCard.parentEmail}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {selectedCard.parentPhoneNo}
+                </p>
                 <p>
                   <strong>Child Name:</strong> {selectedCard.childName}
                 </p>
@@ -165,7 +173,9 @@ const JWLenquiries = () => {
                   </div>
                 ) : videoSrc ? (
                   <div>
-                    <p><strong>Uploaded Video :</strong></p>
+                    <p>
+                      <strong>Uploaded Video :</strong>
+                    </p>
                     <video
                       controls
                       src={videoSrc}
@@ -175,16 +185,18 @@ const JWLenquiries = () => {
                 ) : (
                   <p>No video available.</p>
                 )}
-                {checklist && (
-                  <div className="mt-3"> 
-                    <p><strong>Checklist :</strong></p>
+                {/* {checklist && (
+                  <div className="mt-3">
+                    <p>
+                      <strong>Checklist :</strong>
+                    </p>
                     {Object.keys(checklist).map((key, index) => (
                       <p key={index}>
                         {key.toUpperCase()}: {checklist[key]}
                       </p>
                     ))}
                   </div>
-                )}
+                )} */}
               </div>
               <div className="modal-footer">
                 <button
@@ -192,7 +204,7 @@ const JWLenquiries = () => {
                   className="btn btn-danger"
                   onClick={() => setShowDeleteModal(true)}
                 >
-                  Delete Enquiry
+                  Archive Enquiry
                 </button>
               </div>
             </div>
@@ -209,7 +221,7 @@ const JWLenquiries = () => {
           <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Delete Confirmation</h5>
+                <h5 className="modal-title">Archive Confirmation</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -217,7 +229,7 @@ const JWLenquiries = () => {
                 ></button>
               </div>
               <div className="modal-body">
-                <p>Are you sure you want to delete this enquiry?</p>
+                <p>Are you sure you want to archive this enquiry?</p>
               </div>
               <div className="modal-footer">
                 <button
@@ -232,7 +244,7 @@ const JWLenquiries = () => {
                   className="btn btn-danger"
                   onClick={() => handleDelete(selectedCard.parentEmail)}
                 >
-                  Confirm Delete
+                  Confirm Archive
                 </button>
               </div>
             </div>

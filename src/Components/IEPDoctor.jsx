@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
 import { ToastContainer, toast } from 'react-toastify';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 export default function Progress() {
   const [responses, setResponses] = useState([]);
@@ -36,6 +38,47 @@ export default function Progress() {
     };
     fetchData();
   }, []);
+
+  const handleViewIEP = () => {
+    const doc = new jsPDF();
+    const tableData = [];
+
+    const therapyName = responses[0]?.therapy || "N/A";
+    const therapistName = responses[0]?.therapistName || "N/A";
+    const month = responses[0]?.startingMonth + " " + responses[0]?.startingYear || "N/A";
+    responses.slice(0, 3).forEach((response) => {
+      response.monthlyGoals.forEach((goalData) => {
+        const numberedGoals = goalData.goals
+          .map((goal, index) => `${index + 1}) ${goal}`)
+          .join("\n\n");
+        tableData.push([
+          goalData.month,
+          goalData.target,
+          numberedGoals,
+          goalData.performance
+            ? goalData.performance.map((perf, index) => `${index + 1}) ${perf}`).join("\n") : "N/A",
+          goalData.therapistFeedback || "N/A",
+          goalData.doctorFeedback || "N/A",
+        ]);
+      });
+    });
+
+    doc.setFontSize(18);
+    doc.text("Individualized Education Program (IEP)", 14, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Therapy : ${therapyName}`, 14, 30);
+    doc.text(`Therapist : ${therapistName}`, 70, 30);
+    doc.text(`Month-Year : ${month}`, 140, 30);
+
+    doc.autoTable({
+      head: [["Month", "Target", "Goals", "Performance", "Therapist Feedback", "Doctor Feedback"]],
+      body: tableData,
+      startY: 40,
+    });
+
+    doc.output("dataurlnewwindow");
+  };
 
   const handleInputChange = (e, monthIndex, goalIndex, field) => {
     const { name, value } = e.target;
@@ -260,11 +303,17 @@ export default function Progress() {
   return (
     <div className="container py-4">
       <ToastContainer />
-      <div className='mb-4 d-flex justify-content-between'>
+      <div className='mb-4 d-flex justify-content-around'>
         <div>
           <h1>Individual Education Plan (IEP)</h1>
         </div>
         <button type='button' className='btn btn-success' onClick={() => handleModalOpen(null)}>Assign IEP</button>
+        {responses.length > 0 && (
+          <button type='button' className="btn btn-primary" onClick={handleViewIEP}>
+            IEP Report
+          </button>
+        )
+        }
       </div>
       {loading ? <Loader /> : (
         responses.length === 0 ? <h3>No IEPs assigned</h3> :

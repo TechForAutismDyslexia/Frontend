@@ -129,7 +129,7 @@ const Calendar = ({ events }) => {
         <div className="event-list">
           <h3 className="event-title">Events</h3>
           {eventList.map((event, index) => (
-            <div key={index} className="event-item">
+            <div key={index} className="event-item fw-bold">
               {event.title}
             </div>
           ))}
@@ -137,7 +137,7 @@ const Calendar = ({ events }) => {
       ) : (
         <div className="event-list">
           <h3 className="event-title">Events</h3>
-          <div className="event-item">No events</div>
+          <div className="event-item fw-bold">No events</div>
         </div>
       )}
     </div>

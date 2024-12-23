@@ -18,13 +18,21 @@ export default function Register() {
     setLoading(true);
     e.preventDefault();
     try {
-      const res = await axios.post("https://api.joywithlearning.com/api/users/register", {
-        username,
-        password,
-        name,
-        mobilenumber,
-        email,
-      });
+      const token = sessionStorage.getItem("logintoken");
+      const res = await axios.post("https://api.joywithlearning.com/api/users/register",
+        {
+          username,
+          password,
+          name,
+          mobilenumber,
+          email,
+        },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        },
+      );
       console.log(res);
       setLoading(false);
       toast.success("Registered successfully!", { autoClose: 2000 });
@@ -32,14 +40,8 @@ export default function Register() {
         navigate("/admindashboard");
       }, 2000);
     } catch (e) {
-      if (e.response && e.response.status === 401) {
-        toast.error("Username already exists!", { autoClose: 2000 });
-        setLoading(false);
-        return;
-      }
-      console.error("Data not sent");
+      toast.error(e.message, { autoClose: 2000 });
       setLoading(false);
-      toast.error("Error has occurred. Please try again!", { autoClose: 2000 });
     }
   };
 
@@ -64,7 +66,7 @@ export default function Register() {
                     className="form-control"
                     required
                   />
-                  <label htmlFor="name">Name</label>
+                  <label htmlFor="name">Name<span style={{ color: "red" }}></span></label>
                 </div>
                 <div className="form-floating mb-3">
                   <input
@@ -76,7 +78,7 @@ export default function Register() {
                     className="form-control"
                     required
                   />
-                  <label htmlFor="username">Username</label>
+                  <label htmlFor="username">Username<span style={{ color: "red" }}></span></label>
                 </div>
                 <div className="form-floating mb-3">
                   <input
@@ -100,19 +102,19 @@ export default function Register() {
                     className="form-control"
                     required
                   />
-                  <label htmlFor="mobilenumber">Mobile Number</label>
+                  <label htmlFor="mobilenumber">Mobile Number<span style={{ color: "red" }}></span></label>
                 </div>
                 <div className="form-floating mb-3">
                   <input
                     id="password"
-                    type="password"
+                    type="text"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="form-control"
                     required
                   />
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">Password<span style={{ color: "red" }}></span></label>
                 </div>
                 <div className="d-grid">
                   <button type="submit" className="btn btn-primary mt-3">

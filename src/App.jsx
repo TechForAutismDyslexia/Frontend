@@ -189,7 +189,6 @@ function App() {
             }
           />
 
-          {/* Catch-All for 404 */}
           <Route path="/forbidden" element={<Forbidden />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

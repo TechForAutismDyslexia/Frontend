@@ -172,21 +172,27 @@ export default function Admin() {
       <div className="mb-4">
         <h1 className="my-4 text-center">Admin Dashboard</h1>
       </div>
-
       <div className="d-flex flex-wrap justify-content-center mb-4">
         <button
-          className="btn m-2 fw-bold card shadow-lg btn-outline-info "
+          className="btn m-2 fw-bold card shadow-lg btn-outline-info"
           style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
-          onClick={() => navigate("/approveappointment")}
+          onClick={() => navigate("/jwlenquiries")}
         >
-          Manage Appointments
+          JWL Enquiries
         </button>
         <button
-          className="btn m-2 fw-bold card shadow-lg btn-outline-info "
+          className="btn m-2 fw-bold card shadow-lg btn-outline-info"
           style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
-          onClick={() => navigate("/viewappointment")}
+          onClick={() => navigate("/register")}
         >
-          View Appointments
+          Register Parent
+        </button>
+        <button
+          className="btn m-2 fw-bold card shadow-lg btn-outline-info"
+          style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
+          onClick={() => navigate("/admindashboard/adminregister")}
+        >
+          Register Doctor/Therapist
         </button>
         <button
           className="btn m-2 fw-bold card shadow-lg btn-outline-info"
@@ -196,25 +202,18 @@ export default function Admin() {
           Book Appointment
         </button>
         <button
-          className="btn m-2 fw-bold card shadow-lg btn-outline-info"
+          className="btn m-2 fw-bold card shadow-lg btn-outline-info "
           style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/viewappointment")}
         >
-          Add Parent
+          View Appointments
         </button>
         <button
-          className="btn m-2 fw-bold card shadow-lg btn-outline-info"
+          className="btn m-2 fw-bold card shadow-lg btn-outline-info "
           style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
-          onClick={() => navigate("/admindashboard/adminregister")}
+          onClick={() => navigate("/approveappointment")}
         >
-          Add Doctor/Therapist
-        </button>
-        <button
-          className="btn m-2 fw-bold card shadow-lg btn-outline-info"
-          style={{ backgroundColor: "rgb(100, 150, 200)" }} //style={{ backgroundColor: "rgb(100, 190, 150)" }}
-          onClick={() => navigate("/jwlenquiries")}
-        >
-          JWL Enquiries
+          Manage Appointments
         </button>
       </div>
 
@@ -230,7 +229,7 @@ export default function Admin() {
           <div className="my-5">
             {pending.length === 0 ? null : (
               <>
-                <h2 className="mb-4 text-center">Pending Users</h2>
+                <h2 className="mb-4 text-center">New Registrations</h2>
                 <div className="row">
                   {pending.map((child) => (
                     <div
@@ -244,12 +243,20 @@ export default function Admin() {
                         <div className="card-body">
                           <h5 className="card-title">{child.name}</h5>
                           <p className="card-text">Age: {child.age}</p>
-                          <p className="card-text">
-                            Doctor: {child.doctorName}
-                          </p>
-                          <p className="card-text">
-                            Therapist: {child.caretakerName}
-                          </p>
+                          {child.doctorName && child.caretakerName ? (
+                            <>
+                              <p className="card-text">
+                              Doctor: {child.doctorName}
+                            </p>
+                            <p className="card-text">
+                              Therapist: {child.caretakerName}
+                            </p>
+                            </>
+                          ):
+                          (<>
+                            <p><strong>Please assign Doctor and Therapist.</strong></p>
+                          </>)}
+                          
                         </div>
                       </div>
                     </div>
@@ -277,9 +284,14 @@ export default function Admin() {
                         <h5 className="card-title">{child.name}</h5>
                         <p className="card-text">Age: {child.age}</p>
                         <p className="card-text">Doctor: {child.doctorName}</p>
-                        <p className="card-text">
-                          Therapist: {child.caretakerName}
-                        </p>
+                        <p className="card-text">Therapist: {child.caretakerName}</p>
+                        <span
+                          className="position-absolute top-0 end-0 p-2"
+                          title="More information about this child"
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <i className="bi bi-info-circle"></i>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -310,12 +322,12 @@ export default function Admin() {
                   <strong>Age:</strong> {selectedChild.age}
                 </p>
                 <p>
-                  <strong>Doctor:</strong> {selectedChild.doctorName}
+                  <strong>Doctor:</strong>  {selectedChild.doctorName?.length === 0 ? "Yet to be assigned" : selectedChild.doctorName}
                 </p>
                 <p>
-                  <strong>Therapist:</strong> {selectedChild.caretakerName}
+                  <strong>Therapist:</strong> {selectedChild.caretakerName?.length === 0 ? "Yet to be assigned" : selectedChild.caretakerName}
                 </p>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="caretakerSelect">
                     <strong>Assign Therapist</strong>
                   </label>
@@ -332,8 +344,8 @@ export default function Admin() {
                       </option>
                     ))}
                   </select>
-                </div>
-                <div className="form-group">
+                </div> */}
+                {/* <div className="form-group">
                   <label htmlFor="doctorSelect">
                     <strong>Assign Doctor</strong>
                   </label>
@@ -350,7 +362,7 @@ export default function Admin() {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
               </div>
               <div className="modal-footer">
                 <button
@@ -365,7 +377,7 @@ export default function Admin() {
                   className="btn btn-success"
                   onClick={handleSubmit}
                 >
-                  Save changes
+                  Update
                 </button>
                 <button
                   type="button"

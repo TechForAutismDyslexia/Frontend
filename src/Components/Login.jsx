@@ -20,12 +20,22 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
+  const getCentreId = (name) =>{
+    const centreMapping = {
+        "Barkathpura" : 1,
+        "Champapet" : 2,
+        "Himayathnagar" : 3,
+        "Nacharam" : 4,
+      }
+    return centreMapping[name];
+}
+
   const handleLogin = async (e) => {
     setLoading(true);
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://api.joywithlearning.com/api/users/login",
+        "https:api.joywithlearning.com/api/users/login",
         { username, password }
       );
       sessionStorage.setItem("username", username);
@@ -34,6 +44,9 @@ export default function Login() {
       console.log(response);
       const decodedToken = jwtDecode(response.data);
       sessionStorage.setItem("role", decodedToken.role);
+      if(decodedToken.role === "admin") {
+        sessionStorage.setItem("centreId", getCentreId(username));
+      }
       sessionStorage.setItem("id", decodedToken.id);
       setLoading(false);
       Navigate(`/${decodedToken.role}dashboard`);

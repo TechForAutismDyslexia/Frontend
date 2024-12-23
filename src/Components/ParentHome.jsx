@@ -49,6 +49,16 @@ export default function ParentHome() {
     fetchChildFeedback(child._id);
   };
 
+  const getCentreName = (centreId) =>{
+    const centreMapping = {
+        1 : "Barkathpura",
+        2 : "Champapet",
+        3 : "Himayathnagar",
+        4 : "Nacharam"
+      }
+    return centreMapping[centreId];
+}
+
   const fetchEvents = async () => {
     const events = {};
     try {
@@ -162,7 +172,7 @@ export default function ParentHome() {
         <section className="row">
           {isLoading && <Loader />}
           {!isLoading && children.length === 0 && (
-            <h3 className="text-center">No child has been registered</h3>
+            <h3 className="text-center">Please register your child</h3>
           )}
           {!isLoading &&
             children.map((child, index) => (
@@ -179,17 +189,26 @@ export default function ParentHome() {
                     <p className="card-text">
                       <strong>Parent Details :</strong> {child.parentDetails}
                     </p>
-                    <p className="card-text">
-                      <strong>Therapist Name :</strong> {child.caretakerName}
+                    {child.caretakerName && child.doctorName ? (
+                      <>
+                      <p className="card-text">
+                      <strong>Therapist:</strong> {child.caretakerName}
                     </p>
                     <p className="card-text">
-                      <strong>Doctor Name :</strong> {child.doctorName}
+                      <strong>Doctor:</strong> {child.doctorName}
                     </p>
+                    </>
+                    ):(
+                        <>
+                          <p><strong>Our admin will get in touch shortly</strong></p>
+                        </>
+                    )}
+                    
                   </div>
                 </div>
               </div>
             ))}
-        </section>
+        </section>  
       </div>
 
       {selectedChild && (
@@ -230,11 +249,7 @@ export default function ParentHome() {
                   <strong>Doctor Name :</strong> {selectedChild.doctorName}
                 </p>
                 <p>
-                  <strong>Center Id :</strong> {selectedChild.centreId}
-                </p>
-                <p>
-                  <strong>Admin Status :</strong>{" "}
-                  {selectedChild.adminStatus ? "true" : "false"}
+                  <strong>Center Id :</strong> {getCentreName(selectedChild.centreId)}
                 </p>
                 {feedbackLoader && <Loader />}
                 {childFeedback && (

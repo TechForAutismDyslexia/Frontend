@@ -67,7 +67,7 @@ export default function Doctor() {
         if (!events[date]) {
           events[date] = [];
         }
-        events[date].push({title : `Consultation : ${event.slots[0].time}`});
+        events[date].push({title : `Consultation : ${event.slots[0].time} ${event.childName}`});
       });
       setEvents(events);
     } catch (error) {
@@ -88,6 +88,16 @@ export default function Doctor() {
       setChildGames([]);
     }
   };
+
+  const getCentreName = (centreId) =>{
+        const centreMapping = {
+            1 : "Barkathpura",
+            2 : "Champapet",
+            3 : "Himayathnagar",
+            4 : "Nacharam"
+          }
+        return centreMapping[centreId];
+  }
 
   const handleSubmitFeedback = async () => {
     try {
@@ -145,6 +155,11 @@ export default function Doctor() {
             <Modal.Body>
               <Calendar events={events} />
             </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
           </Modal>
         </div>
         <div>
@@ -160,9 +175,9 @@ export default function Doctor() {
                     <div className="card-body">
                       <h5 className="card-title">{child.name}</h5>
                       <p className="card-text">Age: {child.age}</p>
-                      <p className="card-text">Parent Details: {child.parentDetails}</p>
+                      <p className="card-text">Parent: {child.parentDetails}</p>
                       <p className="card-text">Therapist: {child.caretakerName}</p>
-                      <p className="card-text">Center ID: {child.centreId}</p>
+                      <p className="card-text">Center Name: {getCentreName(child.centreId)}</p>
                     </div>
                   </div>
                 </div>
@@ -181,7 +196,7 @@ export default function Doctor() {
                 <p><strong>Parent Details:</strong> {selectedChild.parentDetails}</p>
                 <p><strong>Therapist:</strong> {selectedChild.caretakerName}</p>
                 <p><strong>Doctor:</strong> {selectedChild.doctorName}</p>
-                <p><strong>Center ID:</strong> {selectedChild.centreId}</p>
+                <p><strong>Center Name:</strong> {getCentreName(selectedChild.centreId)}</p>
                 {childFeedback && (
                   <div>
                     <h5><strong>Feedback:</strong></h5>
