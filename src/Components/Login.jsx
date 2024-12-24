@@ -35,7 +35,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https:api.joywithlearning.com/api/users/login",
+        "https://api.joywithlearning.com/api/users/login",
         { username, password }
       );
       sessionStorage.setItem("username", username);
