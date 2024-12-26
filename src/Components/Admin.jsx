@@ -246,17 +246,17 @@ export default function Admin() {
                           {child.doctorName && child.caretakerName ? (
                             <>
                               <p className="card-text">
-                              Doctor: {child.doctorName}
-                            </p>
-                            <p className="card-text">
-                              Therapist: {child.caretakerName}
-                            </p>
+                                Doctor: {child.doctorName}
+                              </p>
+                              <p className="card-text">
+                                Therapist: {child.caretakerName}
+                              </p>
                             </>
-                          ):
-                          (<>
-                            <p><strong>Please assign Doctor and Therapist.</strong></p>
-                          </>)}
-                          
+                          ) :
+                            (<>
+                              <p><strong>Please assign Doctor and Therapist.</strong></p>
+                            </>)}
+
                         </div>
                       </div>
                     </div>
@@ -322,48 +322,61 @@ export default function Admin() {
                   <strong>Age:</strong> {selectedChild.age}
                 </p>
                 <p>
-                  <strong>Doctor:</strong>  {selectedChild.doctorName?.length === 0 ? "Yet to be assigned" : selectedChild.doctorName}
+                  <strong>Doctor:</strong>{" "}
+                  {selectedChild.doctorName?.length === 0
+                    ? "Yet to be assigned"
+                    : selectedChild.doctorName}
                 </p>
                 <p>
-                  <strong>Therapist:</strong> {selectedChild.caretakerName?.length === 0 ? "Yet to be assigned" : selectedChild.caretakerName}
+                  <strong>Therapist:</strong>{" "}
+                  {selectedChild.caretakerName?.length === 0
+                    ? "Yet to be assigned"
+                    : selectedChild.caretakerName}
                 </p>
-                {/* <div className="form-group">
-                  <label htmlFor="caretakerSelect">
-                    <strong>Assign Therapist</strong>
-                  </label>
-                  <select
-                    id="caretakerSelect"
-                    className="form-control"
-                    value={selectedCaretaker}
-                    onChange={handleCaretakerChange}
-                  >
-                    <option value="">Select Therapist</option>
-                    {therapists.map((caretaker) => (
-                      <option key={caretaker._id} value={caretaker._id}>
-                        {caretaker.name}
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
-                {/* <div className="form-group">
-                  <label htmlFor="doctorSelect">
-                    <strong>Assign Doctor</strong>
-                  </label>
-                  <select
-                    id="doctorSelect"
-                    className="form-control"
-                    value={selectedDoctor}
-                    onChange={handleDoctorChange}
-                  >
-                    <option value="">Select Doctor</option>
-                    {doctors.map((doctor) => (
-                      <option key={doctor._id} value={doctor._id}>
-                        {doctor.name}
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
+
+                {selectedChild.adminStatus === false && (
+                  <>
+                    <div className="form-group">
+                      <label htmlFor="caretakerSelect">
+                        <strong>Assign Therapist</strong>
+                      </label>
+                      <select
+                        id="caretakerSelect"
+                        className="form-control"
+                        value={selectedCaretaker}
+                        onChange={handleCaretakerChange}
+                      >
+                        <option value="">Select Therapist</option>
+                        {therapists.map((caretaker) => (
+                          <option key={caretaker._id} value={caretaker._id}>
+                            {caretaker.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="doctorSelect">
+                        <strong>Assign Doctor</strong>
+                      </label>
+                      <select
+                        id="doctorSelect"
+                        className="form-control"
+                        value={selectedDoctor}
+                        onChange={handleDoctorChange}
+                      >
+                        <option value="">Select Doctor</option>
+                        {doctors.map((doctor) => (
+                          <option key={doctor._id} value={doctor._id}>
+                            {doctor.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </>
+                )}
               </div>
+
               <div className="modal-footer">
                 <button
                   type="button"
@@ -372,13 +385,15 @@ export default function Admin() {
                 >
                   Reports
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={handleSubmit}
-                >
-                  Update
-                </button>
+                {selectedChild.adminStatus === false && (
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={handleSubmit}
+                  >
+                    Save Changes
+                  </button>
+                )}
                 <button
                   type="button"
                   className="btn btn-secondary"

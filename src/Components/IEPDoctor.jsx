@@ -31,7 +31,7 @@ export default function Progress() {
         setTherapistName(sessionStorage.getItem("therapistName"));
       } catch (error) {
         console.error('Error fetching data:', error);
-        toast.error("Error fetching data", { autoClose: 2000 });
+        toast.error("Error fetching data : " + error, { autoClose: 2000 });
       } finally {
         setLoading(false);
       }
@@ -72,7 +72,7 @@ export default function Progress() {
     doc.text(`Month-Year : ${month}`, 140, 30);
 
     doc.autoTable({
-      head: [["Month", "Target", "Goals", "Performance", "Therapist Feedback", "Doctor Feedback"]],
+      head: [["Month", "Long-Term Goals", "Short-Term Goals", "Performance", "Therapist Feedback", "Doctor Feedback"]],
       body: tableData,
       startY: 40,
     });
@@ -186,7 +186,7 @@ export default function Progress() {
       setResponses(response.data);
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.success("Error submitting form", { autoClose: 2000 });
+      toast.error("Error submitting form", { autoClose: 2000 });
     }
   };
 
@@ -250,24 +250,24 @@ export default function Progress() {
         <div key={monthIndex} className="card mb-3">
           <div className="card-body">
             <h5 className="mb-3">{monthGoal.month}</h5>
-            <h6 className="text-primary">Targets</h6>
+            <h6 className="text-primary">Long-Term Goal</h6>
             <div className="input-group mb-3">
               <input
                 type="text"
                 className="form-control"
-                placeholder={`Target`}
+                placeholder={`Long-Term Goal`}
                 value={monthGoal.target}
                 onChange={(e) => handleInputChange(e, monthIndex, null, 'target')}
                 disabled={isDisabled}
               />
             </div>
-            <h6 className="text-primary">Goals</h6>
+            <h6 className="text-primary">Short-Term Goals</h6>
             {monthGoal.goals.map((goal, goalIndex) => (
               <div key={goalIndex} className="d-flex align-items-center mb-3">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder={`Goal ${goalIndex + 1}`}
+                  placeholder={`Short-Term Goal ${goalIndex + 1}`}
                   value={goal}
                   onChange={(e) => handleInputChange(e, monthIndex, goalIndex, 'goals')}
                   disabled={isDisabled}
@@ -415,7 +415,7 @@ export default function Progress() {
                     </div>
                   )}
                   <div className="mb-3">
-                    <label className="form-label">Targets and Goals by Month</label>
+                    <label className="form-label">Long-Term and Short-Term Goals</label>
                     {renderMonthlyGoals()}
                   </div>
 
@@ -460,7 +460,7 @@ export default function Progress() {
               <div className="modal-body">
                 <div className="card mb-3">
                   <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
-                    Monthly Target
+                    Long-Term Goal
                   </div>
                   <div className="card-body">
                     <h6 className="card-title text-truncate">{selectedMonthDetails.target}</h6>
@@ -469,7 +469,7 @@ export default function Progress() {
 
                 <div className="card mb-3">
                   <div className="card-header" style={{ backgroundColor: "blanchedalmond" }}>
-                    Goals and Performances
+                    Short-Term Goals and Performances
                   </div>
                   <div className="card-body">
                     {selectedMonthDetails.goals &&
@@ -482,7 +482,7 @@ export default function Progress() {
                             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-wrap"
                           >
                             <div className="w-100 w-md-auto mb-2 mb-md-0">
-                              <h6 className="my-0 text-truncate">Goal: {goal}</h6>
+                              <h6 className="my-0 text-truncate">Short-Term Goal: {goal}</h6>
                               <small className="text-muted">
                                 Performance: {selectedMonthDetails.performance[index] ? (
                                   <p
