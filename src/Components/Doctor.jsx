@@ -92,8 +92,8 @@ export default function Doctor() {
   const getCentreName = (centreId) =>{
         const centreMapping = {
             1 : "Barkathpura",
-            2 : "Champapet",
-            3 : "Himayathnagar",
+            2 : "Himayathnagar",
+            3 : "Champapet",
             4 : "Nacharam"
           }
         return centreMapping[centreId];
