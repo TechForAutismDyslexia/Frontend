@@ -11,7 +11,7 @@ export default function Progress() {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [submitText, setSubmitText] = useState('');
-  const [therapistName, setTherapistName] = useState('');
+  const [therapistName, setTherapistName] = useState(sessionStorage.getItem("therapistName"));
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState('1');
   const currentYear = new Date().getFullYear();
@@ -28,7 +28,6 @@ export default function Progress() {
           { headers: { Authorization: `${sessionStorage.getItem("logintoken")}` } }
         );
         setResponses(response.data);
-        setTherapistName(sessionStorage.getItem("therapistName"));
       } catch (error) {
         console.error('Error fetching data:', error);
         toast.error("Error fetching data : " + error, { autoClose: 2000 });
@@ -44,7 +43,7 @@ export default function Progress() {
     const tableData = [];
 
     const therapyName = responses[0]?.therapy || "N/A";
-    const therapistName = responses[0]?.therapistName || "N/A";
+    const therapist = therapistName;
     const month = responses[0]?.startingMonth + " " + responses[0]?.startingYear || "N/A";
     responses.slice(0, 3).forEach((response) => {
       response.monthlyGoals.forEach((goalData) => {
@@ -68,7 +67,7 @@ export default function Progress() {
 
     doc.setFontSize(12);
     doc.text(`Therapy : ${therapyName}`, 14, 30);
-    doc.text(`Therapist : ${therapistName}`, 70, 30);
+    doc.text(`Therapist : ${therapist}`, 70, 30);
     doc.text(`Month-Year : ${month}`, 140, 30);
 
     doc.autoTable({
